@@ -1,0 +1,55 @@
+{% extends "groupaccount/base.html" %}
+
+{% block content %}
+
+  {% if groups %}
+    <style type="text/css">
+      table {
+	width:30%;
+      }
+    </style>
+
+    {% for group in groups %}
+    
+    <center><h4>{{ group.name }}</h4></center>
+    <table>
+      <tr>
+<!-- 	<th><b>Member</b></th> -->
+	{% for member in group.users %}  
+	  {% ifequal member.username user.username %}
+	    <td>
+	      <b>{{ member.username }}</b>
+	    </td>
+	  {% else %}
+	    <td>
+	      {{ member.username }}
+	    </td>
+	  {% endifequal %}
+	{% endfor %}
+	<td>Total</td>
+      <tr>
+      </tr>
+<!--	<th><b>Balance</b></th>-->
+	{% for member in group.users %}  
+	  {% ifequal member.username user.username %}
+	    <td {% if member.balanceFloat <= 0.0 %} style="color:red" {% else %}
+	    style="color:green"
+	    {% endif %}><b>{{member.balance}}</b>
+	    </td>
+	  {% else %}
+	    <td {% if member.balanceFloat <= 0.0 %} style="color:red" {% else %}
+	    style="color:green"
+	    {% endif %}>{{member.balance}}
+	    </td>
+	  {% endifequal %}
+	{% endfor %}
+      
+      <td><b>{{group.groupBalance}}</b></td>
+      </tr>
+    </table>
+
+    {% endfor %}
+
+  {% endif %}
+
+{% endblock %}

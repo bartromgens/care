@@ -136,7 +136,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'userprofile',
     'groupaccount',
-    'transaction'
+    'transaction',
+    'transactionreal',
 )
 
 # A sample logging configuration. The only tangible logging

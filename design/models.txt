@@ -5,14 +5,12 @@ User
 
 UserProfile
   user (User)
+  displayname (string)
   friends (UserProfiles)
   groups (GroupAccounts)
   settings (UserSettings)
 
 UserSettings
-
-Group
-  name (String)
 
 GroupAccount
   number (int)
@@ -39,6 +37,7 @@ Transaction
 
 TransactionReal
   amount (Double)
+  groupaccount (GroupAccount)
   date (Date)
   from (User)
   to (User)

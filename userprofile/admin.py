@@ -5,6 +5,7 @@ from django.contrib import admin
 class UserProfileAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['user']}),
+        (None, {'fields': ['displayname']}),
         (None, {'fields': ['groupAccounts']}),
     ]
     

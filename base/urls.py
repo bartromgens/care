@@ -16,6 +16,6 @@ urlpatterns = patterns('',
   url(r'^accounts/new/$', 'base.views.newGroup'),
   
   url(r'^transactions/', include('transaction.urls')),
-  #url(r'^accounts/', include('accounts.urls')),
+  url(r'^accounts/', include('groupaccount.urls')),
   url(r'^admin/', include(admin.site.urls)),
 )

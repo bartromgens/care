@@ -49,6 +49,7 @@ class MyTransactionView(AccountDetailView):
     
     context = super(MyTransactionView, self).get_context_data(**kwargs)
     context['transactionssection'] = True
+    #context['displayname'] = UserProfile.objects.get(user=self.request.user).displayname
     return context
     
 class SelectGroupTransactionView(BaseView):

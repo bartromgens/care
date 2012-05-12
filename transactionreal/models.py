@@ -8,13 +8,13 @@ from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 #users = User.objects.filter(groups__name='monkeys')
 
-class Transaction(models.Model):
+class TransactionReal(models.Model):
   amount = models.FloatField('amount')
-  what = models.CharField(max_length=200)
+  sender = models.ForeignKey(UserProfile, related_name='sender')
+  receiver = models.ForeignKey(UserProfile, related_name='receiver')
+  comment = models.CharField(max_length=200)
   groupAccount = models.ForeignKey(GroupAccount)
   date = models.DateTimeField('date')
-  buyer = models.ForeignKey(UserProfile, related_name='buyer')
-  consumers = models.ManyToManyField(UserProfile, related_name='consumers')
   
   def __unicode__(self):
     return self.what

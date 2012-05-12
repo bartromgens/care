@@ -57,17 +57,18 @@
 	    <b>{{ transaction.amountPerPerson }}</b></td>
 	<td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
 	<td>
-	  {% ifequal transaction.buyer.username user.username %}
+	  {% ifequal transaction.buyer.displayname displayname %}
 	  <b>{{ transaction.buyer }}</b>
 	  {% else %}
+	  <b>{{ displayname }}</b>
 	  {{ transaction.buyer }}
 	  {% endifequal %}
 	</td>
 <!-- 	<td>{{ transaction.amount }}</td> -->
-	<td>{{ transaction.group }}</td>
+	<td>{{ transaction.groupAccount }}</td>
 	<td>
 	  {% for consumer in transaction.consumers.all %}
-	    {% ifequal consumer.username user.username %}
+	    {% ifequal consumer.displayname displayname %}
 	    <font id="consumerfont"><b>{{ consumer }}</b></font>
 	    {% else %}
 	    <font id="consumerfont">{{ consumer }}</font>

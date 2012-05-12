@@ -7,7 +7,7 @@ from transaction.models import Transaction
 from base.views import BaseView
 
 class GroupsView(BaseView):
-  template_name = "accounts/index.html"
+  template_name = "groupaccount/index.html"
   context_object_name = "groups"
   
   def get_context_data(self, **kwargs):
@@ -22,7 +22,7 @@ class GroupsView(BaseView):
     
     
 class MyGroupsView(BaseView):
-  template_name = "accounts/myaccounts.html"
+  template_name = "groupaccount/myaccounts.html"
   context_object_name = "my groups"
   
   def getTransactions(self, buyerId):

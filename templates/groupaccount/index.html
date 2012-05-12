@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+
+{% block title %}Care 3.0{% endblock %}
+
+{% block content %}
+
+  <center><h3>Groups</h3></center>
+
+  {% if groups %}
+    <table>
+    <tr>
+<!--       <td><b>ID</b></td> -->
+      <td><b>Group Name</b></td>
+      <td><b>Members</b></td>
+    </tr>
+    {% for group in groups %}
+    <tr>
+<!--      <td >{{ group.id }}</td>-->
+      <td><a href="/accounts/{{ group.id }}/">{{ group.name }}</a></td>
+      <td>
+	{% for user in group.user_set.all %}
+	  {{user.username}}, 
+	{% endfor %}
+      </td>
+    </tr>
+  {% endfor %}
+    </table>
+
+  {% else %}
+    <p>No accounts are available.</p>
+  {% endif %}
+
+{% endblock %}

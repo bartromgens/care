@@ -9,8 +9,9 @@ from django.contrib.auth.models import User, Group
 
 class UserProfile(models.Model):
   user = models.ForeignKey(User)
+  displayname = models.CharField(max_length=200)
   groupAccounts = models.ManyToManyField(GroupAccount)
   #settings = models.ForeignKey(UserSettings)
   
   def __unicode__(self):
-    return self.user.username
+    return self.displayname

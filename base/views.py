@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.contrib import auth
 from django.contrib.auth.models import User, Group
 from base.forms import LoginForm, UserCreateForm, GroupCreateForm
+from userprofile.models import UserProfile
 
 class BaseView(TemplateView):
   template_name = "base/base.html"
@@ -14,6 +15,7 @@ class BaseView(TemplateView):
     context = super(BaseView, self).get_context_data(**kwargs)
     if self.request.user.is_authenticated():
       context['user'] = self.request.user
+      context['displayname'] = UserProfile.objects.get(user=self.request.user).displayname
       context['isLoggedin'] = True
     return context
 
