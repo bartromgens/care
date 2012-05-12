@@ -1,0 +1,46 @@
+User
+  username (String)
+  password
+  group (String)
+
+UserProfile
+  user (User)
+  friends (UserProfiles)
+  groups (GroupAccounts)
+  settings (UserSettings)
+
+UserSettings
+
+Group
+  name (String)
+
+GroupAccount
+  number (int)
+  name (string)
+  
+GroupSettings
+  interest (double)
+
+GroupAccountInvites
+  groupAccount (GroupAccount)
+  date (Date)
+  from (UserProfile)
+  to (UserProfile)
+  message (Test)
+  accepted (boolean)
+  rejected (boolean)
+
+Transaction
+  amount (Double)
+  what	(String)
+  date (Date)
+  buyer (User)
+  consumers (Users)
+
+TransactionReal
+  amount (Double)
+  date (Date)
+  from (User)
+  to (User)
+  comment (String)
+  

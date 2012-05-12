@@ -1,0 +1,85 @@
+{% extends "transaction/base.html" %}
+
+{% block content %}
+<!--  <h4>{{user.username}}'s Transaction Overview</h4> -->
+
+<!--   {% if buyer_transactions %}
+    <table>
+    <tr>
+      <td><b>ID</b></td>
+      <td><b>Group</b></td>
+      <td><b>Buyer</b></td>
+      <td><b>$$$</b></td>
+      <td><b>Date</b></td>
+      <td><b>What</b></td>
+      <td><b>Consumers</b></td>
+    </tr>
+    {% for transaction in buyer_transactions %}
+    <tr>
+      <td><a href="/transactions/{{ transaction.id }}/">{{ transaction.id }}</a></td>
+      <td>{{ transaction.group }}</td>
+      <td>{{ transaction.buyer }}</td>
+      <td>{{ transaction.amount }}</td>
+      <td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
+      <td>{{ transaction.comment }}</td>
+      <td>
+	{% for consumer in transaction.consumers.all %}
+	  {{consumer}}, 
+	{% endfor %}
+      </td>
+    </tr>
+  {% endfor %}
+    </table>
+
+  {% else %}
+      <p>No buyer transactions available.</p>
+  {% endif %}-->
+
+  {% if full_list %}
+    <table>
+    <tr>
+<!--       <td><b>ID</b></td> -->
+      <th><b>What</b></th>
+      <th><b>&#8364</b></th>
+      <th><b>Date</b></th>
+      <th><b>Who</b></th>
+      <th><b>Group</b></th>
+      <th><b>Consumers</b></th>
+    </tr>
+    {% for transaction in full_list %}
+    <tr>
+<!-- 	<td><a href="/transactions/{{ transaction.id }}/">{{ transaction.id }}</a></td> -->
+	<td > 
+	  <b>{{ transaction.what }}</b> </td> 
+	<td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
+	    style="color:green"
+	    {% endif %}>
+	    <b>{{ transaction.amountPerPerson }}</b></td>
+	<td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
+	<td>
+	  {% ifequal transaction.buyer.username user.username %}
+	  <b>{{ transaction.buyer }}</b>
+	  {% else %}
+	  {{ transaction.buyer }}
+	  {% endifequal %}
+	</td>
+<!-- 	<td>{{ transaction.amount }}</td> -->
+	<td>{{ transaction.group }}</td>
+	<td>
+	  {% for consumer in transaction.consumers.all %}
+	    {% ifequal consumer.username user.username %}
+	    <font id="consumerfont"><b>{{ consumer }}</b></font>
+	    {% else %}
+	    <font id="consumerfont">{{ consumer }}</font>
+	    {% endifequal %}
+	  {% endfor %}
+	</td>
+    </tr>
+  {% endfor %}
+    </table>
+
+  {% else %}
+      <p>No consumer transactions available.</p>
+  {% endif %}
+
+{% endblock %}

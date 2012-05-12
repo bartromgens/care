@@ -1,0 +1,30 @@
+{% extends "base/base_login.html" %}
+
+{% block title %}Care{% endblock %}
+
+{% block content %}
+
+  <center><h4>Register</h4></center>
+
+  {% if error %}
+    {{ error }}
+  {% endif %}
+
+  {% if registered %}
+    You have successfully registered!
+    <br />
+    <a href="care/login/">Login</a>
+  {% endif %}
+
+  {% if form %}
+  <center>
+    <form action="." method="post">
+    {% csrf_token %}
+    <table id="formtable">
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Register" />
+    </form>
+  </center>
+  {% endif %}
+{% endblock %}

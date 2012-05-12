@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <title>Care</title>
+  <style type="text/css">
+  <!--
+  @import url("{{ STATIC_URL }}style.css");
+  -->
+  </style>
+</head>
+
+<!-- <body bgcolor="#f2f4f5"> -->
+ <body bgcolor="#f5f8fc"> 
+
+  <div id="container">
+
+    <div id="header">
+      <font id="logotitle" ><b>Care</b></font></br>
+      <font id="logosubtitle" ><b>Online Banking for Groups</b></font>
+    </div>
+
+      <div id="login">
+	{% if not isLoggedin %}
+	  <font id="loginfont"><b>You are not logged in.</b></font>
+	  <a href="/login/" id="loginlink">[login]</a> 
+	  <a href="/register/" id="loginlink">[register]</a>  
+	{% endif %}
+	{% if isLoggedin %}
+	  <font id="loginfont"><b>You are signed in as </b></font>
+	   <a href="/user/" id="usernamelink"><b>{{ user.username }}</b></a>.  
+	  <a href="/logout/" id="loginlink">[logout]</a>
+	{% endif %}
+      </div>
+    
+    <div class="horizontalmenu">
+      <ul>
+      <li>
+	{% if homesection %}
+	  <a href="/care/" id="selectedbutton">Home</a>
+	{% else %}
+	  <a href="/care/">Home</a>
+	{% endif %}
+      </li>
+      <li>
+	{% if transactionssection %}
+	  <a href="/transactions/" id="selectedbutton">Transactions</a>
+	{% else %}
+	  <a href="/transactions/">Transactions</a>
+	{% endif %}
+      </li>
+      <li>
+	{% if groupssection %}
+	  <a href="/accounts/my/" id="selectedbutton">Groups</a>
+	{% else %}
+	  <a href="/accounts/my/">Groups</a>
+	{% endif %}
+      </li>
+<!--       <li><a href="/settings/">Settings</a></li> -->
+      <li><a href="/help/">Help</a></li>
+      <li><a href="/about">About</a></li>
+      </ul>     
+      <div id="horizontalmenubar">
+      </div>
+    </div>
+
+
+    <div class="verticalmenu">
+      {% block sidebar %}{% endblock %}
+    </div>
+
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <div id="footer">
+<!--      <font color=#FFFFFF><b>Rainbowboys 2012</b></font>-->
+    </div>
+
+  </div>
+
+</body>
+
+</html> 

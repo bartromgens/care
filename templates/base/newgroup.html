@@ -1,0 +1,30 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Care{% endblock %}
+
+{% block content %}
+
+  <center><h4>Create Group</h4></center>
+
+  {% if error %}
+    {{ error }}
+  {% endif %}
+
+  {% if created %}
+    Group successfully created!
+    <br />
+    <a href="accounts/my/">Groups</a>
+  {% endif %}
+
+  {% if form %}
+  <center>
+    <form action="." method="post">
+      {% csrf_token %}
+      <table id="formtable">
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Create" />
+    </form>
+  </center>
+  {% endif %}
+{% endblock %}s
