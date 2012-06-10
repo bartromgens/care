@@ -66,9 +66,9 @@ class SelectGroupTransactionView(BaseView):
     
     return context
     
-def newTransaction(request, groupId):
+def newTransaction(request, groupAccountId):
   def errorHandle(error):
-    kwargs = {'user' : request.user,'groupId' : groupId}
+    kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
     form = NewTransactionForm(**kwargs)
     context = RequestContext(request)
     context['error'] = error
@@ -80,7 +80,7 @@ def newTransaction(request, groupId):
     return render_to_response('transaction/new.html', context)
           
   if request.method == 'POST': # If the form has been submitted...
-    kwargs = {'user' : request.user,'groupId' : groupId}
+    kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
     form = NewTransactionForm(request.POST, **kwargs) # A form bound to the POST data
     
     if form.is_valid(): # All validation rules pass
@@ -98,7 +98,7 @@ def newTransaction(request, groupId):
       return errorHandle(error)
   
   else:
-    kwargs = {'user' : request.user,'groupId' : groupId}
+    kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
     form = NewTransactionForm(**kwargs) # An unbound form
     context = RequestContext(request)
     context['form'] = form

@@ -12,9 +12,9 @@ class Transaction(models.Model):
   amount = models.FloatField('amount')
   what = models.CharField(max_length=200)
   groupAccount = models.ForeignKey(GroupAccount)
-  date = models.DateTimeField('date')
   buyer = models.ForeignKey(UserProfile, related_name='buyer')
   consumers = models.ManyToManyField(UserProfile, related_name='consumers')
+  date = models.DateTimeField('date')
   
   def __unicode__(self):
     return self.what
