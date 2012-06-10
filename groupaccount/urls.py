@@ -1,6 +1,5 @@
-from django.conf.urls import patterns, include, url
-from django.views.generic import ListView
-from django.contrib.auth.decorators import login_required, permission_required
+from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 from groupaccount.views import GroupsView, AccountDetailView, MyGroupsView
 
 urlpatterns = patterns('',

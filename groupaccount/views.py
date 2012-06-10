@@ -1,7 +1,5 @@
-from django.views.generic import TemplateView
-from django.views.generic import DetailView
 from itertools import chain
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 #from accounts.models import Account
 from transaction.models import Transaction
 from base.views import BaseView
@@ -14,7 +12,6 @@ class GroupsView(BaseView):
     # Call the base implementation first to get a context
     context = super(GroupsView, self).get_context_data(**kwargs)
     groups = Group.objects.all()
-    accountView = AccountDetailView()
 
     context['groups'] = groups
     context['groupssection'] = True
@@ -45,9 +42,9 @@ class MyGroupsView(BaseView):
     for group in groups:
       group.users = group.user_set.all()
       for user in group.users:
-	user.balanceFloat = AccountDetailView.getBalance(accountView, group.id, user.id)
-	user.balance = '%.2f' % user.balanceFloat
-	groupBalance += user.balanceFloat
+        user.balanceFloat = AccountDetailView.getBalance(accountView, group.id, user.id)
+        user.balance = '%.2f' % user.balanceFloat
+        groupBalance += user.balanceFloat
       group.groupBalance = '%.2f' % groupBalance
       
     context['groups'] = groups
@@ -81,7 +78,7 @@ class AccountDetailView(BaseView):
 
     for transaction in buyerTransactions:
       totalBought += transaction.amount
-	
+      
     for transaction in consumerTransactions:
       nConsumers = transaction.consumers.count()
       totalConsumed += transaction.amount / nConsumers
