@@ -11,9 +11,9 @@ from userprofile.models import UserProfile
 class Transaction(models.Model):
   amount = models.FloatField('amount')
   what = models.CharField(max_length=200)
-  groupAccount = models.ForeignKey(GroupAccount)
   buyer = models.ForeignKey(UserProfile, related_name='buyer')
   consumers = models.ManyToManyField(UserProfile, related_name='consumers')
+  groupAccount = models.ForeignKey(GroupAccount)
   date = models.DateTimeField('date')
   
   def __unicode__(self):
