@@ -1,9 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib.auth.decorators import login_required, permission_required
-from django.views.generic import DetailView, ListView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView
 from transaction.models import Transaction
-from transaction.views import BuyerDetailView, TransactionView, MyTransactionView, SelectGroupTransactionView
+from transaction.views import TransactionView, MyTransactionView, SelectGroupTransactionView
 
 urlpatterns = patterns('',
     url(r'^$', login_required(MyTransactionView.as_view())),

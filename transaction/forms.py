@@ -1,6 +1,5 @@
 import datetime
 from django import forms
-from django.db import models
 from django.contrib.auth.models import User, Group
 from transaction.models import Transaction
 
