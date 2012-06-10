@@ -1,4 +1,4 @@
-# Django settings for care3 project.
+# Django settings for care project.
 import os
 
 DEBUG = True
@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'care3.sqlite',                      # Or path to database file if using sqlite3.
+        'NAME': '/home/bart/prog/care/care3.sqlite',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -64,14 +64,14 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/home/bart/prog/care3/static/'
+STATIC_URL = '/home/bart/prog/care/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join("/home/bart/prog/care3/", 'static'),
+    os.path.join("/home/bart/prog/care/", 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -111,7 +111,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/bart/prog/care3/templates"
+    "/home/bart/prog/care/templates"
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
