@@ -1,8 +1,8 @@
 from django.views.generic import TemplateView
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from base.forms import LoginForm, UserCreateForm, GroupCreateForm
 from userprofile.models import UserProfile
 
@@ -37,7 +37,7 @@ def register(request):
     context['error'] = error
     context['form'] = form
     return render_to_response('base/register.html', context)
-		      
+    
   if request.method == 'POST': # If the form has been submitted...
     form = UserCreateForm(request.POST) # A form bound to the POST data
     if form.is_valid():
@@ -65,7 +65,7 @@ def newGroup(request):
     context['form'] = form
     context['groupssection'] = True
     return render_to_response('base/newgroup.html', context)
-		      
+  
   if request.method == 'POST': # If the form has been submitted...
     form = GroupCreateForm(request.POST) # A form bound to the POST data
     if form.is_valid():
@@ -74,8 +74,8 @@ def newGroup(request):
       group.user_set.add(request.user)
       context = RequestContext(request)
       if request.user.is_authenticated():
-	context['user'] = request.user
-	context['isLoggedin'] = True
+        context['user'] = request.user
+        context['isLoggedin'] = True
       context['registered'] = True
       context['groupssection'] = True
       return render_to_response('base/newgroup.html', context)
@@ -86,8 +86,8 @@ def newGroup(request):
     form = GroupCreateForm() # An unbound form
     context = RequestContext(request)
     if request.user.is_authenticated():
-	context['user'] = request.user
-	context['isLoggedin'] = True
+      context['user'] = request.user
+      context['isLoggedin'] = True
     context['form'] = form
     context['groupssection'] = True
     return render_to_response('base/newgroup.html', context)
@@ -99,7 +99,7 @@ def login(request):
     context['error'] = error
     context['form'] = form
     return render_to_response('base/login.html', context)
-		      
+        
   if request.method == 'POST': # If the form has been submitted...
     form = LoginForm(request.POST) # A form bound to the POST data
     if form.is_valid(): # All validation rules pass
@@ -107,21 +107,21 @@ def login(request):
       password = request.POST['password']
       user = auth.authenticate(username=username, password=password)
       if user is not None:
-	if user.is_active:
-	  # Redirect to a success page.
-	  auth.login(request, user)
-	  context = RequestContext(request)
-	  context['user'] = user
-	  context['isLoggedin'] = True
-	  return render_to_response('base/index.html', context)
-	else:
-	  # Return a 'disabled account' error message
-	  error = u'account disabled'
-	  return errorHandle(error)
+        if user.is_active:
+          # Redirect to a success page.
+          auth.login(request, user)
+          context = RequestContext(request)
+          context['user'] = user
+          context['isLoggedin'] = True
+          return render_to_response('base/index.html', context)
+        else:
+          # Return a 'disabled account' error message
+          error = u'account disabled'
+          return errorHandle(error)
       else:
-	# Return an 'invalid login' error message.
-	error = u'invalid login'
-	return errorHandle(error)
+        # Return an 'invalid login' error message.
+        error = u'invalid login'
+        return errorHandle(error)
     else:
       error = u'form is invalid'
       return errorHandle(error)
