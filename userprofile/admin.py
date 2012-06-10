@@ -3,11 +3,11 @@ from userprofile.models import UserProfile
 from django.contrib import admin
 
 class UserProfileAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': ['user']}),
-        (None, {'fields': ['displayname']}),
-        (None, {'fields': ['groupAccounts']}),
-    ]
+  fieldsets = [
+    (None, {'fields': ['user']}),
+    (None, {'fields': ['displayname']}),
+    (None, {'fields': ['groupAccounts']}),
+  ]
     
 #class AccountAdmin(admin.ModelAdmin):
     #fieldsets = [

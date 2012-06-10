@@ -1,9 +1,7 @@
 from django.db import models
-import datetime
-from django.utils import timezone
 from groupaccount.models import GroupAccount
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
 #users = User.objects.filter(groups__name='monkeys')
 

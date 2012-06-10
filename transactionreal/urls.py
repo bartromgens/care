@@ -8,10 +8,7 @@ from transactionreal.views import SelectGroupRealTransactionView
 urlpatterns = patterns('',
   url(r'^new/$', login_required(SelectGroupRealTransactionView.as_view())),
   url(r'^new/(?P<groupId>\d+)/$', 'transactionreal.views.newRealTransaction'),
-  url(r'^(?P<pk>\d+)/$',
-      login_required(DetailView.as_view(
-          model=Transaction,
-          template_name='transaction/detail.html'))),
+  url(r'^(?P<pk>\d+)/$', login_required(DetailView.as_view(model=Transaction, template_name='transaction/detail.html'))),
   
   #url(r'^buyer/(?P<buyerId>\d+)/$', BuyerDetailView.as_view()),
 )
