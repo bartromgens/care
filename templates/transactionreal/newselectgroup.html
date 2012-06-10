@@ -1,0 +1,22 @@
+{% extends "transaction/base.html" %}
+
+{% block title %}Care{% endblock %}
+
+{% block content %}
+  <center>
+  <h4>Select real transaction group:</h4>
+      {% for groupaccount in groupaccounts %}
+    <div class="selectgroupmenu">
+      <ul>
+	<li><a href="/transactionsreal/new/{{ groupaccount.id }}"><b>{{groupaccount.name}}</b></a></li>
+      </ul>
+    </div>
+    <br />
+      {% endfor %}
+
+       <br /><br />
+    
+  </center>
+  
+{% endblock %} 
+ 

@@ -1,16 +1,16 @@
 # some_app/views.py
-from django.views.generic import TemplateView, View
-from django.views.generic.edit import FormMixin
-from django.views.generic import DetailView
+#from django.views.generic import TemplateView, View
+#from django.views.generic.edit import FormMixin
+#from django.views.generic import DetailView
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect, get_object_or_404
-from django.contrib.auth.models import User, Group
+from django.shortcuts import render_to_response
+#from django.contrib.auth.models import User, Group
 
 from transaction.models import Transaction
 from base.views import BaseView
 from transaction.forms import NewTransactionForm
 from groupaccount.views import AccountDetailView
-from groupaccount.models import GroupAccount
+#from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
 class BuyerDetailView(BaseView):
@@ -44,8 +44,8 @@ class MyTransactionView(AccountDetailView):
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
-    user = self.request.user
-    groups = user.groups.all()
+#    user = self.request.user
+#    groups = user.groups.all()
     
     context = super(MyTransactionView, self).get_context_data(**kwargs)
     context['transactionssection'] = True
@@ -76,29 +76,34 @@ def newTransaction(request, groupId):
     if request.user.is_authenticated():
       context['user'] = request.user
       context['isLoggedin'] = True
-    context['transactionssection'] = True
+      context['transactionssection'] = True
     return render_to_response('transaction/new.html', context)
-		      
+          
   if request.method == 'POST': # If the form has been submitted...
     kwargs = {'user' : request.user,'groupId' : groupId}
     form = NewTransactionForm(request.POST, **kwargs) # A form bound to the POST data
+    
     if form.is_valid(): # All validation rules pass
-      newForm = form.save()
+      form.save()
       context = RequestContext(request)
+
       if request.user.is_authenticated():
-	context['user'] = request.user
-	context['isLoggedin'] = True
-      context['transactionssection'] = True
+        context['user'] = request.user
+        context['isLoggedin'] = True
+        context['transactionssection'] = True
+
       return render_to_response('transaction/newsuccess.html', context)
     else:
       error = u'form is invalid'
       return errorHandle(error)
+  
   else:
     kwargs = {'user' : request.user,'groupId' : groupId}
     form = NewTransactionForm(**kwargs) # An unbound form
     context = RequestContext(request)
     context['form'] = form
     context['transactionssection'] = True
+    
     if request.user.is_authenticated():
       context['user'] = request.user
       context['isLoggedin'] = True
