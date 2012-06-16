@@ -5,10 +5,14 @@ from django.contrib import auth
 from django.contrib.auth.models import Group
 from base.forms import LoginForm, UserCreateForm, GroupCreateForm
 from userprofile.models import UserProfile
+import logging
 
 class BaseView(TemplateView):
   template_name = "base/base.html"
   context_object_name = "base"
+  
+  logger = logging.getLogger(__name__)
+  logger.addHandler(logging.StreamHandler())
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
