@@ -1,16 +1,10 @@
-# some_app/views.py
-#from django.views.generic import TemplateView, View
-#from django.views.generic.edit import FormMixin
-#from django.views.generic import DetailView
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-#from django.contrib.auth.models import User, Group
-
+from itertools import chain
 from transaction.models import Transaction
+from transactionreal.models import TransactionReal
 from base.views import BaseView
 from transaction.forms import NewTransactionForm
-from groupaccount.views import AccountDetailView
-#from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
 class BuyerDetailView(BaseView):
@@ -31,26 +25,78 @@ class TransactionView(BaseView):
   context_object_name = "transaction"
   
   def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
     context = super(TransactionView, self).get_context_data(**kwargs)
-    # Add in a QuerySet of all the books
     transactions = Transaction.objects.order_by('date')[:50].reverse()
     context['latest_transactions_list'] = transactions
     return context
     
-class MyTransactionView(AccountDetailView):
-  #template_name = "transactions/mytransactions.html"
+    
+class MyTransactionView(BaseView):
+  template_name = "transaction/mytransactions.html"
   context_object_name = "my transactions"
+  
+  def getBuyerTransactions(self, buyerId):
+    transactions = Transaction.objects.filter(buyer__id=buyerId)
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % (transaction.amount)
+      transaction.amountPerPersonFloat = transaction.amount
+    return transactions
+    
+  def getConsumerTransactions(self, consumerId):
+    transactions = Transaction.objects.filter(consumers__id=consumerId)
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount/transaction.consumers.count())
+      transaction.amountPerPersonFloat = (-1*transaction.amount/transaction.consumers.count())
+    return transactions
+    
+  def getBalance(self, groupAccountId, userProfileId):
+    buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)
+    consumerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, consumers__id=userProfileId)
+
+    senderRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, sender__id=userProfileId)
+    receiverRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, receiver__id=userProfileId)
+    
+    totalBought = 0.0
+    totalConsumed = 0.0
+    
+    totalSent = 0.0
+    totalReceived = 0.0
+
+    for transaction in buyerTransactions:
+      totalBought += transaction.amount
+      
+    for transaction in consumerTransactions:
+      nConsumers = transaction.consumers.count()
+      totalConsumed += transaction.amount / nConsumers
+      
+    for transaction in senderRealTransactions:
+      totalSent += transaction.amount
+      
+    for transaction in receiverRealTransactions:
+      totalReceived += transaction.amount
+      
+    balance = (totalBought + totalSent - totalConsumed - totalReceived)
+    
+    return balance
+  
+  def getNumberOfBuyerTransactions(self, buyerId):
+    transactions = Transaction.objects.filter(buyer__id=buyerId)
+    return len(transactions)
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
-#    user = self.request.user
-#    groups = user.groups.all()
-    
     context = super(MyTransactionView, self).get_context_data(**kwargs)
+    user = self.request.user
+    buyerTransactions = self.getBuyerTransactions(user.id)
+    consumerTransactions = self.getConsumerTransactions(user.id)
+    full_list = list(chain(buyerTransactions, consumerTransactions))
+    full_list_sorted = sorted(full_list, key=lambda instance: instance.date, reverse=True)
+    
+    context['buyer_transactions'] = self.getBuyerTransactions(user.id)
+    context['consumer_transactions'] = self.getConsumerTransactions(user.id)
+    context['full_list'] = full_list_sorted
     context['transactionssection'] = True
-    #context['displayname'] = UserProfile.objects.get(user=self.request.user).displayname
-    return context
+    return context# Create your views here.
     
 class SelectGroupTransactionView(BaseView):
   template_name = "transaction/newselectgroup.html"
