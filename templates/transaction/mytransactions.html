@@ -1,71 +1,34 @@
 {% extends "transaction/base.html" %}
 
 {% block content %}
-<!--  <h4>{{user.username}}'s Transaction Overview</h4> -->
-
-<!--   {% if buyer_transactions %}
+  <h4>Virtual Transactions</h4>
+  
+  {% if transactionsAll %}
     <table>
     <tr>
-      <td><b>ID</b></td>
-      <td><b>Group</b></td>
-      <td><b>Buyer</b></td>
-      <td><b>$$$</b></td>
-      <td><b>Date</b></td>
-      <td><b>What</b></td>
-      <td><b>Consumers</b></td>
-    </tr>
-    {% for transaction in buyer_transactions %}
-    <tr>
-      <td><a href="/transactions/{{ transaction.id }}/">{{ transaction.id }}</a></td>
-      <td>{{ transaction.group }}</td>
-      <td>{{ transaction.buyer }}</td>
-      <td>{{ transaction.amount }}</td>
-      <td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
-      <td>{{ transaction.comment }}</td>
-      <td>
-	{% for consumer in transaction.consumers.all %}
-	  {{consumer}}, 
-	{% endfor %}
-      </td>
-    </tr>
-  {% endfor %}
-    </table>
-
-  {% else %}
-      <p>No buyer transactions available.</p>
-  {% endif %}-->
-
-  {% if full_list %}
-    <table>
-    <tr>
-<!--       <td><b>ID</b></td> -->
-      <th><b>What</b></th>
       <th><b>&#8364</b></th>
-      <th><b>Date</b></th>
-      <th><b>Who</b></th>
+      <th><b>What</b></th>
       <th><b>Group</b></th>
+      <th><b>Who</b></th>
       <th><b>Consumers</b></th>
+      <th><b>Date</b></th>
     </tr>
-    {% for transaction in full_list %}
+    {% for transaction in transactionsAll %}
     <tr>
-<!-- 	<td><a href="/transactions/{{ transaction.id }}/">{{ transaction.id }}</a></td> -->
-	<td > 
-	  <b>{{ transaction.what }}</b> </td> 
-	<td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
+   	<td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
 	    style="color:green"
 	    {% endif %}>
-	    <b>{{ transaction.amountPerPerson }}</b></td>
-	<td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
+	    <b>{{ transaction.amountPerPerson }}</b>
+	</td>
+	<td > <b>{{ transaction.what }}</b> </td> 
+	<td>{{ transaction.groupAccount }}</td>
 	<td>
 	  {% ifequal transaction.buyer.displayname displayname %}
-	  <b>{{ transaction.buyer }}</b>
+	  	<b>{{ transaction.buyer }}</b>
 	  {% else %}
-	  <b>{{ displayname }}</b>
-	  {{ transaction.buyer }}
+	  	{{ transaction.buyer }}
 	  {% endifequal %}
 	</td>
-<!-- 	<td>{{ transaction.amount }}</td> -->
-	<td>{{ transaction.groupAccount }}</td>
 	<td>
 	  {% for consumer in transaction.consumers.all %}
 	    {% ifequal consumer.displayname displayname %}
@@ -75,12 +38,56 @@
 	    {% endifequal %}
 	  {% endfor %}
 	</td>
+	<td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
     </tr>
-  {% endfor %}
-    </table>
+  	{% endfor %}
+  	</table>
 
   {% else %}
-      <p>No consumer transactions available.</p>
+    <p>No virtual transactions available.</p>
+  {% endif %}
+  
+  <h4>Real Transactions</h4>
+
+  {% if transactionsRealAll %}
+    <table>
+    <tr>
+      <th><b>&#8364</b></th>
+      <th><b>From</b></th>
+      <th><b>To</b></th>
+      <th><b>Comment</b></th>
+      <th><b>Group</b></th>
+      <th><b>Date</b></th>
+    </tr>
+    {% for transaction in transactionsRealAll %}
+    <tr>
+	<td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
+	    style="color:green"
+	    {% endif %}>
+	    <b>{{ transaction.amountPerPerson }}</b></td>
+	<td>
+	  {% ifequal transaction.sender.displayname displayname %}
+	  	<b>{{ transaction.sender }}</b>
+	  {% else %}
+	  	{{ transaction.sender }}
+	  {% endifequal %}
+	</td>
+	<td>
+	  {% ifequal transaction.receiver.displayname displayname %}
+	  	<b>{{ transaction.receiver }}</b>
+	  {% else %}
+	  	{{ transaction.receiver }}
+	  {% endifequal %}
+	</td>
+	<td >{{ transaction.comment }}</td> 
+	<td >{{ transaction.groupAccount }}</td> 
+	<td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
+    </tr>
+  	{% endfor %}
+  	</table>
+
+  {% else %}
+      <p>No real transactions available.</p>
   {% endif %}
 
 {% endblock %}

@@ -7,6 +7,7 @@ from base.views import BaseView
 from transaction.forms import NewTransactionForm
 from userprofile.models import UserProfile
 
+
 class BuyerDetailView(BaseView):
 
   template_name = "transaction/about.html"
@@ -49,6 +50,20 @@ class MyTransactionView(BaseView):
       transaction.amountPerPersonFloat = (-1*transaction.amount/transaction.consumers.count())
     return transactions
     
+  def getSentTransactionsReal(self, senderId):
+    transactions = TransactionReal.objects.filter(sender__id=senderId)
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % (transaction.amount)
+      transaction.amountPerPersonFloat = transaction.amount
+    return transactions
+    
+  def getReceivedTransactionsReal(self, receiverId):
+    transactions = TransactionReal.objects.filter(receiver__id=receiverId)
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount)
+      transaction.amountPerPersonFloat = (-1*transaction.amount)
+    return transactions
+    
   def getBalance(self, groupAccountId, userProfileId):
     buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)
     consumerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, consumers__id=userProfileId)
@@ -58,7 +73,6 @@ class MyTransactionView(BaseView):
     
     totalBought = 0.0
     totalConsumed = 0.0
-    
     totalSent = 0.0
     totalReceived = 0.0
 
@@ -76,7 +90,6 @@ class MyTransactionView(BaseView):
       totalReceived += transaction.amount
       
     balance = (totalBought + totalSent - totalConsumed - totalReceived)
-    
     return balance
   
   def getNumberOfBuyerTransactions(self, buyerId):
@@ -89,15 +102,22 @@ class MyTransactionView(BaseView):
     user = self.request.user
     buyerTransactions = self.getBuyerTransactions(user.id)
     consumerTransactions = self.getConsumerTransactions(user.id)
-    full_list = list(chain(buyerTransactions, consumerTransactions))
-    full_list_sorted = sorted(full_list, key=lambda instance: instance.date, reverse=True)
+    transactionsAll = list(chain(buyerTransactions, consumerTransactions))
+    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
+    
+    sentTransactions = self.getSentTransactionsReal(user.id)
+    receivedTransactions = self.getReceivedTransactionsReal(user.id)
+    transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
+    transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     
     context['buyer_transactions'] = self.getBuyerTransactions(user.id)
     context['consumer_transactions'] = self.getConsumerTransactions(user.id)
-    context['full_list'] = full_list_sorted
+    context['transactionsRealAll'] = transactionsRealAllSorted
+    context['transactionsAll'] = transactionsAllSorted
     context['transactionssection'] = True
     return context# Create your views here.
-    
+
+
 class SelectGroupTransactionView(BaseView):
   template_name = "transaction/newselectgroup.html"
   context_object_name = "select transaction group"
@@ -111,7 +131,8 @@ class SelectGroupTransactionView(BaseView):
     context['transactionssection'] = True
     
     return context
-    
+
+  
 def newTransaction(request, groupAccountId):
   def errorHandle(error):
     kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
