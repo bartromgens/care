@@ -1,0 +1,54 @@
+{% extends "groupaccount/base.html" %}
+
+{% block content %}
+
+  {% if invites %}
+    <style type="text/css">
+      table {
+	width:95%;
+      }
+    </style>
+
+ {% if invites %}
+    <table>
+    <tr>
+      <th><b>Group</b></th>
+      <th><b>Inviter</b></th>
+      <th><b>Invitee</b></th>
+      <th><b>Comment</b></th>
+      <th><b>Date</b></th>
+      <th><b>Accepted</b></th>
+      <th><b>Declined</b></th>
+    </tr>
+    {% for invite in invites %}
+    <tr>
+		<td>{{ invite.groupAccount }}</td>
+		<td>
+		  {% ifequal invite.inviter.displayname displayname %}
+		  	<b>{{ invite.inviter }}</b>
+		  {% else %}
+		  	{{ invite.inviter }}
+		  {% endifequal %}
+		</td>
+		<td>
+		  {% ifequal invite.invitee.displayname displayname %}
+		    <b>{{ invite.invitee }}</b></font>
+		  {% else %}
+		    {{ invite.invitee }}</font>
+		  {% endifequal %}
+		</td>
+		<td > {{ invite.comment }} </td>
+		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td>
+		<td > {{ invite.isAccepted }} </td>
+		<td > {{ invite.isDeclined }} </td>
+    </tr>
+  	{% endfor %}
+  	</table>
+
+  {% else %}
+    <p>No virtual transactions available.</p>
+  {% endif %}
+
+  {% endif %}
+
+{% endblock %}

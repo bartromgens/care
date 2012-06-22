@@ -53,15 +53,15 @@ class MyTransactionView(BaseView):
   def getSentTransactionsReal(self, senderId):
     transactions = TransactionReal.objects.filter(sender__id=senderId)
     for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % (transaction.amount)
-      transaction.amountPerPersonFloat = transaction.amount
+      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount)
+      transaction.amountPerPersonFloat = (-1*transaction.amount)
     return transactions
     
   def getReceivedTransactionsReal(self, receiverId):
     transactions = TransactionReal.objects.filter(receiver__id=receiverId)
     for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount)
-      transaction.amountPerPersonFloat = (-1*transaction.amount)
+      transaction.amountPerPerson = '%.2f' % (1*transaction.amount)
+      transaction.amountPerPersonFloat = (1*transaction.amount)
     return transactions
     
   def getBalance(self, groupAccountId, userProfileId):

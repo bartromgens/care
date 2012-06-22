@@ -17,4 +17,4 @@ class TransactionReal(models.Model):
   date = models.DateTimeField('date')
   
   def __unicode__(self):
-    return self.what
+    return self.comment

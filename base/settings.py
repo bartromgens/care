@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'groupaccount',
     'transaction',
     'transactionreal',
+    'groupaccountinvite',
 )
 
 # A sample logging configuration. The only tangible logging
