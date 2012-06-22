@@ -22,7 +22,7 @@ class SelectGroupRealTransactionView(BaseView):
 
 def newRealTransaction(request, groupAccountId):
   def errorHandle(error):
-    kwargs = {'user' : request.user, 'groupAccountId' : groupAccountId}
+    kwargs = {'userProfile' : UserProfile.objects.get(user=request.user), 'groupAccountId' : groupAccountId}
     form = NewRealTransactionForm(**kwargs)
     context = RequestContext(request)
     context['error'] = error
@@ -34,7 +34,7 @@ def newRealTransaction(request, groupAccountId):
     return render_to_response('transactionreal/new.html', context)
           
   if request.method == 'POST': # If the form has been submitted...
-    kwargs = {'user' : request.user, 'groupAccountId' : groupAccountId}
+    kwargs = {'userProfile' : UserProfile.objects.get(user=request.user), 'groupAccountId' : groupAccountId}
     form = NewRealTransactionForm(request.POST, **kwargs) # A form bound to the POST data
     
     if form.is_valid(): # All validation rules pass
@@ -52,7 +52,7 @@ def newRealTransaction(request, groupAccountId):
       return errorHandle(error)
   
   else:
-    kwargs = {'user' : request.user, 'groupAccountId' : groupAccountId}
+    kwargs = {'userProfile' : UserProfile.objects.get(user=request.user), 'groupAccountId' : groupAccountId}
     form = NewRealTransactionForm(**kwargs) # An unbound form
     context = RequestContext(request)
     context['form'] = form
