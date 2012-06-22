@@ -1,0 +1,22 @@
+{% extends "groupaccount/base.html" %}
+
+{% block title %}Care{% endblock %}
+
+{% block content %}
+  <center><h4>Invite</h4></center>
+
+  {% if error %}
+    {{ error }}
+  {% endif %}
+
+  <center>
+    <form action="." method="post">
+    {% csrf_token %}
+    <table id="formtable">
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Submit" />
+    </form>
+  </center>
+{% endblock %} 
+ 
