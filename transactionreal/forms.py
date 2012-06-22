@@ -7,11 +7,11 @@ from userprofile.models import UserProfile
 class NewRealTransactionForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     groupAccountId = kwargs.pop('groupAccountId')
-    user = kwargs.pop('user')
+    userProfile = kwargs.pop('user')
     super(NewRealTransactionForm, self).__init__(*args, **kwargs)
     
     self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None)
-    self.fields['sender'].initial = user    
+    self.fields['sender'].initial = userProfile    
     self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None)
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=GroupAccount.objects.filter(id=groupAccountId), empty_label=None)

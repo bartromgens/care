@@ -1,6 +1,5 @@
 import datetime
 from django import forms
-from groupaccount.models import GroupAccount
 from groupaccountinvite.models import GroupAccountInvite
 from userprofile.models import UserProfile
 import logging
