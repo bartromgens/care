@@ -80,11 +80,11 @@ th {
 
 #login {
   height: 10px;
-  width: 250px;
+  width: 300px;
   position: absolute;
   top: 10px;
   left: 50%;
-  margin-left: 200px; }
+  margin-left: 240px; }
 
 #loginfont {
   font-family: "Arial";
