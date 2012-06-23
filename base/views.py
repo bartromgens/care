@@ -2,9 +2,10 @@ from django.views.generic import TemplateView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
-from django.contrib.auth.models import Group
-from base.forms import LoginForm, UserCreateForm, GroupCreateForm
+from groupaccount.models import GroupAccount
+from base.forms import LoginForm, UserCreateForm
 from userprofile.models import UserProfile
+from groupaccount.forms import NewGroupAccountForm
 from groupaccountinvite.models import GroupAccountInvite
 import logging
 
@@ -38,6 +39,7 @@ class HomeView(BaseView):
     context['homesection'] = True
     return context
         
+        
 def register(request):
   def errorHandle(error):
     form = UserCreateForm()
@@ -56,15 +58,16 @@ def register(request):
     else:
       error = u'form is invalid'
       return errorHandle(error)
-  else:
-    form = UserCreateForm() # An unbound form
-    context = RequestContext(request)
-    context['form'] = form
-    return render_to_response('base/register.html', context)
-    
-def newGroup(request):
+#  else:
+#    form = UserCreateForm() # An unbound form
+#    context = RequestContext(request)
+#    context['form'] = form
+#    return render_to_response('base/register.html', context)
+
+
+def newGroupAccount(request):
   def errorHandle(error):
-    form = GroupCreateForm()
+    form = NewGroupAccountForm()
     context = RequestContext(request)
     if request.user.is_authenticated():
       context['user'] = request.user
@@ -75,11 +78,12 @@ def newGroup(request):
     return render_to_response('base/newgroup.html', context)
   
   if request.method == 'POST': # If the form has been submitted...
-    form = GroupCreateForm(request.POST) # A form bound to the POST data
+    form = NewGroupAccountForm(request.POST) # A form bound to the POST data
     if form.is_valid():
-      form.save()
-      group = Group.objects.get(name=form.data['name'])
-      group.user_set.add(request.user)
+      groupAccount = form.save()
+      userProfile = UserProfile.objects.get(user=request.user)
+      userProfile.groupAccounts.add(groupAccount)
+      userProfile.save()
       context = RequestContext(request)
       if request.user.is_authenticated():
         context['user'] = request.user
@@ -91,7 +95,7 @@ def newGroup(request):
       error = u'form is invalid'
       return errorHandle(error)
   else:
-    form = GroupCreateForm() # An unbound form
+    form = NewGroupAccountForm() # An unbound form
     context = RequestContext(request)
     if request.user.is_authenticated():
       context['user'] = request.user
@@ -99,6 +103,7 @@ def newGroup(request):
     context['form'] = form
     context['groupssection'] = True
     return render_to_response('base/newgroup.html', context)
+
         
 def login(request):
   def errorHandle(error):

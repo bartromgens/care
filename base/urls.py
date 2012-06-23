@@ -13,7 +13,7 @@ urlpatterns = patterns('',
   url(r'^logout/$', 'base.views.logout'),
   url(r'^register/$', 'base.views.register'),
   url(r'^accounts/login/$', 'base.views.login'),
-  url(r'^accounts/new/$', 'base.views.newGroup'),
+  url(r'^accounts/new/$', 'base.views.newGroupAccount'),
   
   url(r'^transactions/', include('transaction.urls')),
   url(r'^transactionsreal/', include('transactionreal.urls')),

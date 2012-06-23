@@ -16,10 +16,10 @@ class UserCreateForm(UserCreationForm):
     model = User 
     fields = ("username", "email", "password1", "password2")
     
-class GroupCreateForm(forms.ModelForm):
-  def __init__(self, *args, **kwargs):
-    super(GroupCreateForm, self).__init__(*args, **kwargs)
-  
-  class Meta:
-    model = Group
-    fields = ('name',)
+#class GroupCreateForm(forms.ModelForm):
+#  def __init__(self, *args, **kwargs):
+#    super(GroupCreateForm, self).__init__(*args, **kwargs)
+#  
+#  class Meta:
+#    model = Group
+#    fields = ('name',)
