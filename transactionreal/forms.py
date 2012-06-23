@@ -14,6 +14,8 @@ class NewRealTransactionForm(forms.ModelForm):
     self.fields['sender'].initial = userProfile    
     self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None)
     
+    self.fields['comment'] = forms.CharField(required=False)
+    
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=GroupAccount.objects.filter(id=groupAccountId), empty_label=None)
 
     self.fields['groupAccount'].widget.attrs['readonly'] = True
