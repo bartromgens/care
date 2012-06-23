@@ -58,11 +58,11 @@ def register(request):
     else:
       error = u'form is invalid'
       return errorHandle(error)
-#  else:
-#    form = UserCreateForm() # An unbound form
-#    context = RequestContext(request)
-#    context['form'] = form
-#    return render_to_response('base/register.html', context)
+  else:
+    form = UserCreateForm() # An unbound form
+    context = RequestContext(request)
+    context['form'] = form
+    return render_to_response('base/register.html', context)
 
 
 def newGroupAccount(request):
