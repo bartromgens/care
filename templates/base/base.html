@@ -20,7 +20,7 @@
       <font id="logosubtitle" ><b>Online Banking for Groups</b></font>
     </div>
 
-      <div id="login">
+    <div id="login">
 	{% if not isLoggedin %}
 	  <font id="loginfont"><b>You are not logged in.</b></font>
 	  <a href="/login/" id="loginlink">[login]</a> 
@@ -31,7 +31,10 @@
 	   <a href="/user/" id="usernamelink"><b>{{ user.username }}</b></a>.  
 	  <a href="/logout/" id="loginlink">[logout]</a>
 	{% endif %}
-      </div>
+	{% if hasInvites %}
+	   <a href="/invites/" id="usernamelink"><b>New invite</b></a>.  
+	{% endif %}
+    </div>
     
     <div class="horizontalmenu">
       <ul>
@@ -50,10 +53,18 @@
 	{% endif %}
       </li>
       <li>
-	{% if groupssection %}
-	  <a href="/accounts/my/" id="selectedbutton">Groups</a>
+    {% if hasInvites %}
+	  {% if groupssection %}
+		<a href="/accounts/my/" id="selectedbutton">Groups [N]</a>
+	  {% else %}
+		<a href="/accounts/my/">Groups [N]</a>
+	  {% endif %}
 	{% else %}
-	  <a href="/accounts/my/">Groups</a>
+	  {% if groupssection %}
+		<a href="/accounts/my/" id="selectedbutton">Groups</a>
+	  {% else %}
+		<a href="/accounts/my/">Groups</a>
+	  {% endif %}
 	{% endif %}
       </li>
 <!--       <li><a href="/settings/">Settings</a></li> -->

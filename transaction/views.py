@@ -8,18 +8,18 @@ from transaction.forms import NewTransactionForm
 from userprofile.models import UserProfile
 
 
-class BuyerDetailView(BaseView):
-
-  template_name = "transaction/about.html"
-  context_object_name = "transaction"
-  
-  def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-    context = super(BuyerDetailView, self).get_context_data(**kwargs)
-    # Add in a QuerySet of all the books
-    transactions = Transaction.objects.filter(buyer__id=kwargs['buyerId'])
-    context['transaction_list'] = transactions
-    return context
+#class BuyerDetailView(BaseView):
+#
+#  template_name = "transaction/about.html"
+#  context_object_name = "transaction"
+#  
+#  def get_context_data(self, **kwargs):
+#    # Call the base implementation first to get a context
+#    context = super(BuyerDetailView, self).get_context_data(**kwargs)
+#    # Add in a QuerySet of all the books
+#    transactions = Transaction.objects.filter(buyer__id=kwargs['buyerId'])
+#    context['transaction_list'] = transactions
+#    return context
     
 class TransactionView(BaseView):
   template_name = "transaction/index.html"
@@ -99,19 +99,19 @@ class MyTransactionView(BaseView):
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(MyTransactionView, self).get_context_data(**kwargs)
-    user = self.request.user
-    buyerTransactions = self.getBuyerTransactions(user.id)
-    consumerTransactions = self.getConsumerTransactions(user.id)
+    userProfile = UserProfile.objects.get(user=self.request.user)
+    buyerTransactions = self.getBuyerTransactions(userProfile.id)
+    consumerTransactions = self.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
-    sentTransactions = self.getSentTransactionsReal(user.id)
-    receivedTransactions = self.getReceivedTransactionsReal(user.id)
+    sentTransactions = self.getSentTransactionsReal(userProfile.id)
+    receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
     transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     
-    context['buyer_transactions'] = self.getBuyerTransactions(user.id)
-    context['consumer_transactions'] = self.getConsumerTransactions(user.id)
+    context['buyer_transactions'] = self.getBuyerTransactions(userProfile.id)
+    context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
     context['transactionsRealAll'] = transactionsRealAllSorted
     context['transactionsAll'] = transactionsAllSorted
     context['transactionssection'] = True

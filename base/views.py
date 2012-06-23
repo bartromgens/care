@@ -5,6 +5,7 @@ from django.contrib import auth
 from django.contrib.auth.models import Group
 from base.forms import LoginForm, UserCreateForm, GroupCreateForm
 from userprofile.models import UserProfile
+from groupaccountinvite.models import GroupAccountInvite
 import logging
 
 class BaseView(TemplateView):
@@ -18,8 +19,11 @@ class BaseView(TemplateView):
     # Call the base implementation first to get a context
     context = super(BaseView, self).get_context_data(**kwargs)
     if self.request.user.is_authenticated():
+      userProfile = UserProfile.objects.get(user=self.request.user)
+      invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)
       context['user'] = self.request.user
-      context['displayname'] = UserProfile.objects.get(user=self.request.user).displayname
+      context['hasInvites'] = invites.exists()
+      context['displayname'] = userProfile.displayname
       context['isLoggedin'] = True
     return context
 

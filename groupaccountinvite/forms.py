@@ -23,7 +23,10 @@ class NewInviteForm(forms.ModelForm):
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=userProfile.groupAccounts, empty_label=None)
 
-    self.fields['createdDateAndTime'] = forms.DateField(initial=datetime.date.today)
+    self.fields['isAccepted'] = forms.BooleanField(widget=forms.HiddenInput, required=False)
+    self.fields['isDeclined'] = forms.BooleanField(widget=forms.HiddenInput, required=False)
+
+    self.fields['createdDateAndTime'] = forms.DateField(widget=forms.HiddenInput, initial=datetime.date.today)
   
   class Meta:
     model = GroupAccountInvite
