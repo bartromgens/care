@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
+from django.views.generic.edit import UpdateView
 from base.forms import LoginForm, UserCreateForm
 from userprofile.models import UserProfile
 from groupaccount.forms import NewGroupAccountForm
@@ -18,6 +19,27 @@ class BaseView(TemplateView):
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(BaseView, self).get_context_data(**kwargs)
+    if self.request.user.is_authenticated():
+      userProfile = UserProfile.objects.get(user=self.request.user)
+      invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)
+      context['user'] = self.request.user
+      context['hasInvites'] = invites.exists()
+      context['nInvites'] = invites.count()
+      context['displayname'] = userProfile.displayname
+      context['isLoggedin'] = True
+    return context
+
+
+class BaseUpdateView(UpdateView):
+  template_name = "base/base.html"
+  context_object_name = "base"
+  
+  logger = logging.getLogger(__name__)
+  logger.addHandler(logging.StreamHandler())
+  
+  def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+    context = super(BaseUpdateView, self).get_context_data(**kwargs)
     if self.request.user.is_authenticated():
       userProfile = UserProfile.objects.get(user=self.request.user)
       invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)

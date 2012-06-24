@@ -1,9 +1,9 @@
 from django.views.generic.edit import UpdateView
 from userprofile.forms import EditUserProfileForm
 from userprofile.models import UserProfile
-from base.views import BaseView
+from base.views import BaseUpdateView
 
-class EditUserProfileView(UpdateView):
+class EditUserProfileView(BaseUpdateView):
   model = UserProfile
   form_class = EditUserProfileForm
   template_name = 'userprofile/edit.html'
@@ -14,9 +14,11 @@ class EditUserProfileView(UpdateView):
     print type(userProfile.id) 
     print type(self.kwargs['pk'])
     
+    # check whether user owns the UserProfile that is edited.
     if (userProfile.id == int(self.kwargs['pk'])):
-      print 'correct user'
+      context['isAllowed'] = True;
     else:
-      print 'wrong user'    
+      context.clear()    
+      context['isAllowed'] = False;
     
     return context

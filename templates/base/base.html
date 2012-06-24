@@ -28,7 +28,7 @@
     	{% endif %}
     	{% if isLoggedin %}
     	  <font id="loginfont"><b>You are signed in as </b></font>
-    	   <a href="/user/" id="usernamelink"><b>{{ user.username }}</b></a>.  
+    	   <a href="/userprofile/edit/{{ user.id}}" id="usernamelink"><b>{{ user.username }}</b></a>.  
     	  <a href="/logout/" id="loginlink">[logout]</a>
     	{% endif %}
     </div>
