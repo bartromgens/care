@@ -12,12 +12,10 @@ class SelectGroupRealTransactionView(BaseView):
   
   def get_context_data(self, **kwargs):    
     context = super(SelectGroupRealTransactionView, self).get_context_data(**kwargs)
-    
     userProfile = UserProfile.objects.get(user=self.request.user)
     groupaccounts = userProfile.groupAccounts.all
     context['groupaccounts'] = groupaccounts
     context['transactionssection'] = True
-    
     return context
 
 def newRealTransaction(request, groupAccountId):
@@ -40,12 +38,10 @@ def newRealTransaction(request, groupAccountId):
     if form.is_valid(): # All validation rules pass
       form.save()
       context = RequestContext(request)
-
       if request.user.is_authenticated():
         context['user'] = request.user
         context['isLoggedin'] = True
         context['transactionssection'] = True
-
       return render_to_response('transactionreal/newsuccess.html', context)
     else:
       error = u'form is invalid'
@@ -57,7 +53,6 @@ def newRealTransaction(request, groupAccountId):
     context = RequestContext(request)
     context['form'] = form
     context['transactionssection'] = True
-    
     if request.user.is_authenticated():
       context['user'] = request.user
       context['isLoggedin'] = True
