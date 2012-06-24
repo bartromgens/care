@@ -2,7 +2,6 @@ from django.views.generic import TemplateView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
-from groupaccount.models import GroupAccount
 from base.forms import LoginForm, UserCreateForm
 from userprofile.models import UserProfile
 from groupaccount.forms import NewGroupAccountForm
