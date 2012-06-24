@@ -112,7 +112,7 @@ def newGroupAccount(request):
         context['isLoggedin'] = True
       context['registered'] = True
       context['groupssection'] = True
-      return render_to_response('base/newgroup.html', context)
+      return render_to_response('groupaccount/newsuccess.html', context)
     else:
       error = u'form is invalid'
       return errorHandle(error)

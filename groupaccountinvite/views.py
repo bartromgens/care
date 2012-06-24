@@ -117,7 +117,7 @@ def newInvite(request):
         context['isLoggedin'] = True
         context['groupssection'] = True
 
-      return render_to_response('groupaccountinvite/new.html', context)
+      return render_to_response('groupaccountinvite/newsuccess.html', context)
     else:
       error = u'form is invalid'
       return errorHandle(error)
