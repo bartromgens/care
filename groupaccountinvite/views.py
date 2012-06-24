@@ -30,9 +30,10 @@ class MyGroupAccountInvitesView(BaseView):
     
     invitesSent = self.getSentInvites(user.id)
     invitesReceived = self.getReceivedInvites(user.id)
-    invites = list(chain(invitesSent, invitesReceived))
+#    invites = list(chain(invitesSent, invitesReceived))
 
-    context['invites'] = invites
+    context['invitesSent'] = invitesSent
+    context['invitesReceived'] = invitesReceived
     context['groupssection'] = True
     return context
 
