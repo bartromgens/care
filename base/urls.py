@@ -19,5 +19,6 @@ urlpatterns = patterns('',
   url(r'^transactionsreal/', include('transactionreal.urls')),
   url(r'^accounts/', include('groupaccount.urls')),
   url(r'^invites/', include('groupaccountinvite.urls')),
+  url(r'^userprofile/', include('userprofile.urls')),
   url(r'^admin/', include(admin.site.urls)),
 )
