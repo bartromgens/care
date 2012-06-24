@@ -4,7 +4,7 @@
 
     <style type="text/css">
       table {
-	width:95%;
+	width:80%;
       }
     </style>
   <center><h4>Received</h4></center>
@@ -15,10 +15,7 @@
       <th><b>Inviter</b></th>
       <th><b>Invitee</b></th>
       <th><b>Date</b></th>
-      <th><b>Accept</b></th>
-      <th><b>Decline</b></th>
-      <th><b>Accepted</b></th>
-      <th><b>Declined</b></th>
+      <th><b>Status</b></th>
     </tr>
     {% for invite in invitesReceived %}
     <tr>
@@ -38,10 +35,13 @@
       {% endifequal %}
     </td>
     <td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td>
-    <td > <b><a href="/invites/accept/{{ invite.id }}">Accept</a></b> </td>
-    <td > <b><a href="/invites/decline/{{ invite.id }}">Decline</a></b> </td>
-    <td > {{ invite.isAccepted }} </td>
-    <td > {{ invite.isDeclined }} </td>
+    {% if invite.isAccepted %}
+      <td style="color:green"> <b>Accepted</b> </td>
+    {% elif invite.isDeclined %}
+      <td style="color:red"> <b>Declined</b> </td>
+    {% else %}
+      <td > <b><a href="/invites/accept/{{ invite.id }}">Accept</a> | <a href="/invites/decline/{{ invite.id }}">Decline</a></b></td>
+    {% endif %}
     </tr>
     {% endfor %}
     </table>
@@ -59,8 +59,6 @@
       <th><b>Invitee</b></th>
       <th><b>Date</b></th>
       <th><b>Status</b></th>
-      <th><b>Accepted</b></th>
-      <th><b>Declined</b></th>
     </tr>
     {% for invite in invitesSent %}
     <tr>
@@ -81,14 +79,12 @@
 		</td>
 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td>
     {% if invite.isAccepted %}
-		  <td > <b>Accepted</b> </td>
+		  <td style="color:green"> <b>Accepted</b> </td>
 		{% elif not invite.isDeclined %}
 		  <td > <b>Open</b> </td>
 		{% else %}
-		  <td > <b>Declined</b> </td>
+		  <td style="color:red"> <b>Declined</b> </td>
     {% endif %}
-    <td > {{ invite.isAccepted }} </td>
-		<td > {{ invite.isDeclined }} </td>
     </tr>
   	{% endfor %}
   	</table>

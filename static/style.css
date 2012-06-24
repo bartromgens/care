@@ -53,6 +53,11 @@ th {
   font-weight: bold;
   color: #2b6dac; }
 
+#notificationFont {
+  font-size: 0.7em;
+  vertical-align: text-top;
+  color: red; }
+
 #consumerfont {
   font-family: "Arial";
   font-size: 0.9em;

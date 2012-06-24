@@ -52,9 +52,9 @@
       <li>
     {% if hasInvites %}
 	  {% if groupssection %}
-		<a href="/accounts/my/" id="selectedbutton">Groups [N]</a>
+		<a href="/accounts/my/" id="selectedbutton">Groups <font id="notificationFont">{{ nInvites }}</font></a>
 	  {% else %}
-		<a href="/accounts/my/">Groups [N]</a>
+		<a href="/accounts/my/">Groups <font id="notificationFont">{{ nInvites }}</font></a>
 	  {% endif %}
 	{% else %}
 	  {% if groupssection %}

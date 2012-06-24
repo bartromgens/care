@@ -5,5 +5,9 @@
   <a href="/accounts/my/">Overview</a><br />
   <a href="/accounts/new/">Create</a><br />
   <a href="/invites/new/">Invite</a><br />
-  <a href="/invites/">Invites</a><br />
+  {% if hasInvites %}
+    <a href="/invites/">Invites <font id="notificationFont">{{ nInvites }}</font></a><br />
+  {% else %}
+    <a href="/invites/">Invites</a><br />
+  {% endif %}
 {% endblock %}

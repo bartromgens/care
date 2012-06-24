@@ -23,6 +23,7 @@ class BaseView(TemplateView):
       invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)
       context['user'] = self.request.user
       context['hasInvites'] = invites.exists()
+      context['nInvites'] = invites.count()
       context['displayname'] = userProfile.displayname
       context['isLoggedin'] = True
     return context
