@@ -55,7 +55,6 @@ class AcceptInviteView(MyGroupAccountInvitesView):
     userProfile.save()
     invite.save()
     
-    self.logger.warning(userProfile.groupAccounts.all())
     invitesSent = self.getSentInvites(user.id)
     invitesReceived = self.getReceivedInvites(user.id)
     invites = list(chain(invitesSent, invitesReceived))
@@ -73,13 +72,23 @@ class DeclineInviteView(MyGroupAccountInvitesView):
     context = super(DeclineInviteView, self).get_context_data(**kwargs)
     self.logger.warning("declined " + self.kwargs['inviteId'])
     invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
-    invite.isAccepted = False
-    invite.isDeclined = True
     user = self.request.user
-    groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
     userProfile = UserProfile.objects.get(user=user)
-    userProfile.groupAccounts.remove(groupAccount)
-    userProfile.save()
+    
+    print userProfile.groupAccounts.get(id=invite.groupAccount.id)
+    
+    if userProfile.groupAccounts.get(id=invite.groupAccount.id):
+      print 'Group is already accepted. Groups cannot be removed.'
+      invite.isAccepted = False
+      invite.isDeclined = True
+    else:
+      print 'Group is declined.'
+      invite.isDeclined = True
+      groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
+      userProfile = UserProfile.objects.get(user=user)
+      userProfile.groupAccounts.remove(groupAccount)
+      userProfile.save()
+    
     invite.save()
     
     invitesSent = self.getSentInvites(user.id)
