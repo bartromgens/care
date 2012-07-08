@@ -44,7 +44,9 @@
   	</table>
 
   {% else %}
-    <p>No virtual transactions available.</p>
+    <font id="userMessageFont">
+      No virtual transactions available.
+    </font>
   {% endif %}
   
   <center><h4>Real Transactions</h4></center>
@@ -87,7 +89,9 @@
   	</table>
 
   {% else %}
-      <p>No real transactions available.</p>
+    <font id="userMessageFont">
+      No real transactions available.
+    </font>
   {% endif %}
 
 {% endblock %}

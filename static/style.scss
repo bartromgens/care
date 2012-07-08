@@ -18,7 +18,7 @@ $secondColor: #2B6DAC;
 // $firstColor: #046f96;
 // $secondColor: #c2e2f0;
 
-body{
+body {
   margin-left:auto;
   margin-right:auto;
 }
@@ -27,17 +27,17 @@ h1 {
   color:$secondColor;
 }
 
-h4{
+h4 {
   color:$firstColor;
   font-size:1em;
   font-family:"Arial",Georgia,Serif;
 }
 
-a{
+a {
   font-family:"Arial",Georgia,Serif;
 }
 
-font{
+font {
   font-family:"Arial",Georgia,Serif;
 }
 
@@ -72,7 +72,7 @@ th {
   font-family:"Arial",Georgia,Serif;
 }
 
-#userMessageFont{
+#userMessageFont {
   font-family:"Arial";
   font-size:1.0em;
   font-weight:bold;
@@ -84,13 +84,13 @@ th {
   vertical-align: text-top; 
   color:red }
 
-#consumerfont{
+#consumerfont {
   font-family:"Arial";
   font-size:0.9em;
   color:$firstColor
 }
 
-#container{
+#container {
   width:960px;
   margin-left:auto;
   margin-right:auto;
@@ -100,21 +100,21 @@ th {
   box-shadow: 1px 1px 8px #8e8e8e;
 }
 
-#logotitle{
+#logotitle {
   font-family:"Arial";
   font-size:60px;
   color:$firstColor
 }
 
 
-#logosubtitle{
+#logosubtitle {
   font-family:"Arial";
   padding-left:4px;
   font-size:1.1em;
   color:$secondColor
 }
 
-#header{
+#header {
   background-color:#FFFFFF;
 //   height:110px;
   padding-left:30px;
@@ -122,7 +122,7 @@ th {
   padding-bottom:13px;
 }
 
-#login{
+#login {
 //   background-color:#FFFFFF;
   height:10px;
   width:300px;
@@ -135,25 +135,25 @@ th {
   margin-left:240px;
 }
 
-#loginfont{
+#loginfont {
   font-family:"Arial";
   font-size:0.8em;
   color:$firstColor
 }
 
-#loginlink{
+#loginlink {
   font-size:0.8em;
   color:$secondColor;
   text-decoration:none;
 }
 
-#usernamelink{
+#usernamelink {
   font-size:0.8em;
   color:$secondColor;
   text-decoration:none;
 }
 
-#formtable{
+#formtable {
   width:40%;
   margin:1em auto;
   border-collapse:collapse;
@@ -161,7 +161,7 @@ th {
   font-family:"Arial",Georgia,Serif;
 }
 
-#content{
+#content {
   background-color:#FFFFFF;
   height:740px;
   width:765px;
@@ -171,20 +171,20 @@ th {
   overflow:auto;
 }
 
-#footer{
+#footer {
   background-color:$secondColor;
   height:5px;
   clear:both;
   text-align:center;
 }
 
-div.horizontalmenu{
+div.horizontalmenu {
   width:100%;
   height:36px;
   background-color:$firstColor;
 }
 
-#horizontalmenubar{
+#horizontalmenubar {
   background-color:$secondColor;
   clear:both;
   text-align:center;
@@ -193,23 +193,23 @@ div.horizontalmenu{
   align:bottom;
 }
 
-div.horizontalmenu ul{
+div.horizontalmenu ul {
   list-style-type:none;
   margin:0;
   padding:0;
 }
 
-div.horizontalmenu li{
+div.horizontalmenu li {
   float:left;	
 }
 
-div.horizontalmenu a{
+div.horizontalmenu a {
   display:block;
   width:120px;
   font-size:1em;
 }
 
-div.horizontalmenu a:link,div.horizontalmenu a:visited{
+div.horizontalmenu a:link, div.horizontalmenu a:visited {
   font-weight:bold;
   color:#FFFFFF;
   background-color:$firstColor;
@@ -219,40 +219,40 @@ div.horizontalmenu a:link,div.horizontalmenu a:visited{
   /*text-transform:uppercase;*/
 }
 
-div.horizontalmenu a:hover,div.horizontalmenu a:active{
+div.horizontalmenu a:hover, div.horizontalmenu a:active {
   background-color:$secondColor;
 }
 
-div.selectgroupmenu{
+div.selectgroupmenu {
   height:45px;
   width:300px;
   background-color:$secondColor;
 }
 
-div.selectgroupmenu ul{
+div.selectgroupmenu ul {
   list-style-type:none;
   margin:0;
   padding:0;
 }
 
-div.selectgroupmenu li{
+div.selectgroupmenu li {
   margin:0;
   padding:0;
   float:center;	
 }
 
-div.selectgroupmenu a{
+div.selectgroupmenu a {
   display:block;
   height:34px;
   width:300px;
   font-size:1.5em;
 }
 
-#selectedbutton{
+#selectedbutton {
   background-color:$secondColor;
 }
 
-div.selectgroupmenu a:link,div.selectgroupmenu a:visited{
+div.selectgroupmenu a:link, div.selectgroupmenu a:visited {
   font-weight:bold;
   color:#FFFFFF;
   background-color:$firstColor;
@@ -264,11 +264,11 @@ div.selectgroupmenu a:link,div.selectgroupmenu a:visited{
   /*text-transform:uppercase;*/
 }
 
-div.selectgroupmenu a:hover,div.selectgroupmenu a:active{
+div.selectgroupmenu a:hover, div.selectgroupmenu a:active {
   background-color:$secondColor;
 }
 
-div.verticalmenu{
+div.verticalmenu {
   background-color:#FFFFFF;
   height:755px;
   width:170px;
@@ -277,25 +277,25 @@ div.verticalmenu{
   padding-top:5px;
 }
 
-div.verticalmenu ul{
+div.verticalmenu ul {
   list-style-type:none;
   margin:0;
   padding:0;
 }
 
-div.verticalmenu li{
+div.verticalmenu li {
   margin:0 75px 75px 0; 
   vertical-align:top
 }
 
-div.verticalmenu a{
+div.verticalmenu a {
   display:block;
   width:155px;
   height:4px;
   font-size:0.9em;
 }
 
-div.verticalmenu a:link,div.verticalmenu a:visited{
+div.verticalmenu a:link, div.verticalmenu a:visited {
   font-weight:bold;
   color:$secondColor;
   background-color:#FFFFFF;
@@ -305,7 +305,7 @@ div.verticalmenu a:link,div.verticalmenu a:visited{
   /*text-transform:uppercase;*/
 }
 
-div.verticalmenu a:hover,div.verticalmenu a:active{
+div.verticalmenu a:hover, div.verticalmenu a:active {
   background-color:#FFFFFF;
   color:$firstColor;
 }

@@ -12,14 +12,19 @@
 
   <center>
     <form action="." method="post">
-    {% csrf_token %}
-    <table id="formtable">
-      {{ form.as_table }}
-    </table>
-    <input type="submit" value="Login" />
+      {% csrf_token %}
+        <table id="formtable">
+          {{ form.as_table }}
+        </table>
+      <input type="submit" value="Login" />
     </form>
-    <br />
-    <a href="/register/">register</a>
+    
+    <br/>
+    <br/>
+    
+    <font id="userMessageFont">
+      New? <a href="/register/">Register</a>!
+    </font>
   </center>
 
 {% endblock %}
