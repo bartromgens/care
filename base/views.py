@@ -5,6 +5,7 @@ from django.contrib import auth
 from django.views.generic.edit import UpdateView
 from base.forms import LoginForm, UserCreateForm
 from userprofile.models import UserProfile
+from transaction.models import Transaction
 from groupaccount.forms import NewGroupAccountForm
 from groupaccountinvite.models import GroupAccountInvite
 import logging
@@ -50,14 +51,41 @@ class BaseUpdateView(UpdateView):
       context['isLoggedin'] = True
     return context
 
-    
+
 class HomeView(BaseView):
   template_name = "base/index.html"
   context_object_name = "homepage"
+
+  def getTransactions(self, buyerId):
+    transactions = Transaction.objects.filter(buyer__id=buyerId)
+    return transactions
+  
+  def getNumberOfTransactions(self, buyerId):
+    transactions = Transaction.objects.all()
+    return len(transactions)
   
   def get_context_data(self, **kwargs):
+    from groupaccount.views import MyTransactionView
     # Call the base implementation first to get a context
     context = super(HomeView, self).get_context_data(**kwargs)
+    user = self.request.user
+
+    userProfile = UserProfile.objects.get(user=user)
+    groupAccounts = userProfile.groupAccounts.all()
+    
+    accountView = MyTransactionView()
+    
+    myTotalBalanceFloat = 0.0
+    
+    for groupAccount in groupAccounts:
+      groupAccount.myBalanceFloat = MyTransactionView.getBalance(accountView, groupAccount.id, userProfile.id)
+      groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
+      myTotalBalanceFloat += groupAccount.myBalanceFloat
+      myTotalBalance = '%.2f' % myTotalBalanceFloat
+      context['myTotalBalance'] = myTotalBalance
+      context['myTotalBalanceFloat'] = myTotalBalanceFloat
+      
+    context['groups'] = groupAccounts
     context['homesection'] = True
     return context
   

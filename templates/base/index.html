@@ -2,6 +2,36 @@
 
 {% block title %}Care{% endblock %}
 
+{% block sidebar %}
+  <h4>My Balance</h4>
+  <font id="userMessageFont">    
+  Total
+  <br />
+  {% if myTotalBalance %}
+    {% if myTotalBalanceFloat <= 0.0 %} 
+      <font style="color:red">
+    {% else %}
+      <font style="color:green">
+    {% endif %}
+    {{ myTotalBalance }} &#8364
+    </font>
+    
+    {% for group in groups %}   
+      <br /><br />
+      {{ group.name }}
+      <br />
+      {% if group.myBalanceFloat <= 0.0 %} 
+        <font style="color:red">
+      {% else %}
+        <font style="color:green">
+      {% endif %}
+      <b>{{ group.myBalance }} &#8364</b>
+      </font>
+    {% endfor %}
+  {% endif %}
+      </font>
+{% endblock %}
+
 {% block content %}
 
 {% endblock %}

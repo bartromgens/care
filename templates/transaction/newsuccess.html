@@ -1,12 +1,17 @@
-{% extends "groupaccount/detail.html" %}
+{% extends "transaction/base.html" %}
 
 {% block title %}Care 3.0{% endblock %}
 
 {% block content %}
 
   <center>
-    <h3>New Transaction Added</h3>
-    <a href="/transactions/my/">Transactions</a>
+    <font id="userMessageFont">
+    New Transaction Added.
+    <br />
+    <br />
+    View your transaction in the 
+    <a href="/transactions/">transaction overview.</a>
+    </font>
   </center>
   
 {% endblock %} 

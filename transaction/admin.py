@@ -7,7 +7,6 @@ class TransactionAdmin(admin.ModelAdmin):
     (None, {'fields': ['what']}),
     (None, {'fields': ['amount']}),
     (None, {'fields': ['groupAccount']}),
-    (None, {'fields': ['date']}),
     (None, {'fields': ['buyer']}),
     (None, {'fields': ['consumers']}), ]
   list_display = ('what', 'amount', 'groupAccount', 'buyer', 'date')

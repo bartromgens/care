@@ -1,6 +1,7 @@
 from django.db import models
+from django import forms
 #import datetime
-#from django.utils import timezone
+from django.utils import timezone
 
 #from django.contrib.auth.models import User
 
@@ -14,7 +15,7 @@ class Transaction(models.Model):
   buyer = models.ForeignKey(UserProfile, related_name='buyer')
   consumers = models.ManyToManyField(UserProfile, related_name='consumers')
   groupAccount = models.ForeignKey(GroupAccount)
-  date = models.DateTimeField('date')
+  date = models.DateTimeField(auto_now=True, auto_now_add=True)
   
   def __unicode__(self):
     return self.what
