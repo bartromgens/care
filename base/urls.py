@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
-from base.views import HomeView
+from base.views import HomeView, AboutView, HelpView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -14,6 +14,8 @@ urlpatterns = patterns('',
   url(r'^register/$', 'base.views.register'),
   url(r'^accounts/login/$', 'base.views.login'),
   url(r'^accounts/new/$', 'base.views.newGroupAccount'),
+  url(r'^help/$', HelpView.as_view()),
+  url(r'^about/$', AboutView.as_view()),
   
   url(r'^transactions/', include('transaction.urls')),
   url(r'^transactionsreal/', include('transactionreal.urls')),

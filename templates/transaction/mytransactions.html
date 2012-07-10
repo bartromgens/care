@@ -13,7 +13,7 @@
       <th><b>Consumers</b></th>
       <th><b>Date</b></th>
     </tr>
-    {% for transaction in transactionsAll %}
+      {% for transaction in transactionsAll %}
     <tr>
    	<td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
 	    style="color:green"
@@ -44,9 +44,11 @@
   	</table>
 
   {% else %}
+    <center>
     <font id="userMessageFont">
       No virtual transactions available.
     </font>
+    </center>
   {% endif %}
   
   <center><h4>Real Transactions</h4></center>
@@ -89,9 +91,11 @@
   	</table>
 
   {% else %}
+    <center>
     <font id="userMessageFont">
       No real transactions available.
     </font>
+    </center>
   {% endif %}
 
 {% endblock %}

@@ -60,7 +60,29 @@ class HomeView(BaseView):
     context = super(HomeView, self).get_context_data(**kwargs)
     context['homesection'] = True
     return context
-        
+  
+  
+class AboutView(BaseView):
+  template_name = "base/about.html"
+  context_object_name = "about"
+  
+  def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+    context = super(AboutView, self).get_context_data(**kwargs)
+    context['aboutsection'] = True
+    return context
+
+
+class HelpView(BaseView):
+  template_name = "base/help.html"
+  context_object_name = "help"
+  
+  def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+    context = super(HelpView, self).get_context_data(**kwargs)
+    context['helpsection'] = True
+    return context
+          
         
 def register(request):
   def errorHandle(error):

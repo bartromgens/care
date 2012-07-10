@@ -64,9 +64,22 @@
 	  {% endif %}
 	{% endif %}
       </li>
-<!--       <li><a href="/settings/">Settings</a></li> -->
-      <li><a href="/help/">Help</a></li>
-      <li><a href="/about">About</a></li>
+
+  <li>
+  {% if helpsection %}
+    <a href="/help/" id="selectedbutton">Help</a>
+  {% else %}
+    <a href="/help/">Help</a>
+  {% endif %}
+  </li>
+  
+  <li>
+  {% if aboutsection %}
+    <a href="/about/" id="selectedbutton">About</a>
+  {% else %}
+    <a href="/about/">About</a>
+  {% endif %}
+  </li>
       </ul>     
       <div id="horizontalmenubar">
       </div>
@@ -82,7 +95,6 @@
     </div>
 
     <div id="footer">
-<!--      <font color=#FFFFFF><b>Rainbowboys 2012</b></font>-->
     </div>
 
   </div>
