@@ -1,5 +1,4 @@
 from datetime import datetime
-from django.utils import timezone
 from django import forms
 from transaction.models import Transaction
 from groupaccount.models import GroupAccount
@@ -20,7 +19,6 @@ class NewTransactionForm(forms.ModelForm):
 
     self.fields['groupAccount'].widget.attrs['readonly'] = True
 
-    print datetime.today()
     self.fields['date'] = forms.DateField(initial=datetime.now())
   
   class Meta:

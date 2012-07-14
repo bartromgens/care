@@ -171,6 +171,25 @@ th {
   overflow:auto;
 }
 
+#row {
+  clear: both;
+  width: 100%;
+} 
+
+#col_left {
+  float: left;
+  width: 50%;
+  margin: 0 0px 0 0;
+  border: 0px;
+} 
+
+#col_right {
+  float: right;
+  width: 50%;
+  margin: 0 0px 0 0;
+  border: 0px;
+} 
+
 #footer {
   background-color:$secondColor;
   height:5px;

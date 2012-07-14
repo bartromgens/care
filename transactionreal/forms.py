@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from django import forms
 from transactionreal.models import TransactionReal
 from groupaccount.models import GroupAccount
@@ -20,7 +20,7 @@ class NewRealTransactionForm(forms.ModelForm):
 
     self.fields['groupAccount'].widget.attrs['readonly'] = True
 
-    self.fields['date'] = forms.DateField(initial=datetime.date.today)
+    self.fields['date'] = forms.DateField(initial=datetime.now())
   
   class Meta:
     model = TransactionReal

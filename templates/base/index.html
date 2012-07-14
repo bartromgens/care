@@ -13,7 +13,7 @@
     {% else %}
       <font style="color:green">
     {% endif %}
-    {{ myTotalBalance }} &#8364
+    <b>{{ myTotalBalance }}</b> &#8364
     </font>
     
     {% for group in groups %}   
@@ -25,13 +25,107 @@
       {% else %}
         <font style="color:green">
       {% endif %}
-      <b>{{ group.myBalance }} &#8364</b>
+      <b>{{ group.myBalance }}</b> &#8364
       </font>
     {% endfor %}
   {% endif %}
       </font>
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
+<div id="row">
+  <div id="col_left">
+    <center><h4>Virtual Transactions</h4></center>
+    
+    {% if transactionsAll %}
+    <table>
+      <tr>
+        <th><b>&#8364</b></th>
+        <th><b>What</b></th>
+        <th><b>Who</b></th>
+      </tr>
+      
+      {% for transaction in transactionsAll %}
+      <tr>
+        <td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
+          style="color:green"
+          {% endif %}>
+          <b>{{ transaction.amountPerPerson }}</b>
+        </td>
+        <td > <b>{{ transaction.what }}</b> </td> 
+        <td>
+          {% ifequal transaction.buyer.displayname displayname %}
+            <b>{{ transaction.buyer }}</b>
+          {% else %}
+            {{ transaction.buyer }}
+          {% endifequal %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  
+    {% else %}
+      <center>
+      <font id="userMessageFont">
+        No virtual transactions available.
+      </font>
+      </center>
+    {% endif %}
+  </div>
+
+  <div id="col_right">
+    <center><h4>Friends</h4></center>
+  </div> 
+</div>
+
+<div id="row">
+  <div id="col_left">
+    <center><h4>Real Transactions</h4></center>
+  
+    {% if transactionsRealAll %}
+      <table>
+      <tr>
+        <th><b>&#8364</b></th>
+        <th><b>From</b></th>
+        <th><b>To</b></th>
+      </tr>
+      {% for transaction in transactionsRealAll %}
+      <tr>
+        <td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
+            style="color:green"
+            {% endif %}>
+            <b>{{ transaction.amountPerPerson }}</b>
+        </td>
+        <td>
+        {% ifequal transaction.sender.displayname displayname %}
+          <b>{{ transaction.sender }}</b>
+        {% else %}
+          {{ transaction.sender }}
+        {% endifequal %}
+        </td>
+        <td>
+          {% ifequal transaction.receiver.displayname displayname %}
+            <b>{{ transaction.receiver }}</b>
+          {% else %}
+            {{ transaction.receiver }}
+          {% endifequal %}
+        </td>
+      </tr>
+      {% endfor %}
+      </table>
+  
+    {% else %}
+      <center>
+      <font id="userMessageFont">
+        No real transactions available.
+      </font>
+      </center>
+    {% endif %}
+  </div>
+  
+  <div id="col_right">
+    <center><h4>Invites</h4></center>
+  </div> 
+</div> 
 {% endblock %}

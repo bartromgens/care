@@ -27,10 +27,6 @@ class MyGroupAccountsView(BaseView):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
     return transactions
   
-  def getNumberOfTransactions(self, buyerId):
-    transactions = Transaction.objects.all()
-    return len(transactions)
-  
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(MyGroupAccountsView, self).get_context_data(**kwargs)

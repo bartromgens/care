@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
 from django.views.generic.edit import UpdateView
+from itertools import chain
 from base.forms import LoginForm, UserCreateForm
 from userprofile.models import UserProfile
 from transaction.models import Transaction
@@ -60,10 +61,6 @@ class HomeView(BaseView):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
     return transactions
   
-  def getNumberOfTransactions(self, buyerId):
-    transactions = Transaction.objects.all()
-    return len(transactions)
-  
   def get_context_data(self, **kwargs):
     from groupaccount.views import MyTransactionView
     # Call the base implementation first to get a context
@@ -73,18 +70,31 @@ class HomeView(BaseView):
     userProfile = UserProfile.objects.get(user=user)
     groupAccounts = userProfile.groupAccounts.all()
     
-    accountView = MyTransactionView()
+    transactionView = MyTransactionView()
+    buyerTransactions = transactionView.getBuyerTransactions(userProfile.id)
+    consumerTransactions = transactionView.getConsumerTransactions(userProfile.id)
+    transactionsAll = list(chain(buyerTransactions, consumerTransactions))
+    for transaction in transactionsAll:
+      print transaction.date
+    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
+    
+    sentTransactions = transactionView.getSentTransactionsReal(userProfile.id)
+    receivedTransactions = transactionView.getReceivedTransactionsReal(userProfile.id)
+    transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
+    transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     
     myTotalBalanceFloat = 0.0
     
     for groupAccount in groupAccounts:
-      groupAccount.myBalanceFloat = MyTransactionView.getBalance(accountView, groupAccount.id, userProfile.id)
+      groupAccount.myBalanceFloat = MyTransactionView.getBalance(transactionView, groupAccount.id, userProfile.id)
       groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
       myTotalBalanceFloat += groupAccount.myBalanceFloat
       myTotalBalance = '%.2f' % myTotalBalanceFloat
       context['myTotalBalance'] = myTotalBalance
       context['myTotalBalanceFloat'] = myTotalBalanceFloat
       
+    context['transactionsAll'] = transactionsAllSorted[0:5]
+    context['transactionsRealAll'] = transactionsRealAllSorted[0:5]
     context['groups'] = groupAccounts
     context['homesection'] = True
     return context

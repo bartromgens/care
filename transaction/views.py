@@ -51,14 +51,14 @@ class MyTransactionView(BaseView):
     return transactions
     
   def getSentTransactionsReal(self, senderId):
-    transactions = TransactionReal.objects.filter(sender__id=senderId)
+    transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % (-1*transaction.amount)
       transaction.amountPerPersonFloat = (-1*transaction.amount)
     return transactions
     
   def getReceivedTransactionsReal(self, receiverId):
-    transactions = TransactionReal.objects.filter(receiver__id=receiverId)
+    transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % (1*transaction.amount)
       transaction.amountPerPersonFloat = (1*transaction.amount)
@@ -110,7 +110,7 @@ class MyTransactionView(BaseView):
     sentTransactions = self.getSentTransactionsReal(userProfile.id)
     receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
-    transactionsRealAllSorted = transactionsRealAll #sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
+    transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     
     context['buyer_transactions'] = self.getBuyerTransactions(userProfile.id)
     context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
