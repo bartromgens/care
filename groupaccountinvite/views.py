@@ -62,6 +62,7 @@ class AcceptInviteView(MyGroupAccountInvitesView):
     context['invites'] = invites
     context['groupssection'] = True
     return context
+
   
 class DeclineInviteView(MyGroupAccountInvitesView):
   template_name = "groupaccountinvite/overview.html"

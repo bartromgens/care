@@ -31,17 +31,10 @@
       </tr>
 	<th><b>Balance</b></th>
 	{% for member in group.userProfiles %}  
-	  {% ifequal member.user user.username %}
-	    <td {% if member.balanceFloat <= 0.0 %} style="color:red" {% else %}
-	    style="color:green"
-	    {% endif %}><b>{{member.balance}}</b>
-	    </td>
-	  {% else %}
-	    <td {% if member.balanceFloat <= 0.0 %} style="color:red" {% else %}
-	    style="color:green"
-	    {% endif %}>{{member.balance}}
-	    </td>
-	  {% endifequal %}
+    <td {% if member.balanceFloat < 0.0 %} style="color:red" {% else %}
+      style="color:green" {% endif %}>
+      <b>{{member.balance}}</b>
+    </td>
 	{% endfor %}
       
       <td><b>{{group.groupBalance}}</b></td>

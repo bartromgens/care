@@ -96,6 +96,17 @@ class HomeView(BaseView):
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     print friends
     
+    from groupaccountinvite.views import MyGroupAccountInvitesView
+    
+    groupAccountView = MyGroupAccountInvitesView()
+    
+    invitesSent = groupAccountView.getSentInvites(userProfile.id);
+    invitesReceived = groupAccountView.getReceivedInvites(userProfile.id);
+    invitesAll = list(chain(invitesSent, invitesReceived))
+    invitesAll = set(invitesAll)
+    invitesAllSorted = sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
+    
+    context['invitesAll'] = invitesAllSorted[0:5]
     context['friends'] = friends
     context['transactionsAll'] = transactionsAllSorted[0:5]
     context['transactionsRealAll'] = transactionsRealAllSorted[0:5]

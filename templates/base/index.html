@@ -3,17 +3,18 @@
 {% block title %}Care{% endblock %}
 
 {% block sidebar %}
-  <h4>My Balance</h4>
-  <font id="userMessageFont">    
-  Total
-  <br />
+
   {% if myTotalBalance %}
+    <h4>My Balance</h4>
+    <font id="userMessageFont">    
+      Total
+    <br />
     {% if myTotalBalanceFloat < 0.0 %} 
       <font style="color:red">
     {% else %}
       <font style="color:green">
     {% endif %}
-    <b>{{ myTotalBalance }}</b> &#8364
+      &#8364 <b>{{ myTotalBalance }}</b> 
     </font>
     
     {% for group in groups %}   
@@ -25,11 +26,12 @@
       {% else %}
         <font style="color:green">
       {% endif %}
-      <b>{{ group.myBalance }}</b> &#8364
+        &#8364 <b>{{ group.myBalance }}</b>
       </font>
     {% endfor %}
+    </font>
   {% endif %}
-      </font>
+      
 {% endblock %}
 
 
@@ -137,12 +139,66 @@
         </td>
       </tr>
     </table>
+    {% else %}
+      <center>
+      <font id="userMessageFont">
+        No friends :(
+      </font>
+      </center>
     {% endif %}
-    
   </div> 
   
   <div id="col_left">
     <center><h4>Invites</h4></center>
+    
+    {% if invitesAll %}
+    <table>
+      <tr>
+        <th><b>Group</b></th>
+        <th><b>Inviter</b></th>
+        <th><b>Invitee</b></th>
+        <th><b>Status</b></th>
+      </tr>
+      {% for invite in invitesAll %}
+      <tr>
+        <td>
+          {{ invite.groupAccount }}
+        </td>
+        <td>
+          {% ifequal invite.inviter.displayname displayname %}
+            <b>{{ invite.inviter }}</b>
+          {% else %}
+            {{ invite.inviter }}
+          {% endifequal %}
+        </td>
+        <td>
+          {% ifequal invite.invitee.displayname displayname %}
+            <b>{{ invite.invitee }}</b></font>
+          {% else %}
+            {{ invite.invitee }}</font>
+          {% endifequal %}
+        </td>
+        {% if invite.isAccepted %}
+          <td style="color:green"> <b>Accepted</b> </td>
+        {% elif invite.isDeclined %}
+          <td style="color:red"> <b>Declined</b> </td>
+        {% else %}
+          <td > 
+            <b><a href="/invites/accept/{{ invite.id }}">Accept</a> | <a href="/invites/decline/{{ invite.id }}">Decline</a></b>
+          </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </table>
+    
+    {% else %}
+      <center>
+      <font id="userMessageFont">
+        No invites.
+      </font>
+      </center>
+    {% endif %}
+    
   </div> 
 </div> 
 {% endblock %}
