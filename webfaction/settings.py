@@ -60,7 +60,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/bartromgens/webapps/care/care/static/'
+STATIC_ROOT = '/home/bartromgens/webapps/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -71,7 +71,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/bartromgens/webapps/care/care/static/'
+    '/home/bartromgens/webapps/care/care/staticfiles/',
 )
 
 # List of finder classes that know how to find static files in
