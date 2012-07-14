@@ -8,7 +8,7 @@
   Total
   <br />
   {% if myTotalBalance %}
-    {% if myTotalBalanceFloat <= 0.0 %} 
+    {% if myTotalBalanceFloat < 0.0 %} 
       <font style="color:red">
     {% else %}
       <font style="color:green">
@@ -20,7 +20,7 @@
       <br /><br />
       {{ group.name }}
       <br />
-      {% if group.myBalanceFloat <= 0.0 %} 
+      {% if group.myBalanceFloat < 0.0 %} 
         <font style="color:red">
       {% else %}
         <font style="color:green">
@@ -75,12 +75,6 @@
   </div>
 
   <div id="col_right">
-    <center><h4>Friends</h4></center>
-  </div> 
-</div>
-
-<div id="row">
-  <div id="col_left">
     <center><h4>Real Transactions</h4></center>
   
     {% if transactionsRealAll %}
@@ -124,7 +118,30 @@
     {% endif %}
   </div>
   
+</div>
+
+<div id="row">
   <div id="col_right">
+    <center><h4>Friends</h4></center>
+    
+    {% if friends %}
+    <table>
+      <tr>
+        <th><b>Name</b></th>
+      </tr>
+      <tr>
+        <td>
+          {% for friend in friends %}
+            <b>{{ friend.displayname }}</b>,
+          {% endfor %}
+        </td>
+      </tr>
+    </table>
+    {% endif %}
+    
+  </div> 
+  
+  <div id="col_left">
     <center><h4>Invites</h4></center>
   </div> 
 </div> 

@@ -92,7 +92,11 @@ class HomeView(BaseView):
       myTotalBalance = '%.2f' % myTotalBalanceFloat
       context['myTotalBalance'] = myTotalBalance
       context['myTotalBalanceFloat'] = myTotalBalanceFloat
-      
+
+    friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
+    print friends
+    
+    context['friends'] = friends
     context['transactionsAll'] = transactionsAllSorted[0:5]
     context['transactionsRealAll'] = transactionsRealAllSorted[0:5]
     context['groups'] = groupAccounts
