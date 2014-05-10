@@ -113,10 +113,11 @@ class HomeView(BaseView):
     invitesAll = set(invitesAll)
     invitesAllSorted = sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
     
-    context['invitesAll'] = invitesAllSorted[0:5]
+    slowLastN = 10
+    context['invitesAll'] = invitesAllSorted[0:slowLastN]
     context['friends'] = friends
-    context['transactionsAll'] = transactionsAllSorted[0:5]
-    context['transactionsRealAll'] = transactionsRealAllSorted[0:5]
+    context['transactionsAll'] = transactionsAllSorted[0:slowLastN]
+    context['transactionsRealAll'] = transactionsRealAllSorted[0:slowLastN]
     context['groups'] = groupAccounts
     context['homesection'] = True
     return context
