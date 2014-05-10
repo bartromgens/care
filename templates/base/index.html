@@ -8,7 +8,7 @@
   <center><h3>Balance</h3></center>
 
 <div class="container">   
-  <div class="col-sm-12" align="center">
+  <div class="col-sm-4 col-sm-offset-4" align="center">
     {% if myTotalBalanceFloat < 0.0 %} 
     <font style="color:red">
     {% else %}
@@ -20,28 +20,35 @@
 </div>
 
 <div class="row">  
-  {% for group in groups %}   
-  <div class="col-sm-3" align="center"> 
-    <h4>{{ group.name }}</h4>
-    {% if group.myBalanceFloat < 0.0 %} 
-    <font style="color:red">
-    {% else %}
-    <font style="color:green">
-    {% endif %}
-    <h4>&#8364 <b>{{ group.myBalance }}</b></h4>
-    </font>
+  <div class="col-md-4 col-sm-offset-4" align="center">
+    <h4>Per group</h4>
+    <table class="table table-striped table-hover">
+    {% for group in groups %}   
+    <tr>
+      <td>{{ group.name }}</td>
+      <td>
+        {% if group.myBalanceFloat < 0.0 %} 
+        <font style="color:red">
+        {% else %}
+        <font style="color:green">
+        {% endif %}
+        &#8364 <b>{{ group.myBalance }}</b>
+        </font>
+      </td>
+    </tr>
+    {% endfor %}
+    
+    </table>
   </div>
-  {% endfor %}
-
 </div>
 
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-2" align="center">
+  <div class="col-md-5 col-sm-offset-1" align="center">
   
-      <h3><a href="/transactions/new/"><i class="glyphicon glyphicon-plus"></i></a> Shares</h3>
+      <h3>Shares</h3>
     
     {% if transactionsAll %}
-    <table class="table table-striped table-hover" style="width: 95%;">
+    <table class="table table-striped table-hover" style="width: 100%;">
 
       {% for transaction in transactionsAll %}
       <tr>
@@ -58,9 +65,7 @@
             {{ transaction.buyer }}
           {% endifequal %}
         </td>
-        <td>
-         {{ transaction.date|date:"j M" }}
-        </td>
+
       </tr>
       {% endfor %}
     </table>
@@ -72,11 +77,11 @@
     {% endif %}
   </div>
 
-  <div div class="col-sm-4" align="center">
+  <div div class="col-sm-5" align="center">
     <center><h3>Transactions</h3></center>
   
     {% if transactionsRealAll %}
-      <table class="table table-striped table-hover" style="width: 95%;">
+      <table class="table table-striped table-hover" style="width: 100%;">
       {% for transaction in transactionsRealAll %}
       <tr>
         <td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
@@ -100,9 +105,6 @@
           {% else %}
             {{ transaction.receiver }}
           {% endifequal %}
-        </td>
-                <td>
-         {{ transaction.date|date:"j M" }}
         </td>
       </tr>
       {% endfor %}

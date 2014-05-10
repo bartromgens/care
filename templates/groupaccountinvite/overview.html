@@ -1,60 +1,71 @@
 {% extends "base/base.html" %}
 
+{% load bootstrap3 %}
 {% block content %}
 
-  <center><h3>Received</h3></center>
+<center><h3>Invites</h3></center>
+
   {% if invitesReceived %}
-    <table>
-    <tr>
-      <th><b>Group</b></th>
-      <th><b>Inviter</b></th>
-      <th><b>Invitee</b></th>
-      <th><b>Date</b></th>
-      <th><b>Status</b></th>
-    </tr>
-    {% for invite in invitesReceived %}
-    <tr>
-    <td>{{ invite.groupAccount }}</td>
-    <td>
-      {% ifequal invite.inviter.displayname displayname %}
-        <b>{{ invite.inviter }}</b>
-      {% else %}
-        {{ invite.inviter }}
-      {% endifequal %}
-    </td>
-    <td>
-      {% ifequal invite.invitee.displayname displayname %}
-        <b>{{ invite.invitee }}</b></font>
-      {% else %}
-        {{ invite.invitee }}</font>
-      {% endifequal %}
-    </td>
-    <td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td>
-    {% if invite.isAccepted %}
-      <td style="color:green"> <b>Accepted</b> </td>
-    {% elif invite.isDeclined %}
-      <td style="color:red"> <b>Declined</b> </td>
-    {% else %}
-      <td > <b><a href="/invites/accept/{{ invite.id }}">Accept</a> | <a href="/invites/decline/{{ invite.id }}">Decline</a></b></td>
-    {% endif %}
-    </tr>
-    {% endfor %}
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-2" align="center">
+      <center><h4>Received</h4></center>
+      <table class="table table-striped table-hover" style="width: 95%;">
+        <tr>
+          <th><b>By</b></th>
+          <th><b>Invited to group</b></th>
+<!--           <th><b>Invitee</b></th> -->
+<!--           <th><b>Date</b></th> -->
+          <th><b>Status</b></th>
+        </tr>
+        {% for invite in invitesReceived %}
+        <tr>
+        <td>{{ invite.inviter }}</td>
+
+        <td>{{ invite.groupAccount }}</td>
+
+<!--         <td>
+          {% ifequal invite.invitee.displayname displayname %}
+            <b>{{ invite.invitee }}</b></font>
+          {% else %}
+            {{ invite.invitee }}</font>
+          {% endifequal %}
+        </td> -->
+        
+<!--         <td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
+        
+        {% if invite.isAccepted %}
+          <td align="center"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
+        {% elif invite.isDeclined %}
+          <td align="center"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
+        {% else %}
+          <td align="center"> 
+            <a href="/invites/accept/{{ invite.id }}" style="color:green">{% bootstrap_icon "ok-circle" %}</a> &nbsp;&nbsp;
+            <a href="/invites/decline/{{ invite.id }}" style="color:red">{% bootstrap_icon "ban-circle" %}</a>
+          </td>
+        {% endif %}
+        </tr>
+        {% endfor %}
     </table>
+  </div>
 
   {% else %}
     <center>
     <h4>No invites received.</h4>
     </center>
   {% endif %}
+
+
+{% if invitesSent %}
+  <div class="col-sm-4" align="center">  
   
-  <center><h3>Sent</h3></center>
-  {% if invitesSent %}
-    <table>
+    <h4>Sent</h4>
+    
+    <table class="table table-striped table-hover" style="width: 95%;">
     <tr>
       <th><b>Group</b></th>
       <th><b>Inviter</b></th>
       <th><b>Invitee</b></th>
-      <th><b>Date</b></th>
+<!--       <th><b>Date</b></th> -->
       <th><b>Status</b></th>
     </tr>
     {% for invite in invitesSent %}
@@ -74,18 +85,20 @@
 		    {{ invite.invitee }}</font>
 		  {% endifequal %}
 		</td>
-		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td>
+<!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
     {% if invite.isAccepted %}
-		  <td style="color:green"> <b>Accepted</b> </td>
+		  <td align="center"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
 		{% elif not invite.isDeclined %}
-		  <td > <b>Open</b> </td>
+		  <td style="color:green" align="center"><b>Sent</b></td>
 		{% else %}
-		  <td style="color:red"> <b>Declined</b> </td>
+		  <td align="center"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
     {% endif %}
     </tr>
   	{% endfor %}
   	</table>
-
+  </div>
+</div>
+  
   {% else %}
     <center>
     <h4>No invites sent.</h4>

@@ -45,13 +45,15 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="/"></a></li>
-              <li><a href="/invites/new">Invite</a></li>
               <li><a href="/invites/">Invites</a></li>
+              <li><a href="/invites/new">Invite</a></li>
             </ul>
           </li>
           
-         <!--  <li><a href="/events">Events</a></li> -->
-        
+          {% if hasInvites %}
+          <li><a href="/invites/" style="color:orange"><i class="glyphicon glyphicon-envelope" style="color:orange"></i> ({{ nInvites }}) </a></li>
+          {% endif %}
+          
         </ul>
 
         <ul class="nav navbar-nav navbar-right">

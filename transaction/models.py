@@ -4,6 +4,9 @@ from django.db import models
 
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
+
+from datetime import datetime
+
 #users = User.objects.filter(groups__name='monkeys')
 
 class Transaction(models.Model):
@@ -12,7 +15,7 @@ class Transaction(models.Model):
   buyer = models.ForeignKey(UserProfile, related_name='buyer')
   consumers = models.ManyToManyField(UserProfile, related_name='consumers')
   groupAccount = models.ForeignKey(GroupAccount)
-  date = models.DateTimeField(auto_now=True, auto_now_add=True)
+  date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
   def __unicode__(self):
     return self.what
