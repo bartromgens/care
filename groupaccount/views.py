@@ -39,15 +39,19 @@ class MyGroupAccountsView(BaseView):
     groupAccounts = userProfile.groupAccounts.all()
     
     accountView = MyTransactionView()
-    groupBalance = 0.0
     
     for groupAccount in groupAccounts:
+      groupBalance = 0.0
       groupAccount.userProfiles = UserProfile.objects.filter(groupAccounts=groupAccount)
       for userProfile in groupAccount.userProfiles:
         userProfile.balanceFloat = MyTransactionView.getBalance(accountView, groupAccount.id, userProfile.id)
         userProfile.balance = '%.2f' % userProfile.balanceFloat
+        logger.debug(userProfile.balanceFloat)
         groupBalance += userProfile.balanceFloat
+        logger.debug('groupBalance: ' + str(groupBalance))
       groupAccount.groupBalance = '%.2f' % groupBalance
+      groupAccount.groupBalanceFloat = '%.3g' % groupBalance
+      groupAccount.balanceVerified = bool(abs(groupBalance) < 1e-9)
       
     
     for groupAccount in groupAccounts:
