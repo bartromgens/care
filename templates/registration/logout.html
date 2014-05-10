@@ -1,0 +1,22 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+{% block title %}Care{% endblock %}
+
+{% block content %}
+
+
+<center><h3>Logout</h3></center>
+
+  {% if error %}
+    {{ error }}
+  {% endif %}
+  
+  <div class="row" align="center">
+    <div class="col-md-4 col-md-offset-4">
+      <h4>You are logged out.</h4>
+      <h4><a href="/accounts/login/">Log in</a></h4>
+    </div>
+  </div>
+  
+{% endblock %}

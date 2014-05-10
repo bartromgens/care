@@ -8,16 +8,23 @@ from groupaccountinvite.models import GroupAccountInvite
 from groupaccountinvite.forms import NewInviteForm
 from userprofile.models import UserProfile
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 class MyGroupAccountInvitesView(BaseView):
   template_name = "groupaccountinvite/overview.html"
   context_object_name = "my invites"
 
-  def getSentInvites(self, userID):
-    invites = GroupAccountInvite.objects.filter(inviter__id=userID)
+  def getSentInvites(self, user):
+    logger.debug('user.id: ' + str(user.id))
+    userProfile = UserProfile.objects.get(user=user)
+    invites = GroupAccountInvite.objects.filter(inviter=userProfile)
     return invites
   
-  def getReceivedInvites(self, userID):
-    invitees = GroupAccountInvite.objects.filter(invitee__id=userID)
+  def getReceivedInvites(self, user):
+    userProfile = UserProfile.objects.get(user=user)
+    invitees = GroupAccountInvite.objects.filter(invitee=userProfile)
     return invitees
   
   def getNumberOfInvites(self, buyerId):
@@ -28,13 +35,13 @@ class MyGroupAccountInvitesView(BaseView):
     context = super(MyGroupAccountInvitesView, self).get_context_data(**kwargs)
     user = self.request.user
     
-    invitesSent = self.getSentInvites(user.id)
-    invitesReceived = self.getReceivedInvites(user.id)
+    invitesSent = self.getSentInvites(user)
+    logger.debug(str(len(invitesSent)))
+    invitesReceived = self.getReceivedInvites(user)
 #    invites = list(chain(invitesSent, invitesReceived))
 
     context['invitesSent'] = invitesSent
     context['invitesReceived'] = invitesReceived
-    context['groupssection'] = True
     return context
 
 
@@ -45,7 +52,7 @@ class AcceptInviteView(MyGroupAccountInvitesView):
   def get_context_data(self, **kwargs):
     context = super(AcceptInviteView, self).get_context_data(**kwargs)
     user = self.request.user
-    self.logger.warning("accepted " + self.kwargs['inviteId'])
+    logger.warning("accepted " + self.kwargs['inviteId'])
     invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
     groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
     invite.isAccepted = True
@@ -55,8 +62,8 @@ class AcceptInviteView(MyGroupAccountInvitesView):
     userProfile.save()
     invite.save()
     
-    invitesSent = self.getSentInvites(user.id)
-    invitesReceived = self.getReceivedInvites(user.id)
+    invitesSent = self.getSentInvites(user)
+    invitesReceived = self.getReceivedInvites(user)
     invites = list(chain(invitesSent, invitesReceived))
 
     context['invites'] = invites
@@ -71,19 +78,19 @@ class DeclineInviteView(MyGroupAccountInvitesView):
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(DeclineInviteView, self).get_context_data(**kwargs)
-    self.logger.warning("declined " + self.kwargs['inviteId'])
+    logger.warning("declined " + self.kwargs['inviteId'])
     invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
     user = self.request.user
     userProfile = UserProfile.objects.get(user=user)
     
-    print userProfile.groupAccounts.get(id=invite.groupAccount.id)
+    logger.debug( userProfile.groupAccounts.get(id=invite.groupAccount.id) )
     
     if userProfile.groupAccounts.get(id=invite.groupAccount.id):
-      print 'Group is already accepted. Groups cannot be removed.'
+      logger.debug( 'Group is already accepted. Groups cannot be removed.' )
       invite.isAccepted = False
       invite.isDeclined = True
     else:
-      print 'Group is declined.'
+      logger.debug( 'Group is declined.' )
       invite.isDeclined = True
       groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
       userProfile = UserProfile.objects.get(user=user)
@@ -92,8 +99,8 @@ class DeclineInviteView(MyGroupAccountInvitesView):
     
     invite.save()
     
-    invitesSent = self.getSentInvites(user.id)
-    invitesReceived = self.getReceivedInvites(user.id)
+    invitesSent = self.getSentInvites(user)
+    invitesReceived = self.getReceivedInvites(user)
     invites = list(chain(invitesSent, invitesReceived))
 
     context['invites'] = invites

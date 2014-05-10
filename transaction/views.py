@@ -1,12 +1,19 @@
-from django.template import RequestContext
-from django.shortcuts import render_to_response
-from itertools import chain
+from base.views import BaseView
 from transaction.models import Transaction
 from transactionreal.models import TransactionReal
-from base.views import BaseView
 from transaction.forms import NewTransactionForm
 from userprofile.models import UserProfile
+from groupaccount.models import GroupAccount
 
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
+from django.views.generic.edit import FormView
+
+from itertools import chain
+
+import logging
+logger = logging.getLogger(__name__)
 
 #class BuyerDetailView(BaseView):
 #
@@ -104,7 +111,7 @@ class MyTransactionView(BaseView):
     consumerTransactions = self.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     for transaction in transactionsAll:
-      print transaction.date
+      logger.debug(transaction.date)
     transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
     sentTransactions = self.getSentTransactionsReal(userProfile.id)
@@ -116,7 +123,6 @@ class MyTransactionView(BaseView):
     context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
     context['transactionsRealAll'] = transactionsRealAllSorted
     context['transactionsAll'] = transactionsAllSorted
-    context['transactionssection'] = True
     return context# Create your views here.
 
 
@@ -130,50 +136,48 @@ class SelectGroupTransactionView(BaseView):
     userProfile = UserProfile.objects.get(user=self.request.user)
     groupaccounts = userProfile.groupAccounts.all
     context['groupaccounts'] = groupaccounts
-    context['transactionssection'] = True
     
     return context
 
-  
-def newTransaction(request, groupAccountId):
-  def errorHandle(error):
-    kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
-    form = NewTransactionForm(**kwargs)
-    context = RequestContext(request)
-    context['error'] = error
-    context['form'] = form
-    if request.user.is_authenticated():
-      context['user'] = request.user
-      context['isLoggedin'] = True
-      context['transactionssection'] = True
-    return render_to_response('transaction/new.html', context)
-          
-  if request.method == 'POST': # If the form has been submitted...
-    kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
-    form = NewTransactionForm(request.POST, **kwargs) # A form bound to the POST data
-    
-    if form.is_valid(): # All validation rules pass
-      form.save()
-      context = RequestContext(request)
 
-      if request.user.is_authenticated():
-        context['user'] = request.user
-        context['isLoggedin'] = True
-        context['transactionssection'] = True
-
-      return render_to_response('transaction/newsuccess.html', context)
+class NewTransactionView(FormView, BaseView):
+  template_name = 'transaction/new.html'
+  form_class = NewTransactionForm
+  success_url = '/transaction/new/success/'
+   
+  def getGroupAccountId(self):
+    if 'groupAccountId' in self.kwargs:
+      return self.kwargs['groupAccountId']
     else:
-      error = u'form is invalid'
-      return errorHandle(error)
-  
-  else:
-    kwargs = {'user' : request.user,'groupAccountId' : groupAccountId}
-    form = NewTransactionForm(**kwargs) # An unbound form
-    context = RequestContext(request)
-    context['form'] = form
-    context['transactionssection'] = True
+      logger.debug(self.request.user.id)
+      user = UserProfile.objects.get(user=self.request.user)
+      user.groupAccounts.all()
+      return 1
     
-    if request.user.is_authenticated():
-      context['user'] = request.user
-      context['isLoggedin'] = True
-    return render_to_response('transaction/new.html', context)
+  def get_form(self, form_class):
+    return NewTransactionForm(self.getGroupAccountId(), self.request.user, **self.get_form_kwargs())   
+    
+  def form_valid(self, form):
+    logger.debug('NewTransactionView::form_valid()')
+    context = super(NewTransactionView, self).form_valid(form)
+    
+    form.save()
+    
+    return HttpResponseRedirect( '/')
+  
+  def form_invalid(self, form):
+    logger.debug('NewTransactionView::form_invalid()')
+    groupAccount = form.cleaned_data['groupAccount']  
+    super(NewTransactionView, self).form_invalid(form)
+    
+    return HttpResponseRedirect( '/transactions/new/' + str(groupAccount.id))
+  
+  def get_context_data(self, **kwargs):
+    logger.debug('NewTransactionView::get_context_data() - groupAccountId: ' + str(self.getGroupAccountId()))
+    context = super(NewTransactionView, self).get_context_data(**kwargs)
+    
+    form = NewTransactionForm(self.getGroupAccountId(), self.request.user)
+    context['form'] = form
+    
+    return context
+

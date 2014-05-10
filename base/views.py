@@ -1,22 +1,26 @@
+from base.forms import LoginForm, UserCreateForm
+from userprofile.models import UserProfile
+from transaction.models import Transaction
+from groupaccount.forms import NewGroupAccountForm
+from groupaccountinvite.models import GroupAccountInvite 
+
+from registration.backends.simple.views import RegistrationView
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
 from django.views.generic.edit import UpdateView
+from django.views.generic.edit import FormView
+
 from itertools import chain
-from base.forms import LoginForm, UserCreateForm
-from userprofile.models import UserProfile
-from transaction.models import Transaction
-from groupaccount.forms import NewGroupAccountForm
-from groupaccountinvite.models import GroupAccountInvite
 import logging
+logger = logging.getLogger(__name__)
+
 
 class BaseView(TemplateView):
   template_name = "base/base.html"
   context_object_name = "base"
-  
-  logger = logging.getLogger(__name__)
-  logger.addHandler(logging.StreamHandler())
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
@@ -36,9 +40,6 @@ class BaseUpdateView(UpdateView):
   template_name = "base/base.html"
   context_object_name = "base"
   
-  logger = logging.getLogger(__name__)
-  logger.addHandler(logging.StreamHandler())
-  
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(BaseUpdateView, self).get_context_data(**kwargs)
@@ -51,6 +52,12 @@ class BaseUpdateView(UpdateView):
       context['displayname'] = userProfile.displayname
       context['isLoggedin'] = True
     return context
+
+
+class NewRegistrationView(RegistrationView):
+  
+  def get_success_url(self, request, new_user):
+    return '/'
 
 
 class HomeView(BaseView):
@@ -75,7 +82,7 @@ class HomeView(BaseView):
     consumerTransactions = transactionView.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     for transaction in transactionsAll:
-      print transaction.date
+      logger.debug(transaction.date)
     transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
     sentTransactions = transactionView.getSentTransactionsReal(userProfile.id)
@@ -94,14 +101,14 @@ class HomeView(BaseView):
       context['myTotalBalanceFloat'] = myTotalBalanceFloat
 
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
-    print friends
+    logger.debug(friends)
     
     from groupaccountinvite.views import MyGroupAccountInvitesView
     
     groupAccountView = MyGroupAccountInvitesView()
     
-    invitesSent = groupAccountView.getSentInvites(userProfile.id);
-    invitesReceived = groupAccountView.getReceivedInvites(userProfile.id);
+    invitesSent = groupAccountView.getSentInvites(user);
+    invitesReceived = groupAccountView.getReceivedInvites(user);
     invitesAll = list(chain(invitesSent, invitesReceived))
     invitesAll = set(invitesAll)
     invitesAllSorted = sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
@@ -135,31 +142,6 @@ class HelpView(BaseView):
     context = super(HelpView, self).get_context_data(**kwargs)
     context['helpsection'] = True
     return context
-          
-        
-def register(request):
-  def errorHandle(error):
-    form = UserCreateForm()
-    context = RequestContext(request)
-    context['error'] = error
-    context['form'] = form
-    return render_to_response('base/register.html', context)
-    
-  if request.method == 'POST': # If the form has been submitted...
-    form = UserCreateForm(request.POST) # A form bound to the POST data
-    if form.is_valid():
-      form.save()
-      context = RequestContext(request)
-      context['registered'] = True
-      return render_to_response('base/register.html', context)
-    else:
-      error = u'form is invalid'
-      return errorHandle(error)
-  else:
-    form = UserCreateForm() # An unbound form
-    context = RequestContext(request)
-    context['form'] = form
-    return render_to_response('base/register.html', context)
 
 
 def newGroupAccount(request):
@@ -208,7 +190,7 @@ def login(request):
     context = RequestContext(request)
     context['error'] = error
     context['form'] = form
-    return render_to_response('base/login.html', context)
+    return render_to_response('registration/login.html', context)
         
   if request.method == 'POST': # If the form has been submitted...
     form = LoginForm(request.POST) # A form bound to the POST data
@@ -239,7 +221,7 @@ def login(request):
     form = LoginForm() # An unbound form
     context = RequestContext(request)
     context['form'] = form
-    return render_to_response('base/login.html', context)
+    return render_to_response('registration/login.html', context)
 
     
 def logout(request):

@@ -9,6 +9,7 @@ class LoginForm(forms.Form):
 class UserCreateForm(UserCreationForm):
   def __init__(self, *args, **kwargs):
     super(UserCreateForm, self).__init__(*args, **kwargs)
+    self.fields['username'].help_text = ''
     
   email = forms.EmailField(required=True)
   

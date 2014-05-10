@@ -5,6 +5,9 @@ from transaction.views import MyTransactionView
 from base.views import BaseView
 from userprofile.models import UserProfile
 
+import logging
+logger = logging.getLogger(__name__)
+
 class GroupsView(BaseView):
   template_name = "groupaccount/index.html"
   context_object_name = "groups"
@@ -48,9 +51,9 @@ class MyGroupAccountsView(BaseView):
       
     
     for groupAccount in groupAccounts:
-      self.logger.warning(groupAccount.name) 
+      logger.warning(groupAccount.name) 
       for userProfile in groupAccount.userProfiles:
-        self.logger.warning(userProfile.displayname + ' ' + userProfile.balance)  
+        logger.warning(userProfile.displayname + ' ' + userProfile.balance)  
 
     context['groups'] = groupAccounts
     context['groupssection'] = True

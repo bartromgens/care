@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+{% block title %}Care{% endblock %}
+
+{% block content %}
+
+  <center><h3>Register</h3></center>
+
+  {% if error %}
+    {{ error }}
+  {% endif %}
+
+  {% if registered %}
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4" align="center">
+        <h4>
+          You have successfully registered!
+        </h4>
+        <h4>
+          Please <a href="/accounts/login/">login</a> to start with Care.
+        </h4>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if form %}
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <form action="." method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">
+              {% bootstrap_icon "pencil" %} Register
+          </button>
+        {% endbuttons %}
+    </form>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}

@@ -1,104 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 
 <head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <title>Care</title>
+  
+  {% load bootstrap3 %}
+  
+  {# Load CSS and JavaScript #}
+  {% bootstrap_css %}
   <style type="text/css">
   <!--
-  @import url("{{ STATIC_URL }}style.css");
+  @import url("{{ STATIC_URL }}css/custom.css");
   -->
   </style>
+  
+  {% block headcontent %}{% endblock %}
+
 </head>
 
-<!-- <body bgcolor="#f2f4f5"> -->
- <body bgcolor="#f5f8fc"> 
-
-  <div id="container">
-
-    <div id="header">
-      <font id="logotitle" ><b>Care</b></font></br>
-      <font id="logosubtitle" ><b>Online Banking for Groups</b></font>
-    </div>
-
-    <div id="login">
-    	{% if not isLoggedin %}
-    	  <font id="loginfont"><b>You are not logged in.</b></font>
-    	  <a href="/login/" id="loginlink">[login]</a> 
-    	  <a href="/register/" id="loginlink">[register]</a>  
-    	{% endif %}
-    	{% if isLoggedin %}
-    	  <font id="loginfont"><b>You are signed in as </b></font>
-    	   <a href="/userprofile/edit/{{ user.id}}" id="usernamelink"><b>{{ user.username }}</b></a>.  
-    	  <a href="/logout/" id="loginlink">[logout]</a>
-    	{% endif %}
-    </div>
-    
-    <div class="horizontalmenu">
-      <ul>
-      <li>
-	{% if homesection %}
-	  <a href="/care/" id="selectedbutton">Home</a>
-	{% else %}
-	  <a href="/care/">Home</a>
-	{% endif %}
-      </li>
-      <li>
-	{% if transactionssection %}
-	  <a href="/transactions/" id="selectedbutton">Transactions</a>
-	{% else %}
-	  <a href="/transactions/">Transactions</a>
-	{% endif %}
-      </li>
-      <li>
-    {% if hasInvites %}
-	  {% if groupssection %}
-		<a href="/accounts/my/" id="selectedbutton">Groups <font id="notificationFont">{{ nInvites }}</font></a>
-	  {% else %}
-		<a href="/accounts/my/">Groups <font id="notificationFont">{{ nInvites }}</font></a>
-	  {% endif %}
-	{% else %}
-	  {% if groupssection %}
-		<a href="/accounts/my/" id="selectedbutton">Groups</a>
-	  {% else %}
-		<a href="/accounts/my/">Groups</a>
-	  {% endif %}
-	{% endif %}
-      </li>
-
-  <li>
-  {% if helpsection %}
-    <a href="/help/" id="selectedbutton">Help</a>
-  {% else %}
-    <a href="/help/">Help</a>
-  {% endif %}
-  </li>
-  
-  <li>
-  {% if aboutsection %}
-    <a href="/about/" id="selectedbutton">About</a>
-  {% else %}
-    <a href="/about/">About</a>
-  {% endif %}
-  </li>
-      </ul>     
-      <div id="horizontalmenubar">
+  <!-- navbar -->
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">CARE</a>
       </div>
+      <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
+          
+          <li><a href="/">Balance</a></li>
+          <li><a href="/transactions/new">Share</a></li>
+          <li><a href="/transactions">Transactions</a></li>
+          <li><a href="/accounts/my">Groups</a></li>
+          
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/"></a></li>
+              <li><a href="/invites/new">Invite</a></li>
+              <li><a href="/invites/">Invites</a></li>
+            </ul>
+          </li>
+          
+         <!--  <li><a href="/events">Events</a></li> -->
+        
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/about/">About</a></li>
+          
+          {% if not isLoggedin %}
+          <li><a href="/accounts/login"><i class="glyphicon glyphicon-log-in"></i> <b>Log in</b></a></li>
+          <li><a href="/accounts/register"><i class="glyphicon glyphicon-pencil"></i> <b>Register</b></a></li>
+          {% else %}
+          <li class="dropdown">
+            <a href="/" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/userprofile/edit/{{ user.id}}"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
+              <li><a href="/admin"><i class="glyphicon glyphicon-wrench"></i> Admin</a></li>
+              <li><a href="/accounts/logout"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
+
+      </div>
+        <!--/.nav-collapse -->
     </div>
-
-
-    <div class="verticalmenu">
-      {% block sidebar %}{% endblock %}
-    </div>
-
-    <div id="content">
-      {% block content %}
-      {% endblock %}
-    </div>
-
-    <div id="footer">
-    </div>
-
   </div>
+
+  <div class="container">
+    {% block content %}Empty page{% endblock %}
+    <hr>
+    <footer class="row">
+    </footer>
+  </div>
+
+<script src={% bootstrap_jquery_url %} ></script>
+
+{% bootstrap_javascript %}
 
 </body>
 

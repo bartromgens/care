@@ -1,13 +1,8 @@
-{% extends "groupaccount/base.html" %}
+{% extends "base/base.html" %}
 
 {% block content %}
 
-    <style type="text/css">
-      table {
-        width:80%;
-      }
-    </style>
-  <center><h4>Received</h4></center>
+  <center><h3>Received</h3></center>
   {% if invitesReceived %}
     <table>
     <tr>
@@ -48,11 +43,11 @@
 
   {% else %}
     <center>
-    <font id="userMessageFont">No invites received.</font>
+    <h4>No invites received.</h4>
     </center>
   {% endif %}
   
-  <center><h4>Sent</h4></center>
+  <center><h3>Sent</h3></center>
   {% if invitesSent %}
     <table>
     <tr>
@@ -93,7 +88,7 @@
 
   {% else %}
     <center>
-    <font id="userMessageFont">No invites sent.</font>
+    <h4>No invites sent.</h4>
     </center>
   {% endif %}
 
