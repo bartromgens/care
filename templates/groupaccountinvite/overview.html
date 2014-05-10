@@ -9,19 +9,27 @@
   <div class="row">
     <div class="col-sm-4 col-sm-offset-2" align="center">
       <center><h4>Received</h4></center>
-      <table class="table table-striped table-hover" style="width: 95%;">
+      <table class="table table-striped table-hover" style="width: 100%;">
+        
         <tr>
           <th><b>By</b></th>
           <th><b>Invited to group</b></th>
 <!--           <th><b>Invitee</b></th> -->
 <!--           <th><b>Date</b></th> -->
-          <th><b>Status</b></th>
+          <th><b>Accept</b></th>
         </tr>
+        
         {% for invite in invitesReceived %}
-        <tr>
-        <td>{{ invite.inviter }}</td>
-
-        <td>{{ invite.groupAccount }}</td>
+        {% if invite.isAccepted %}
+        <tr >
+        {% elif invite.isDeclined %}
+        <tr >
+        {% else %}
+        <tr class="info">
+        {% endif %}
+          <td>{{ invite.inviter }}</td>
+  
+          <td>{{ invite.groupAccount }}</td>
 
 <!--         <td>
           {% ifequal invite.invitee.displayname displayname %}
@@ -34,13 +42,13 @@
 <!--         <td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
         
         {% if invite.isAccepted %}
-          <td align="center"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
+          <td align="center"> <font class="text-primary"><b>{% bootstrap_icon "ok-circle" %}</b></font></td>
         {% elif invite.isDeclined %}
-          <td align="center"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
+          <td align="center"> <font class="text-warning"><b>{% bootstrap_icon "ban-circle" %}</b></font> </td>
         {% else %}
           <td align="center"> 
-            <a href="/invites/accept/{{ invite.id }}" style="color:green">{% bootstrap_icon "ok-circle" %}</a> &nbsp;&nbsp;
-            <a href="/invites/decline/{{ invite.id }}" style="color:red">{% bootstrap_icon "ban-circle" %}</a>
+            <a href="/invites/accept/{{ invite.id }}" style="color:white">{% bootstrap_icon "ok-circle" %}</a> &nbsp;&nbsp;
+            <a href="/invites/decline/{{ invite.id }}" style="color:white">{% bootstrap_icon "ban-circle" %}</a>
           </td>
         {% endif %}
         </tr>
@@ -62,37 +70,41 @@
     
     <table class="table table-striped table-hover" style="width: 95%;">
     <tr>
+<!--       <th><b>Inviter</b></th> -->
+      <th><b>To</b></th>
       <th><b>Group</b></th>
-      <th><b>Inviter</b></th>
-      <th><b>Invitee</b></th>
 <!--       <th><b>Date</b></th> -->
       <th><b>Status</b></th>
     </tr>
     {% for invite in invitesSent %}
-    <tr>
-		<td>{{ invite.groupAccount }}</td>
-		<td>
-		  {% ifequal invite.inviter.displayname displayname %}
-		  	<b>{{ invite.inviter }}</b>
-		  {% else %}
-		  	{{ invite.inviter }}
-		  {% endifequal %}
-		</td>
-		<td>
-		  {% ifequal invite.invitee.displayname displayname %}
-		    <b>{{ invite.invitee }}</b></font>
-		  {% else %}
-		    {{ invite.invitee }}</font>
-		  {% endifequal %}
-		</td>
-<!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
-    {% if invite.isAccepted %}
-		  <td align="center"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
-		{% elif not invite.isDeclined %}
-		  <td style="color:green" align="center"><b>Sent</b></td>
-		{% else %}
-		  <td align="center"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
-    {% endif %}
+    <tr >
+
+<!--   		<td>
+  		  {% ifequal invite.inviter.displayname displayname %}
+  		  	<b>{{ invite.inviter }}</b>
+  		  {% else %}
+  		  	{{ invite.inviter }}
+  		  {% endifequal %}
+  		</td> -->
+      
+  		<td>
+  		  {% ifequal invite.invitee.displayname displayname %}
+  		    <b>{{ invite.invitee }}</b></font>
+  		  {% else %}
+  		    {{ invite.invitee }}</font>
+  		  {% endifequal %}
+  		</td>
+
+  		<td>{{ invite.groupAccount }}</td>
+
+  <!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
+      {% if invite.isAccepted %}
+  		  <td align="center" class="text-primary"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
+  		{% elif not invite.isDeclined %}
+  		  <td align="center" ><font class="text-success"><b>{% bootstrap_icon "send" %}</b></font></td>
+  		{% else %}
+  		  <td align="center" class="text-warning"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
+      {% endif %}
     </tr>
   	{% endfor %}
   	</table>
