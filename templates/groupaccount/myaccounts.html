@@ -1,56 +1,75 @@
 {% extends "base/base.html" %}
 
+{% load bootstrap3 %}
 {% block content %}
 
-  {% if groups %}
-    <style type="text/css">
-      table {
-	width:10%;
-      }
-    </style>
+<center><h3>Groups</h3></center>
 
-    {% for group in groups %}
+{% if groups %}
+{% for group in groups %}
     
-    <center><h4>{{ group.name }}</h4></center>
-    <table>
-      <tr>
-	  	<th><b>Member</b></th>
-		{% for member in group.userProfiles %}  
-		  {% ifequal member.user user %}
-		    <td>
-		      <b>{{ member.displayname }}</b>
-		    </td>
-		  {% else %}
-		    <td>
-		      {{ member.displayname }}
-		    </td>
-		  {% endifequal %}
-		{% endfor %}
-	<td>Total</td>
-      <tr>
-      </tr>
-	<th><b>Balance</b></th>
-	{% for member in group.userProfiles %}  
-    <td {% if member.balanceFloat < 0.0 %} style="color:red" {% else %}
-      style="color:green" {% endif %}>
-      <b>{{member.balance}}</b>
-    </td>
-	{% endfor %}
-      
-      <td><b>{{group.groupBalance}}</b></td>
-      </tr>
-    </table>
 
+<div class="row">
+  <div class="col-md-4 col-md-offset-4" align="center">
+    
+    <h4>{{ group.name }}</h4>
+    
+    <table class="table table-striped table-hover table-bordered">
+      
+      <tr>
+  	  	<th><b>Member</b></th>
+  	    <th >
+          {% if group.balanceVerified %}
+          <div >Balance </div>
+          {% else %}
+          <div >Balance <font style="color:red" > {% bootstrap_icon "warning-sign" %}</font></div>
+          {% endif %}
+        </th>
+      </tr>
+      
+  		{% for member in group.userProfiles %}  
+      <tr>
+  		  {% ifequal member.user user %}
+		      <td><b>{{ member.displayname }}</td>
+  		  {% else %}
+		      <td> {{ member.displayname }}</b></td>
+  		  {% endifequal %}
+          <td>
+          {% if member.balanceFloat < -100.0 %}
+            <div class="text-danger"> <b>{{member.balance}}</b> </div>
+          {% elif member.balanceFloat < 0.0 %}
+            <div class="text-warning"> <b>{{member.balance}}</b> </div>
+          {% elif member.balanceFloat > 100.0 %}
+            <div class="text-success"> <b>{{member.balance}}</b></div>
+          {% elif member.balanceFloat > -0.001 %}
+            <div class="text-info"> <b>{{member.balance}}</b></div>
+          {% endif %}
+          </td>
+      </tr>
+      {% endfor %}
+      
+      <tr>
+        <td> <b>Total</b></td>
+        <td>        
+          {% if group.balanceVerified %}
+          <div> {{group.groupBalance}} &nbsp;&nbsp; <font class="text-success">{% bootstrap_icon "ok-circle" %}</font></div>
+          {% else %}
+          <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{group.groupBalanceFloat}}</b></div>
+          {% endif %}
+        </td>
+      </tr>
+      
+    </table>
+  </div>
+</div>
     {% endfor %}
 
   {% else %}
     <br />
-    <font id="userMessageFont">
       You are not yet part of a group. 
       <br />
       <br />
       Please <a href="/accounts/new/">create</a> a new group or ask a friend to invite you.
-    </font>
   {% endif %}
 
 {% endblock %}
