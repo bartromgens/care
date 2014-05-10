@@ -37,10 +37,13 @@
         <ul class="nav navbar-nav">
           
           <li><a href="/">Balance</a></li>
+
           <li><a href="/transactions/new">Share</a></li>
-          <li><a href="/transactions">Transactions</a></li>
+
+          <li><a href="/transactionsreal/new"> Transfer &#8364</a></li>
+
           <li><a href="/accounts/my">Groups</a></li>
-          
+
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -49,6 +52,10 @@
               <li><a href="/invites/new">Invite</a></li>
             </ul>
           </li>
+
+          <li><a href="/transactions">Shared</a></li>
+          <li><a href="/transactionsreal">Transactions</a></li>
+          
           
           {% if hasInvites %}
           <li><a href="/invites/" style="color:orange"><i class="glyphicon glyphicon-envelope" style="color:orange"></i> ({{ nInvites }}) </a></li>
