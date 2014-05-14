@@ -3,14 +3,28 @@
 {% load bootstrap3 %}
 {% block content %}
 
-<center><h3>Invites</h3></center>
+
+<!-- navbar -->
+<div class="subnav subnav subnav-fixed-top">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li><a href="/invites/new"><b>{% bootstrap_icon "send" %}<font style="padding-left:0.5em;">Invite</font></b></a></li>
+    </ul>
+  </div>
+</div>
 
   {% if invitesReceived %}
   <div class="row">
     <div class="col-sm-4 col-sm-offset-2" align="center">
-      <center><h4>Received</h4></center>
+    
       <table class="table table-striped table-hover" style="width: 100%;">
         
+        <tr class="info">
+          <td colspan="3" align="center">
+          <h4>Invites received</h4>
+          </td>
+        </tr>
+    
         <tr>
           <th><b>By</b></th>
           <th><b>Invited to group</b></th>
@@ -66,16 +80,21 @@
 {% if invitesSent %}
   <div class="col-sm-4" align="center">  
   
-    <h4>Sent</h4>
     
     <table class="table table-striped table-hover" style="width: 95%;">
+
+      <tr class="info">
+        <td colspan="3" align="center">
+        <h4>Invites sent</h4>
+        </td>
+      </tr>
+        
     <tr>
-<!--       <th><b>Inviter</b></th> -->
       <th><b>To</b></th>
       <th><b>Group</b></th>
-<!--       <th><b>Date</b></th> -->
       <th><b>Status</b></th>
     </tr>
+    
     {% for invite in invitesSent %}
     <tr >
 
@@ -109,6 +128,25 @@
   	{% endfor %}
   	</table>
   </div>
+  
+  <div class="col-md-8 col-md-offset-2" align="center">
+    <hr>
+    <h5>Legend</h5>
+    <table class="table table-hover" style="width:100%;">
+      <tr>
+        <td class="info" align="center"> 
+          <font style="color:white">{% bootstrap_icon "ok-circle" %} </a> <br>  accept 
+        </td>
+        <td class="info" align="center"> 
+          <font style="color:white">{% bootstrap_icon "ban-circle" %} </a> <br>  reject 
+        </td>
+        <td align="center"> <font class="text-primary"><b>{% bootstrap_icon "ok-circle" %} <br> accepted </b></font> </td>
+        <td align="center"> <font class="text-warning"><b>{% bootstrap_icon "ban-circle" %} <br>  declined </b></font> </td>
+        <td align="center"> <font class="text-success"><b>{% bootstrap_icon "send" %} <br>  sent</b></font></td>
+      </tr>
+    </table>
+  </div>
+  
 </div>
   
   {% else %}

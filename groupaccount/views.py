@@ -26,6 +26,9 @@ class MyGroupAccountsView(BaseView):
   template_name = "groupaccount/myaccounts.html"
   context_object_name = "my groups"
 
+  def getActiveMenu(self):
+    return 'group'
+  
   def getTransactions(self, buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
     return transactions

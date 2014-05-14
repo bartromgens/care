@@ -43,6 +43,9 @@ class MyTransactionView(BaseView):
   template_name = "transaction/mytransactions.html"
   context_object_name = "my transactions"
   
+  def getActiveMenu(self):
+    return 'shares'
+  
   def getBuyerTransactions(self, buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("date")
     for transaction in transactions:
@@ -144,6 +147,9 @@ class NewTransactionView(FormView, BaseView):
   template_name = 'transaction/new.html'
   form_class = NewTransactionForm
   success_url = '/transaction/new/success/'
+  
+  def getActiveMenu(self):
+    return 'shares'
    
   def getGroupAccountId(self):
     if 'groupAccountId' in self.kwargs:

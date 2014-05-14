@@ -22,6 +22,9 @@ class BaseView(TemplateView):
   template_name = "base/base.html"
   context_object_name = "base"
   
+  def getActiveMenu(self):
+    return ''
+  
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(BaseView, self).get_context_data(**kwargs)
@@ -32,6 +35,7 @@ class BaseView(TemplateView):
       context['hasInvites'] = invites.exists()
       context['nInvites'] = invites.count()
       context['displayname'] = userProfile.displayname
+      context['activeMenu'] = self.getActiveMenu()
       context['isLoggedin'] = True
     return context
 
@@ -64,6 +68,9 @@ class HomeView(BaseView):
   template_name = "base/index.html"
   context_object_name = "homepage"
 
+  def getActiveMenu(self):
+    return 'account'
+  
   def getTransactions(self, buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
     return transactions
@@ -126,6 +133,9 @@ class HomeView(BaseView):
 class AboutView(BaseView):
   template_name = "base/about.html"
   context_object_name = "about"
+  
+  def getActiveMenu(self):
+    return 'about'
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context

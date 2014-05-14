@@ -3,29 +3,33 @@
 {% load bootstrap3 %}
 {% block content %}
 
-<center><h3>Groups</h3></center>
+<!-- navbar -->
+<div class="subnav navbar-default-top">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li><a href="/accounts/new"><b>{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New group</font></b></a></li>
+      <li><a href="/invites/new"><b>{% bootstrap_icon "send" %}<font style="padding-left:0.5em;">Invite</font></b></a></li>
+      <li><a href="/invites/"><b>{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">My invites</font></b></a></li>
+    </ul>
+  </div>
+</div>
+
+<center><h4>Group balances</h4></center>
 
 {% if groups %}
-{% for group in groups %}
-    
-
 <div class="row">
-  <div class="col-md-4 col-md-offset-4" align="center">
-    
-    <h4>{{ group.name }}</h4>
-    
-    <table class="table table-striped table-hover table-bordered">
-      
-      <tr>
-  	  	<th><b>Member</b></th>
-  	    <th >
-          {% if group.balanceVerified %}
-          <div >Balance </div>
-          {% else %}
-          <div >Balance <font style="color:red" > {% bootstrap_icon "warning-sign" %}</font></div>
-          {% endif %}
-        </th>
-      </tr>
+<div class="col-xs-8 col-xs-offset-2" align="center">
+
+{% for group in groups %}
+ 
+{% if forloop.first or forloop.counter0|divisibleby:2 %}
+    <div class="row">
+{% endif %}
+  <div class="col-sm-6" align="center">
+    <div class="panel panel-info">
+      <div class="panel-heading"><b>{{ group.name }}</b></div>
+      <div class="panel-body">
+    <table class="table table-striped table-hover">
       
   		{% for member in group.userProfiles %}  
       <tr>
@@ -61,8 +65,15 @@
       
     </table>
   </div>
+  </div>
+  </div>
+{% if forloop.last or forloop.counter|divisibleby:2 %}
+    </div>
+{% endif %}
+
+{% endfor %}
 </div>
-    {% endfor %}
+</div>
 
   {% else %}
     <br />

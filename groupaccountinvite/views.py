@@ -18,6 +18,9 @@ class MyGroupAccountInvitesView(BaseView):
   template_name = "groupaccountinvite/overview.html"
   context_object_name = "my invites"
 
+  def getActiveMenu(self):
+    return 'invites'
+  
   def getSentInvites(self, user):
     logger.debug('user.id: ' + str(user.id))
     userProfile = UserProfile.objects.get(user=user)
@@ -114,6 +117,9 @@ class NewInviteView(FormView, BaseView):
   template_name = 'groupaccountinvite/new.html'
   form_class = NewInviteForm
   success_url = '/invites/'
+  
+  def getActiveMenu(self):
+    return 'invites'
     
   def get_form(self, form_class):
     return NewInviteForm(self.request.user, **self.get_form_kwargs())   
@@ -137,46 +143,3 @@ class NewInviteView(FormView, BaseView):
     context['form'] = form
     return context
   
-  
-def newInvite(request):
-  def errorHandle(error):
-    kwargs = {'user' : UserProfile.objects.get(user=request.user)}
-    form = NewInviteForm(**kwargs)
-    context = RequestContext(request)
-    context['error'] = error
-    context['form'] = form
-    if request.user.is_authenticated():
-      context['user'] = request.user
-      context['isLoggedin'] = True
-      context['groupssection'] = True
-    return render_to_response('groupaccountinvite/new.html', context)
-          
-  if request.method == 'POST': # If the form has been submitted...
-    kwargs = {'user' : UserProfile.objects.get(user=request.user)}
-    form = NewInviteForm(request.POST, **kwargs) # A form bound to the POST data
-    
-    if form.is_valid(): # All validation rules pass
-      form.save()
-      context = RequestContext(request)
-
-      if request.user.is_authenticated():
-        context['user'] = request.user
-        context['isLoggedin'] = True
-        context['groupssection'] = True
-
-      return render_to_response('groupaccountinvite/newsuccess.html', context)
-    else:
-      error = u'form is invalid'
-      return errorHandle(error)
-  
-  else:
-    kwargs = {'user' : UserProfile.objects.get(user=request.user)}
-    form = NewInviteForm(**kwargs) # An unbound form
-    context = RequestContext(request)
-    context['form'] = form
-    context['groupssection'] = True
-    
-    if request.user.is_authenticated():
-      context['user'] = request.user
-      context['isLoggedin'] = True
-    return render_to_response('groupaccountinvite/new.html', context)

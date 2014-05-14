@@ -9,17 +9,17 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
   url(r'^$', login_required(HomeView.as_view())),
-  url(r'^accounts/new/$', 'base.views.newGroupAccount'),
   url(r'^help/$', HelpView.as_view()),
   url(r'^about/$', AboutView.as_view()),
   
   url(r'^transactions/', include('transaction.urls')),
   url(r'^transactionsreal/', include('transactionreal.urls')),
-  url(r'^accounts/', include('groupaccount.urls')),
   url(r'^invites/', include('groupaccountinvite.urls')),
   url(r'^userprofile/', include('userprofile.urls')),
   url(r'^admin/', include(admin.site.urls)),
   
+  url(r'^accounts/', include('groupaccount.urls')),
+  url(r'^accounts/new/$', 'base.views.newGroupAccount'),
   url(r'^accounts/register/', NewRegistrationView.as_view()),
   url(r'^accounts/', include('registration.backends.simple.urls')),
 )

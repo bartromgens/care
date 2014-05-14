@@ -36,30 +36,49 @@
       <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
           
-          <li><a href="/">Balance</a></li>
-
-          <li><a href="/transactions/new">Share</a></li>
-
-          <li><a href="/transactionsreal/new"> Transfer &#8364</a></li>
-
-          <li><a href="/accounts/my">Groups</a></li>
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="/"></a></li>
-              <li><a href="/invites/">Invites</a></li>
-              <li><a href="/invites/new">Invite</a></li>
-            </ul>
+          {% if activeMenu == "account" %} 
+          <li class="active">
+          {% else %}
+          <li>
+          {% endif %}
+            <a href="/">Account</a>
+          </li>
+          
+          {% if activeMenu == "group" %} 
+          <li class="active">
+          {% else %}
+          <li>
+          {% endif %}
+            <a href="/accounts/my"> Groups </a>
           </li>
 
-          <li><a href="/transactions">Shared</a></li>
-          <li><a href="/transactionsreal">Transactions</a></li>
-          
-          
-          {% if hasInvites %}
-          <li><a href="/invites/" style="color:orange"><i class="glyphicon glyphicon-envelope" style="color:orange"></i> ({{ nInvites }}) </a></li>
+          {% if activeMenu == "shares" %}
+          <li class="active">
+          {% else %}
+          <li>
           {% endif %}
+            <a href="/transactions">Shares</a>
+          </li>
+
+          {% if activeMenu == "transactions" %}
+          <li class="active">
+          {% else %}
+          <li>
+          {% endif %}
+            <a href="/transactionsreal">Transactions</a>
+          </li>
+         
+          {% if activeMenu == "invites" %}
+          <li class="active">
+          {% else %}
+          <li>
+          {% endif %}
+          {% if hasInvites %}
+            <a href="/invites/" ><i class="glyphicon glyphicon-envelope" style="color:orange"></i> ({{ nInvites }}) </a>
+          {% else %}
+            <a href="/invites/" ><i class="glyphicon glyphicon-envelope"></i> </a>
+          {% endif %}
+          </li>
           
         </ul>
 
