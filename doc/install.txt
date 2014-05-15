@@ -1,0 +1,13 @@
+Dependencies:
+python3
+django
+south
+django-registration
+django-bootstrap3
+
+Ubuntu using pip3:
+sudo apt-get install python3-pip
+sudo pip3 install django
+sudo pip3 install south
+sudo pip3 install django-registration
+sudo pip3 install django-bootstrap3
