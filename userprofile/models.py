@@ -2,7 +2,7 @@ from groupaccount.models import GroupAccount
 
 from django.db import models
 from django.contrib.auth.models import User
-from registration.signals import user_registered  
+from registration.signals import user_registered 
 
 import logging
 logger = logging.getLogger(__name__)
