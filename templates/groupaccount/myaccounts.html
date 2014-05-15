@@ -14,8 +14,6 @@
   </div>
 </div>
 
-<center><h4>Group balances</h4></center>
-
 {% if groups %}
 <div class="row">
 <div class="col-xs-8 col-xs-offset-2" align="center">
@@ -26,7 +24,7 @@
     <div class="row">
 {% endif %}
   <div class="col-sm-6" align="center">
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
       <div class="panel-heading"><b>{{ group.name }}</b></div>
       <div class="panel-body">
     <table class="table table-striped table-hover">
@@ -34,7 +32,7 @@
   		{% for member in group.userProfiles %}  
       <tr>
   		  {% ifequal member.user user %}
-		      <td><b>{{ member.displayname }}</td>
+		      <td class="text-info"><b>{{ member.displayname }}</td>
   		  {% else %}
 		      <td> {{ member.displayname }}</b></td>
   		  {% endifequal %}
