@@ -8,16 +8,89 @@
   <div class="container">
     <div class="subnav">
       <ul class="nav navbar-nav">
-        <li><a href="/transactions/new"><b>{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New share</font></b></a></li>
+        <li><a href="/transactions/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New share</font></b></a></li>
       </ul>
     </div>
   </div>
 </div>
 
+{% if transactionsAll %}
 <!--   <center><h5>Shares</h5></center> -->
-  
-  {% if transactionsAll %}
-  
+<div class="panel-group" id="accordion">
+{% for transaction in transactionsAll %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">
+            <h5> 
+            <table> 
+              <tr> 
+                <td style="width:10em;" align="right"> 
+                {% if transaction.amountPerPersonFloat <= 0.0 %}
+                  <b>&#8364<font style="color:red" >{{ transaction.amountPerPerson }}</font></b>
+                {% else %}
+                  <b>&#8364<font style="color:green" >{{ transaction.amountPerPerson }}</font></b>
+                {% endif %}
+                </td>
+                
+                <td style="padding-left:2em; width:20em;">  <b>{{ transaction.what }}</b></td>   
+
+                <td style="padding-left:2em;">  {{ transaction.buyer }}</td>   
+                
+              </tr>
+            </table>
+            </h5>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="row">
+          
+          <div class="col-sm-2" align="center">
+            {% ifequal transaction.buyer.displayname displayname %}
+            <font class="text-info">{{ transaction.buyer }}</font>
+            {% else %}
+            {{ transaction.buyer }}
+            {% endifequal %}
+          </div>
+
+          <div class="col-sm-1" align="center">
+            &#8364 {{ transaction.amount }}
+          </div>
+
+          <div class="col-sm-2" align="center">
+            {{ transaction.what }}
+          </div>
+          
+          <div class="col-sm-2" align="center">
+           &#8364 {{ transaction.amountPerPerson }}
+          </div>
+          
+          <div class="col-sm-2" align="center" style="padding-left:2em;">
+          {% for consumer in transaction.consumers.all %}
+            {% ifequal consumer.displayname displayname %}
+            <font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          <br>
+          </div>
+         
+          <div class="col-sm-2" align="center">
+            {{ transaction.groupAccount }}
+          </div>
+
+          <div class="col-sm-1" align="center">
+          {{ transaction.date|date:"d M" }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+ 
+
+{% if tableView %}  
 <div class="row">
   <div class="col-md-10 col-md-offset-1" align="center">
     <table class="table table-striped table-hover table-condensed">
@@ -34,9 +107,9 @@
     
     {% if transaction.amountPerPersonFloat <= 0.0 %}
      	<td  style="color:red" align="right">
-      {% else %}
+    {% else %}
      	<td  style="color:green" align="right">
-	    {% endif %}
+	  {% endif %}
         
   	    <b>{{ transaction.amountPerPerson }}</b>
       </td>
@@ -70,6 +143,7 @@
   	</table>
   </div>
 </div>
+{% endif %}
 
   {% else %}
     <center>

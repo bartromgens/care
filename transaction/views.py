@@ -107,24 +107,24 @@ class MyTransactionView(BaseView):
     return len(transactions)
   
   def get_context_data(self, **kwargs):
+    logger.debug("start")
     # Call the base implementation first to get a context
     context = super(MyTransactionView, self).get_context_data(**kwargs)
     userProfile = UserProfile.objects.get(user=self.request.user)
     buyerTransactions = self.getBuyerTransactions(userProfile.id)
     consumerTransactions = self.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
-    for transaction in transactionsAll:
-      logger.debug(transaction.date)
-    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
-    sentTransactions = self.getSentTransactionsReal(userProfile.id)
-    receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
-    transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
-    transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
+    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)[:10]
     
-    context['buyer_transactions'] = self.getBuyerTransactions(userProfile.id)
-    context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
-    context['transactionsRealAll'] = transactionsRealAllSorted
+#     sentTransactions = self.getSentTransactionsReal(userProfile.id)
+#     receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
+#     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
+#     transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
+    
+#     context['buyer_transactions'] = self.getBuyerTransactions(userProfile.id)
+#     context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
+#     context['transactionsRealAll'] = transactionsRealAllSorted
     context['transactionsAll'] = transactionsAllSorted
     return context# Create your views here.
 

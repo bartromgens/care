@@ -8,7 +8,7 @@
 <div class="subnav subnav subnav-fixed-top">
   <div class="container">
     <ul class="nav navbar-nav">
-      <li><a href="/invites/new"><b>{% bootstrap_icon "send" %}<font style="padding-left:0.5em;">Invite</font></b></a></li>
+      <li><a href="/invites/new"><b class="text-info">{% bootstrap_icon "send" %}<font style="padding-left:0.5em;">Invite</font></b></a></li>
     </ul>
   </div>
 </div>
@@ -16,58 +16,56 @@
   {% if invitesReceived %}
   <div class="row">
     <div class="col-sm-4 col-sm-offset-2" align="center">
+      <div class="panel panel-primary">
+        <div class="panel-heading"><b>Invites received</b></div>
+        <div class="panel-body">
+          <table class="table table-striped table-hover" style="width: 100%;">
+        
+            <tr>
+              <th><b>By</b></th>
+              <th><b>Invited to group</b></th>
+    <!--           <th><b>Invitee</b></th> -->
+    <!--           <th><b>Date</b></th> -->
+              <th><b>Accept</b></th>
+            </tr>
+            
+            {% for invite in invitesReceived %}
+            {% if invite.isAccepted %}
+            <tr >
+            {% elif invite.isDeclined %}
+            <tr >
+            {% else %}
+            <tr class="info">
+            {% endif %}
+              <td>{{ invite.inviter }}</td>
+      
+              <td>{{ invite.groupAccount }}</td>
     
-      <table class="table table-striped table-hover" style="width: 100%;">
-        
-        <tr class="info">
-          <td colspan="3" align="center">
-          <h4>Invites received</h4>
-          </td>
-        </tr>
-    
-        <tr>
-          <th><b>By</b></th>
-          <th><b>Invited to group</b></th>
-<!--           <th><b>Invitee</b></th> -->
-<!--           <th><b>Date</b></th> -->
-          <th><b>Accept</b></th>
-        </tr>
-        
-        {% for invite in invitesReceived %}
-        {% if invite.isAccepted %}
-        <tr >
-        {% elif invite.isDeclined %}
-        <tr >
-        {% else %}
-        <tr class="info">
-        {% endif %}
-          <td>{{ invite.inviter }}</td>
-  
-          <td>{{ invite.groupAccount }}</td>
-
-<!--         <td>
-          {% ifequal invite.invitee.displayname displayname %}
-            <b>{{ invite.invitee }}</b></font>
-          {% else %}
-            {{ invite.invitee }}</font>
-          {% endifequal %}
-        </td> -->
-        
-<!--         <td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
-        
-        {% if invite.isAccepted %}
-          <td align="center"> <font class="text-primary"><b>{% bootstrap_icon "ok-circle" %}</b></font></td>
-        {% elif invite.isDeclined %}
-          <td align="center"> <font class="text-warning"><b>{% bootstrap_icon "ban-circle" %}</b></font> </td>
-        {% else %}
-          <td align="center"> 
-            <a href="/invites/accept/{{ invite.id }}" style="color:white">{% bootstrap_icon "ok-circle" %}</a> &nbsp;&nbsp;
-            <a href="/invites/decline/{{ invite.id }}" style="color:white">{% bootstrap_icon "ban-circle" %}</a>
-          </td>
-        {% endif %}
-        </tr>
-        {% endfor %}
-    </table>
+    <!--         <td>
+              {% ifequal invite.invitee.displayname displayname %}
+                <b>{{ invite.invitee }}</b></font>
+              {% else %}
+                {{ invite.invitee }}</font>
+              {% endifequal %}
+            </td> -->
+            
+    <!--         <td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
+            
+            {% if invite.isAccepted %}
+              <td align="center"> <font class="text-primary"><b>{% bootstrap_icon "ok-circle" %}</b></font></td>
+            {% elif invite.isDeclined %}
+              <td align="center"> <font class="text-warning"><b>{% bootstrap_icon "ban-circle" %}</b></font> </td>
+            {% else %}
+              <td align="center"> 
+                <a href="/invites/accept/{{ invite.id }}" style="color:white">{% bootstrap_icon "ok-circle" %}</a> &nbsp;&nbsp;
+                <a href="/invites/decline/{{ invite.id }}" style="color:white">{% bootstrap_icon "ban-circle" %}</a>
+              </td>
+            {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+    </div>
   </div>
 
   {% else %}
@@ -79,54 +77,53 @@
 
 {% if invitesSent %}
   <div class="col-sm-4" align="center">  
-  
+    <div class="panel panel-primary">
+      <div class="panel-heading"><b>Invites sent</b></div>
+      <div class="panel-body">
     
-    <table class="table table-striped table-hover" style="width: 95%;">
-
-      <tr class="info">
-        <td colspan="3" align="center">
-        <h4>Invites sent</h4>
-        </td>
-      </tr>
+        <table class="table table-striped table-hover" style="width: 95%;">
+            
+        <tr>
+          <th><b>To</b></th>
+          <th><b>Group</b></th>
+          <th><b>Status</b></th>
+        </tr>
         
-    <tr>
-      <th><b>To</b></th>
-      <th><b>Group</b></th>
-      <th><b>Status</b></th>
-    </tr>
+        {% for invite in invitesSent %}
+        <tr >
     
-    {% for invite in invitesSent %}
-    <tr >
-
-<!--   		<td>
-  		  {% ifequal invite.inviter.displayname displayname %}
-  		  	<b>{{ invite.inviter }}</b>
-  		  {% else %}
-  		  	{{ invite.inviter }}
-  		  {% endifequal %}
-  		</td> -->
-      
-  		<td>
-  		  {% ifequal invite.invitee.displayname displayname %}
-  		    <b>{{ invite.invitee }}</b></font>
-  		  {% else %}
-  		    {{ invite.invitee }}</font>
-  		  {% endifequal %}
-  		</td>
-
-  		<td>{{ invite.groupAccount }}</td>
-
-  <!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
-      {% if invite.isAccepted %}
-  		  <td align="center" class="text-primary"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
-  		{% elif not invite.isDeclined %}
-  		  <td align="center" ><font class="text-success"><b>{% bootstrap_icon "send" %}</b></font></td>
-  		{% else %}
-  		  <td align="center" class="text-warning"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
-      {% endif %}
-    </tr>
-  	{% endfor %}
-  	</table>
+    <!--   		<td>
+      		  {% ifequal invite.inviter.displayname displayname %}
+      		  	<b>{{ invite.inviter }}</b>
+      		  {% else %}
+      		  	{{ invite.inviter }}
+      		  {% endifequal %}
+      		</td> -->
+          
+      		<td>
+      		  {% ifequal invite.invitee.displayname displayname %}
+      		    <b>{{ invite.invitee }}</b></font>
+      		  {% else %}
+      		    {{ invite.invitee }}</font>
+      		  {% endifequal %}
+      		</td>
+    
+      		<td>{{ invite.groupAccount }}</td>
+    
+      <!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
+          {% if invite.isAccepted %}
+      		  <td align="center" class="text-primary"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
+      		{% elif not invite.isDeclined %}
+      		  <td align="center" ><font class="text-success"><b>{% bootstrap_icon "send" %}</b></font></td>
+      		{% else %}
+      		  <td align="center" class="text-warning"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
+          {% endif %}
+        </tr>
+      	{% endfor %}
+      	</table>
+        
+      </div>
+    </div>
   </div>
   
   <div class="col-md-8 col-md-offset-2" align="center">
