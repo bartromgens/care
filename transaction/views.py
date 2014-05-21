@@ -3,15 +3,9 @@ from transaction.models import Transaction
 from transactionreal.models import TransactionReal
 from transaction.forms import NewTransactionForm, EditTransactionForm
 from userprofile.models import UserProfile
-from groupaccount.models import GroupAccount
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-from django.views.generic.edit import UpdateView
-from django import forms
-from django.forms.models import modelform_factory
 
 from itertools import chain
 
