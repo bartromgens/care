@@ -1,7 +1,7 @@
 from base.views import BaseView
 from transaction.models import Transaction
 from transactionreal.models import TransactionReal
-from transaction.forms import NewTransactionForm
+from transaction.forms import NewTransactionForm, EditTransactionForm
 from userprofile.models import UserProfile
 from groupaccount.models import GroupAccount
 
@@ -9,25 +9,16 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
+from django.views.generic.edit import UpdateView
+from django import forms
+from django.forms.models import modelform_factory
 
 from itertools import chain
 
 import logging
 logger = logging.getLogger(__name__)
 
-#class BuyerDetailView(BaseView):
-#
-#  template_name = "transaction/about.html"
-#  context_object_name = "transaction"
-#  
-#  def get_context_data(self, **kwargs):
-#    # Call the base implementation first to get a context
-#    context = super(BuyerDetailView, self).get_context_data(**kwargs)
-#    # Add in a QuerySet of all the books
-#    transactions = Transaction.objects.filter(buyer__id=kwargs['buyerId'])
-#    context['transaction_list'] = transactions
-#    return context
-    
+  
 class TransactionView(BaseView):
   template_name = "transaction/index.html"
   context_object_name = "transaction"
@@ -183,6 +174,43 @@ class NewTransactionView(FormView, BaseView):
     context = super(NewTransactionView, self).get_context_data(**kwargs)
     
     form = NewTransactionForm(self.getGroupAccountId(), self.request.user)
+    context['form'] = form
+    
+    return context
+
+
+class EditTransactionView(FormView, BaseView):
+  template_name = 'transaction/edit.html'
+  form_class = EditTransactionForm
+  success_url = '/transactions/'
+  
+  def getActiveMenu(self):
+    return 'shares'
+   
+  def get_form(self, form_class):
+    pk = self.kwargs['pk']
+    transaction = Transaction.objects.get(pk=pk)
+    return EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())   
+
+  def get_initial(self):
+    return { 'consumers': UserProfile.objects.filter(groupAccounts=2)}
+
+  def form_valid(self, form):
+    logger.debug('EditTransactionView::form_valid()')
+    super(EditTransactionView, self).form_valid(form)
+    form.save()
+    return HttpResponseRedirect( '/transactions/' )
+  
+  def form_invalid(self, form):
+    logger.debug('EditTransactionView::form_invalid()')
+    super(EditTransactionView, self).form_invalid(form)
+    return HttpResponseRedirect( '/transactions/edit/' + str(self.kwargs['pk']))
+  
+  def get_context_data(self, **kwargs):
+    logger.debug('EditTransactionView::get_context_data()')
+    context = super(EditTransactionView, self).get_context_data(**kwargs)
+    
+    form = EditTransactionForm(self.kwargs['pk'], self.request.user)
     context['form'] = form
     
     return context
