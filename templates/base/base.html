@@ -44,14 +44,6 @@
             <a href="/">Account</a>
           </li>
           
-          {% if activeMenu == "group" %} 
-          <li class="active">
-          {% else %}
-          <li>
-          {% endif %}
-            <a href="/accounts/my"> Groups </a>
-          </li>
-
           {% if activeMenu == "shares" %}
           <li class="active">
           {% else %}
@@ -66,6 +58,14 @@
           <li>
           {% endif %}
             <a href="/transactionsreal">Transactions</a>
+          </li>
+          
+          {% if activeMenu == "group" %} 
+          <li class="active">
+          {% else %}
+          <li>
+          {% endif %}
+            <a href="/accounts/my"> Groups </a>
           </li>
          
           {% if activeMenu == "invites" %}
