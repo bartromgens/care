@@ -111,7 +111,9 @@ class MyTransactionView(BaseView):
 #     context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
 #     context['transactionsRealAll'] = transactionsRealAllSorted
     context['transactionsAll'] = transactionsAllSorted
-    return context# Create your views here.
+    if int(context['tableView']) == 0:
+      context['tableView'] = False
+    return context
 
 
 class SelectGroupTransactionView(BaseView):
