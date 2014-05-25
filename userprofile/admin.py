@@ -8,6 +8,8 @@ class UserProfileAdmin(admin.ModelAdmin):
     (None, {'fields': ['displayname']}),
     (None, {'fields': ['groupAccounts']}),
   ]
+  
+  list_display = ('user', 'displayname',)
     
 #class AccountAdmin(admin.ModelAdmin):
     #fieldsets = [
