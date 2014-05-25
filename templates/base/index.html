@@ -13,29 +13,63 @@
     </ul>
   </div>
 </div>
-
-<div class="container" >   
-  <div class="row"> 
-    <div class="col-sm-4 col-sm-offset-4" align="center" >
-      <h4>Balance</h4>
-      {% if myTotalBalanceFloat < 0.0 %} 
-      <font style="color:red">
-      {% else %}
-      <font style="color:green">
-      {% endif %}
-      <h3><b>&#8364 {{ myTotalBalance }}</b> </h3>
-      </font>
-    </div>
+  
+<div class="row"> 
+  <div class="col-sm-4 col-sm-offset-4" align="center" >
+    <h4>Balance</h4>
+    {% if myTotalBalanceFloat < 0.0 %} 
+    <font style="color:red">
+    {% else %}
+    <font style="color:green">
+    {% endif %}
+    <h3><b>&#8364 {{ myTotalBalance }}</b> </h3>
+    </font>
   </div>
 </div>
 
 <hr>
 
-<div class="row">  
-  <div class="col-md-4 col-sm-offset-4" align="center">
+<div class="container" >  
+  <div class="row">
+    <div class="col-sm-4" align="center">
+    
+      <div class="panel panel-primary">
+        <div class="panel-heading"><b>Shares</b></div>
+          <div class="panel-body">
+          <table class="table table-striped table-hover">
+    
+          {% for transaction in transactionsAll %}
+            <tr>
+              <td style="width:8em;">&#8364
+              {% if transaction.amountPerPersonFloat <= 0.0 %}
+              <font class="text-warning">
+              {% else %}
+              <font class="text-info">
+              {% endif %}
+                <b>{{ transaction.amountPerPerson }}</b>
+              </td>
+              
+              <td > {{ transaction.what }}</td> 
+              <td>
+                {% ifequal transaction.buyer.displayname displayname %}
+                  <b>{{ transaction.buyer }}</b>
+                {% else %}
+                  {{ transaction.buyer }}
+                {% endifequal %}
+              </td>
+      
+            </tr>
+          {% endfor %}
+          
+          </table>
+        </div>
+      </div>
+    </div>
   
-    <div class="panel panel-primary">
-      <div class="panel-heading"><b>Per group</b></div>
+    <div class="col-sm-4" align="center">
+  
+      <div class="panel panel-primary">
+        <div class="panel-heading"><b>Per group</b></div>
         <div class="panel-body">
           
           <table class="table table-striped table-hover">
@@ -59,107 +93,56 @@
         </div>
       </div>
     </div>
-  
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-5 col-sm-offset-1" align="center">
-  
-    {% if transactionsAll %}
-    <div class="panel panel-primary">
-      <div class="panel-heading"><b>Shares</b></div>
-        <div class="panel-body">
-        <table class="table table-striped table-hover">
-  
-        {% for transaction in transactionsAll %}
-          <tr>
-            <td style="width:8em;">&#8364
-            {% if transaction.amountPerPersonFloat <= 0.0 %}
-            <font class="text-warning">
-            {% else %}
-            <font class="text-info">
-            {% endif %}
-              <b>{{ transaction.amountPerPerson }}</b>
-            </td>
-            
-            <td > {{ transaction.what }}</td> 
-            <td>
-              {% ifequal transaction.buyer.displayname displayname %}
-                <b>{{ transaction.buyer }}</b>
-              {% else %}
-                {{ transaction.buyer }}
-              {% endifequal %}
-            </td>
     
-          </tr>
-        {% endfor %}
+    
+    <div div class="col-md-4" align="center">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading"><b>Transactions</b></div>
+        <div class="panel-body">
+          <table class="table table-striped table-hover" style="width: 100%;">
+    
+          {% for transaction in transactionsRealAll %}      
         
-        </table>
-      </div>
-    </div>
-  </div>
-  
-    {% else %}
-      <center>
-        No virtual transactions available.
-      </center>
-    {% endif %}
-
-
-  <div div class="col-sm-5" align="center">
-  
-    {% if transactionsRealAll %}
-    <div class="panel panel-primary">
-      <div class="panel-heading"><b>Transactions</b></div>
-      <div class="panel-body">
-        <table class="table table-striped table-hover" style="width: 100%;">
-  
-        {% for transaction in transactionsRealAll %}      
-      
-          <tr>
-            
-            <td style="width:8em;">&#8364
-            {% if transaction.amountPerPersonFloat <= 0.0 %}
-            <font class="text-warning">
-            {% else %}
-            <font class="text-info">
-            {% endif %}
-            <b>{{ transaction.amountPerPerson }}</b>
-            </td>
-            
-            <td>
-            {% ifequal transaction.sender.displayname displayname %}
-              <b>{{ transaction.sender }}</b>
-            {% else %}
-              {{ transaction.sender }}
-            {% endifequal %}
-            </td>
-            
-            <td>
-            {% bootstrap_icon "arrow-right" %}
-            </td>
-            
-            <td>
-              {% ifequal transaction.receiver.displayname displayname %}
-                <b>{{ transaction.receiver }}</b>
+            <tr>
+              
+              <td style="width:8em;">&#8364
+              {% if transaction.amountPerPersonFloat <= 0.0 %}
+              <font class="text-warning">
               {% else %}
-                {{ transaction.receiver }}
+              <font class="text-info">
+              {% endif %}
+              <b>{{ transaction.amountPerPerson }}</b>
+              </td>
+              
+              <td>
+              {% ifequal transaction.sender.displayname displayname %}
+                <b>{{ transaction.sender }}</b>
+              {% else %}
+                {{ transaction.sender }}
               {% endifequal %}
-            </td>
+              </td>
+              
+              <td>
+              {% bootstrap_icon "arrow-right" %}
+              </td>
+              
+              <td>
+                {% ifequal transaction.receiver.displayname displayname %}
+                  <b>{{ transaction.receiver }}</b>
+                {% else %}
+                  {{ transaction.receiver }}
+                {% endifequal %}
+              </td>
+            
+            </tr>
+          {% endfor %}
           
-          </tr>
-        {% endfor %}
-        
-        </table>
+          </table>
+        </div>
       </div>
     </div>
+    
   </div>
-  
-  {% else %}
-    <h4>No real transactions available.</h4>
-  {% endif %}
-  
 </div>
-
 {% endblock %}
