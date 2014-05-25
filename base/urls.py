@@ -19,7 +19,6 @@ urlpatterns = patterns('',
   url(r'^admin/', include(admin.site.urls)),
   
   url(r'^accounts/', include('groupaccount.urls')),
-  url(r'^accounts/new/$', 'base.views.newGroupAccount'),
+  url(r'^accounts/', include('registration.backends.simple.urls')), # the django-registration module
   url(r'^accounts/register/', NewRegistrationView.as_view()),
-  url(r'^accounts/', include('registration.backends.simple.urls')),
 )
