@@ -30,3 +30,7 @@ $ python3.3 manage.py migrate <appname>
 
 Run test server by running,
 $ python manage.py runserver <ip>:<port>
+
+Create a userprofile for the first root user,
+- go to admin /admin/
+- create new user profile and link it to the root user
