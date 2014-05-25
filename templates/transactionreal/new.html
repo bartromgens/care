@@ -4,6 +4,17 @@
 {% block title %}Care{% endblock %}
 
 {% block content %}
+
+{% if nogroup %}
+<div class="container">
+  <h5>
+    <br>
+    <p>You cannot create a transaction because you are not part of a group yet.</p> 
+    <br>
+      Ask a friend to invite you or <a href="/accounts/new">create</a>  a new group. </h5>
+</div>
+{% else %}
+
   <center><h3>Register real transaction</h3></center>
   <center><h4>(I gave someone some money)</h4></center>
 
@@ -28,7 +39,7 @@
 
       <div class="row">  
         <div class="col-xs-6">
-          {% bootstrap_field form.amount %}
+          {% bootstrap_field form.amount%}
         </div>
         <div class="col-xs-6">
           {% bootstrap_field form.receiver %}
@@ -55,5 +66,7 @@
   </div>
   
 </form>
+
+{% endif %}
 {% endblock %} 
  

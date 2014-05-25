@@ -19,7 +19,8 @@ class NewTransactionForm(forms.ModelForm):
     self.fields['what'].label = 'What'
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).groupAccounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
-    self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
+    if GroupAccount.objects.filter(id=groupAccountId).count():
+      self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
     self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput, initial=datetime.now)
   
   def setGroupAccount(self, groupAccount):

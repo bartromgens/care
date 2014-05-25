@@ -16,7 +16,8 @@ class NewRealTransactionForm(forms.ModelForm):
     self.fields['comment'] = forms.CharField(required=False)
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).groupAccounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
-    self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
+    if GroupAccount.objects.filter(id=groupAccountId).count():
+      self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
 #     self.fields['groupAccount'].widget.attrs['readonly'] = True
 
     self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput, initial=datetime.now)

@@ -98,8 +98,10 @@ class NewRealTransactionView(FormView, BaseView):
     else:
       logger.debug(self.request.user.id)
       user = UserProfile.objects.get(user=self.request.user)
-      user.groupAccounts.all()
-      return 1
+      if user.groupAccounts.count():
+        return user.groupAccounts.all()[0].id
+      else:
+        return 0
     
   def get_form(self, form_class):
     logger.debug('get_form()')
@@ -124,7 +126,10 @@ class NewRealTransactionView(FormView, BaseView):
     logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.getGroupAccountId()))
     context = super(NewRealTransactionView, self).get_context_data(**kwargs)
     
-    form = NewRealTransactionForm(self.getGroupAccountId(), self.request.user)
-    context['form'] = form
-    
+    if (self.getGroupAccountId()):
+      form = NewRealTransactionForm(self.getGroupAccountId(), self.request.user)
+      context['form'] = form
+      context['nogroup'] = False
+    else:
+      context['nogroup'] = True
     return context
