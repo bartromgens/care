@@ -7,5 +7,4 @@ urlpatterns = patterns('',
     url(r'^my', login_required(MyGroupAccountsView.as_view())),
     url(r'^new/$', login_required(NewGroupAccountView.as_view())),
     url(r'^newsucces/$', login_required(NewGroupAccountView.as_view())),
-#     url(r'^(?P<groupAccountId>\d+)/$', login_required(MyTransactionView.as_view())),
 )
