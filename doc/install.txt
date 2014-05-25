@@ -11,3 +11,22 @@ sudo pip3 install django
 sudo pip3 install south
 sudo pip3 install django-registration
 sudo pip3 install django-bootstrap3
+
+Create initial database migrations for the following apps:
+userprofile
+groupaccount
+transaction
+transactionreal
+groupaacountinvite
+
+$ python3.3 manage.py schemamigration <appname>
+
+then create the database, and create a root user (you have to create a userprofile for this first user later via the admin)
+$ python3.3 manage.py syncdb
+
+migrate all apps
+$ python3.3 manage.py migrate <appname>
+
+
+Run test server by running,
+$ python manage.py runserver <ip>:<port>
