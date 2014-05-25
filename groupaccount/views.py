@@ -4,6 +4,7 @@ from transaction.models import Transaction
 from transaction.views import MyTransactionView
 from userprofile.models import UserProfile
 
+from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.models import Group
 from django.views.generic.edit import FormView
 
@@ -73,27 +74,31 @@ class MyGroupAccountsView(BaseView):
 class NewGroupAccountView(FormView, BaseView):
   template_name = 'groupaccount/new.html'
   form_class = NewGroupAccountForm
-  success_url = '/groupaccount/new/success/'
+  success_url = '/account/new/success/'
   
   def getActiveMenu(self):
     return 'accounts'
-   
-  def getGroupAccountId(self):
-    if 'groupAccountId' in self.kwargs:
-      return self.kwargs['groupAccountId']
-    else:
-      logger.debug(self.request.user.id)
-      user = UserProfile.objects.get(user=self.request.user)
-      if user.groupAccounts.count():
-        return user.groupAccounts.all()[0].id
-      else:
-        return 0
+
+  def form_valid(self, form):
+    context = super(NewGroupAccountView, self).form_valid(form)
+    groupAccount = form.save()
+    userProfile = UserProfile.objects.get(user=self.request.user)
+    userProfile.groupAccounts.add(groupAccount)
+    userProfile.save()
+    
+    return HttpResponseRedirect('/accounts/new/success/')
   
   def get_context_data(self, **kwargs):
-    logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.getGroupAccountId()))
     context = super(NewGroupAccountView, self).get_context_data(**kwargs)
     
     form = NewGroupAccountForm()
     context['form'] = form
     
     return context
+
+
+class SucessNewGroupAccountView(BaseView):
+  template_name = 'groupaccount/newsuccess.html'
+  
+  def getActiveMenu(self):
+    return 'accounts'
