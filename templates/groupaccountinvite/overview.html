@@ -13,14 +13,21 @@
   </div>
 </div>
 
-  {% if invitesReceived %}
   <div class="row">
     <div class="col-sm-4 col-sm-offset-2" align="center">
       <div class="panel panel-primary">
         <div class="panel-heading"><b>Invites received</b></div>
         <div class="panel-body">
           <table class="table table-striped table-hover" style="width: 100%;">
-        
+            {% if not invitesReceived %}
+              <tr class="container">
+                <h5>
+                  <p>You have not been invited to a group yet.</p> 
+                </h5>
+              </tr>  
+            
+            {% else %}
+            
             <tr>
               <th><b>By</b></th>
               <th><b>Invited to group</b></th>
@@ -63,67 +70,70 @@
             {% endif %}
             </tr>
             {% endfor %}
+            
+            {% endif %}
         </table>
       </div>
     </div>
   </div>
 
-{% else %}
-<div class="container">
-  <h5>
-    <p>You have not been invited to a group yet.</p> 
-  </h5>
-</div>
-{% endif %}
 
 
-{% if invitesSent %}
+
   <div class="col-sm-4" align="center">  
     <div class="panel panel-primary">
       <div class="panel-heading"><b>Invites sent</b></div>
       <div class="panel-body">
     
         <table class="table table-striped table-hover" style="width: 95%;">
-            
+        {% if not invitesSent %}
         <tr>
-          <th><b>To</b></th>
-          <th><b>Group</b></th>
-          <th><b>Status</b></th>
+          <h5>
+            <p>You have not invited someone to a group yet.</p> 
+          </h5>
         </tr>
-        
-        {% for invite in invitesSent %}
-        <tr >
-    
-    <!--   		<td>
-      		  {% ifequal invite.inviter.displayname displayname %}
-      		  	<b>{{ invite.inviter }}</b>
-      		  {% else %}
-      		  	{{ invite.inviter }}
-      		  {% endifequal %}
-      		</td> -->
+        {% else %}
+            
+          <tr>
+            <th><b>To</b></th>
+            <th><b>Group</b></th>
+            <th><b>Status</b></th>
+          </tr>
           
-      		<td>
-      		  {% ifequal invite.invitee.displayname displayname %}
-      		    <b>{{ invite.invitee }}</b></font>
-      		  {% else %}
-      		    {{ invite.invitee }}</font>
-      		  {% endifequal %}
-      		</td>
-    
-      		<td>{{ invite.groupAccount }}</td>
-    
-      <!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
-          {% if invite.isAccepted %}
-      		  <td align="center" class="text-primary"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
-      		{% elif not invite.isDeclined %}
-      		  <td align="center" ><font class="text-success"><b>{% bootstrap_icon "send" %}</b></font></td>
-      		{% else %}
-      		  <td align="center" class="text-warning"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
-          {% endif %}
-        </tr>
+        {% for invite in invitesSent %}
+          <tr >
+      
+      <!--   		<td>
+        		  {% ifequal invite.inviter.displayname displayname %}
+        		  	<b>{{ invite.inviter }}</b>
+        		  {% else %}
+        		  	{{ invite.inviter }}
+        		  {% endifequal %}
+        		</td> -->
+            
+        		<td>
+        		  {% ifequal invite.invitee.displayname displayname %}
+        		    <b>{{ invite.invitee }}</b></font>
+        		  {% else %}
+        		    {{ invite.invitee }}</font>
+        		  {% endifequal %}
+        		</td>
+      
+        		<td>{{ invite.groupAccount }}</td>
+      
+        <!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
+            {% if invite.isAccepted %}
+        		  <td align="center" class="text-primary"> <b>{% bootstrap_icon "ok-circle" %}</b> </td>
+        		{% elif not invite.isDeclined %}
+        		  <td align="center" ><font class="text-success"><b>{% bootstrap_icon "send" %}</b></font></td>
+        		{% else %}
+        		  <td align="center" class="text-warning"> <b>{% bootstrap_icon "ban-circle" %}</b> </td>
+            {% endif %}
+          </tr>
       	{% endfor %}
-      	</table>
-        
+        {% endif %}
+      	
+        </table>
       </div>
     </div>
   </div>
@@ -143,17 +153,14 @@
         <td align="center"> <font class="text-warning"><b>{% bootstrap_icon "ban-circle" %} <br>  declined </b></font> </td>
         <td align="center"> <font class="text-success"><b>{% bootstrap_icon "send" %} <br>  sent</b></font></td>
       </tr>
+      
     </table>
   </div>
   
 </div>
   
-{% else %}
-<div class="container">
-  <h5>
-    <p>You have not invited someone to a group yet.</p> 
-  </h5>
-</div>
-{% endif %}
+
+
+
 
 {% endblock %}
