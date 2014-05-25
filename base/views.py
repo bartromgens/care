@@ -103,9 +103,10 @@ class HomeView(BaseView):
       groupAccount.myBalanceFloat = MyTransactionView.getBalance(transactionView, groupAccount.id, userProfile.id)
       groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
       myTotalBalanceFloat += groupAccount.myBalanceFloat
-      myTotalBalance = '%.2f' % myTotalBalanceFloat
-      context['myTotalBalance'] = myTotalBalance
-      context['myTotalBalanceFloat'] = myTotalBalanceFloat
+    
+    myTotalBalance = '%.2f' % myTotalBalanceFloat
+    context['myTotalBalance'] = myTotalBalance
+    context['myTotalBalanceFloat'] = myTotalBalanceFloat
 
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     logger.debug(friends)
