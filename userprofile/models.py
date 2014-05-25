@@ -19,8 +19,8 @@ user_registered.connect(createUserProfile)
 class UserProfile(models.Model):
   user = models.ForeignKey(User)
   displayname = models.CharField(max_length=200)
-  groupAccounts = models.ManyToManyField(GroupAccount)
+  groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
   #settings = models.ForeignKey(UserSettings)
   
   def __unicode__(self):
-    return self.displayname
+    return str(self.displayname)
