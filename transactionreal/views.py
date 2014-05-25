@@ -64,6 +64,9 @@ class MyRealTransactionView(BaseView):
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
     transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     
+    if int(context['tableView']) == 0:
+      context['tableView'] = False
+    
     context['transactionsRealAll'] = transactionsRealAllSorted
     return context# Create your views here.
 
