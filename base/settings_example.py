@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'south', # for database migration
     'bootstrap3', #bootstrap3 see: https://github.com/dyve/django-bootstrap3 
     'registration', #django-registration 
+    'base',
     'userprofile',
     'groupaccount',
     'transaction',
