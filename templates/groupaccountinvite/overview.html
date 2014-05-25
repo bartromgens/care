@@ -68,11 +68,13 @@
     </div>
   </div>
 
-  {% else %}
-    <center>
-    <h4>No invites received.</h4>
-    </center>
-  {% endif %}
+{% else %}
+<div class="container">
+  <h5>
+    <p>You have not been invited to a group yet.</p> 
+  </h5>
+</div>
+{% endif %}
 
 
 {% if invitesSent %}
@@ -146,10 +148,12 @@
   
 </div>
   
-  {% else %}
-    <center>
-    <h4>No invites sent.</h4>
-    </center>
-  {% endif %}
+{% else %}
+<div class="container">
+  <h5>
+    <p>You have not invited someone to a group yet.</p> 
+  </h5>
+</div>
+{% endif %}
 
 {% endblock %}

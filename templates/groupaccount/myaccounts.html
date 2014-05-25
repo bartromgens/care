@@ -73,12 +73,15 @@
 </div>
 </div>
 
-  {% else %}
-    <br />
-      You are not yet part of a group. 
-      <br />
-      <br />
-      Please <a href="/accounts/new/">create</a> a new group or ask a friend to invite you.
-  {% endif %}
+{% else %}
+<div class="container">
+  <h5>
+    <p>You are not part of a group yet.</p> 
+    <br>
+    Create a new group by clicking <a href="/accounts/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.1em;">New group</font></b></a> in the menu on the top of this page. 
+  </h5>
+</div>
+
+{% endif %}
 
 {% endblock %}

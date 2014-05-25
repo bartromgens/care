@@ -4,11 +4,22 @@
 {% block title %}Care{% endblock %}
 
 {% block content %}
-  <center><h3>Invite</h3s></center>
 
-  {% if error %}
-    {{ error }}
-  {% endif %}
+{% if nogroup %}
+<div class="container">
+  <h5>
+    <br>
+    <p>You cannot share anything yet because you are not part of a group.</p> 
+    <br>
+      Ask a friend to invite you or <a href="/accounts/new">create</a>  a new group. </h5>
+</div>
+{% else %}
+
+<center><h3>Invite</h3s></center>
+
+{% if error %}
+  {{ error }}
+{% endif %}
 
 <form action="" method="post">
 {% csrf_token %}
@@ -50,6 +61,7 @@
     </div>
   </div>
 </form>
+{% endif %}
 
 {% endblock %} 
  
