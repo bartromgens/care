@@ -19,93 +19,20 @@
   </div>
 </div>
 
+<div align="center"><h4>Shares</h4></div>
+
 {% if transactionsAll %}
 
 {% if not tableView %}  
-<!--   <center><h5>Shares</h5></center> -->
-<div class="panel-group" id="accordion">
-{% for transaction in transactionsAll %}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">
-            <h5> 
-            <table> 
-              <tr> 
-                <td style="padding-left:1em; width:6em;" align="left"> 
-                {% if transaction.amountPerPersonFloat <= 0.0 %}
-                  <b>&#8364<font class="text-warning">{{ transaction.amountPerPerson }}</font></b>
-                {% else %}
-                  <b>&#8364<font class="text-info">{{ transaction.amountPerPerson }}</font></b>
-                {% endif %}
-                </td>
-                
-                <td style="padding-left:2em; width:20em;">  <b>{{ transaction.what }}</b></td>   
 
-                <td style="padding-left:2em;">  {{ transaction.buyer }}</td>   
-                
-              </tr>
-            </table>
-            </h5>
-        </a>
-      </h4>
+  {% with "accordiontransactionreal" as parentId %}
+    <div class="panel-group" id="{{ parentId }}">
+    {% for transaction in transactionsAll %}
+      {% include "transaction/transactionpanel.html" %}
+    {% endfor %}
     </div>
-    <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
-      <div class="panel-body">
-        <div class="row">
-          
-          <div class="col-sm-2" align="center">
-            {% ifequal transaction.buyer.displayname displayname %}
-            <font class="text-info">{{ transaction.buyer }}</font>
-            {% else %}
-            {{ transaction.buyer }}
-            {% endifequal %}
-          </div>
+  {% endwith %}
 
-          <div class="col-sm-1" align="center">
-                {% if transaction.amount <= 0.0 %}
-                  <b>&#8364<font class="text-warning">{{ transaction.amount }}</font></b>
-                {% else %}
-                  <b>&#8364<font class="text-info">{{ transaction.amount }}</font></b>
-                {% endif %}
-          </div>
-
-          <div class="col-sm-2" align="center">
-            {{ transaction.what }}
-          </div>
-          
-          <div class="col-sm-1" align="center">
-                {% if transaction.amountPerPersonFloat <= 0.0 %}
-                  <b>&#8364<font class="text-warning" >{{ transaction.amountPerPerson }}</font></b>
-                {% else %}
-                  <b>&#8364<font class="text-info" >{{ transaction.amountPerPerson }}</font></b>
-                {% endif %}
-          </div>
-          
-          <div class="col-sm-2" align="center" style="padding-left:2em;">
-          {% for consumer in transaction.consumers.all %}
-            {% ifequal consumer.displayname displayname %}
-            <font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
-          {% endfor %}
-          <br>
-          </div>
-         
-          <div class="col-sm-2" align="center">
-            {{ transaction.groupAccount }}
-          </div>
-
-          <div class="col-sm-1" align="center">
-          {{ transaction.date|date:"d M" }}
-          </div>
-          <div class="col-sm-1" align="center">
-            <a href="/transactions/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-{% endfor %}
-</div>
 {% endif %}
  
 

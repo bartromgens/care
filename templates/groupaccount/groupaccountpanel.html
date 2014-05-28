@@ -1,0 +1,62 @@
+ {% load bootstrap3 %}
+  
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <a data-toggle="collapse" data-parent="#{{ parentId }}" href="#collapsegroup{{ forloop.counter }}">
+        <h5> 
+          <table> 
+            <tr> 
+            
+              <td style="padding-left:1em; width:10em;" align="left"> 
+                {{ group.name }}
+              </td>
+              
+              <td style="padding-left:1em; width:10em;" align="right">&#8364 {{ group.myBalance }}</td>   
+
+              <td style="padding-left:1em; width:6em;" align="right">        
+                {% if group.balanceVerified %}
+                <div><font class="text-success">{% bootstrap_icon "ok-circle" %}</font></div>
+                {% else %}
+                <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{group.groupBalanceFloat}}</b></div>
+                {% endif %}
+              </td>
+              
+            </tr>
+          </table>
+        </h5>
+      </a>
+    </div>
+  </div>
+  <div id="collapsegroup{{ forloop.counter }}" class="panel-collapse collapse">
+    <div class="panel-body">
+      <div class="row">
+      
+        <div class="col-sm-12" align="center">
+          <table> 
+            {% for member in group.userProfiles %}  
+            <tr>
+              {% ifequal member.user user %}
+                <td class="text-info" style="padding-left:1em; width:10em;"><b>{{ member.displayname }}</td>
+              {% else %}
+                <td style="padding-left:1em; width:10em;"> {{ member.displayname }}</b></td>
+              {% endifequal %}
+                <td>
+                {% if member.balanceFloat < -100.0 %}
+                  <div class="text-danger"> <b>{{member.balance}}</b> </div>
+                {% elif member.balanceFloat < 0.0 %}
+                  <div class="text-warning"> <b>{{member.balance}}</b> </div>
+                {% elif member.balanceFloat > 100.0 %}
+                  <div class="text-success"> <b>{{member.balance}}</b></div>
+                {% elif member.balanceFloat > -0.001 %}
+                  <div class="text-info"> <b>{{member.balance}}</b></div>
+                {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
