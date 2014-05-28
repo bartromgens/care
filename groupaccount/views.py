@@ -1,8 +1,9 @@
 from base.views import BaseView
 from groupaccount.forms import NewGroupAccountForm
+from groupaccount.models import addGroupAccountInfo
 from transaction.models import Transaction
-from transaction.views import MyTransactionView
 from userprofile.models import UserProfile
+from userprofile.models import getBalance
 
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.models import Group
@@ -45,26 +46,8 @@ class MyGroupAccountsView(BaseView):
     userProfile = UserProfile.objects.get(user=user)
     groupAccounts = userProfile.groupAccounts.all()
     
-    accountView = MyTransactionView()
-    
     for groupAccount in groupAccounts:
-      groupBalance = 0.0
-      groupAccount.userProfiles = UserProfile.objects.filter(groupAccounts=groupAccount)
-      for userProfile in groupAccount.userProfiles:
-        userProfile.balanceFloat = MyTransactionView.getBalance(accountView, groupAccount.id, userProfile.id)
-        userProfile.balance = '%.2f' % userProfile.balanceFloat
-        logger.debug(userProfile.balanceFloat)
-        groupBalance += userProfile.balanceFloat
-        logger.debug('groupBalance: ' + str(groupBalance))
-      groupAccount.groupBalance = '%.2f' % groupBalance
-      groupAccount.groupBalanceFloat = '%.3g' % groupBalance
-      groupAccount.balanceVerified = bool(abs(groupBalance) < 1e-9)
-      
-    
-    for groupAccount in groupAccounts:
-      logger.warning(groupAccount.name) 
-      for userProfile in groupAccount.userProfiles:
-        logger.warning(userProfile.displayname + ' ' + userProfile.balance)  
+      groupAccount = addGroupAccountInfo(groupAccount)
 
     context['groups'] = groupAccounts
     context['groupssection'] = True

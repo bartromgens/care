@@ -9,3 +9,18 @@ class GroupAccount(models.Model):
   
   def __unicode__(self):
     return self.name
+  
+
+def addGroupAccountInfo(groupAccount):
+  from userprofile.models import UserProfile, getBalance
+  
+  groupBalance = 0.0
+  groupAccount.userProfiles = UserProfile.objects.filter(groupAccounts=groupAccount)
+  for userProfile in groupAccount.userProfiles:
+    userProfile.balanceFloat = getBalance(groupAccount.id, userProfile.id)
+    userProfile.balance = '%.2f' % userProfile.balanceFloat
+    groupBalance += userProfile.balanceFloat
+  groupAccount.groupBalance = '%.2f' % groupBalance
+  groupAccount.groupBalanceFloat = '%.3g' % groupBalance
+  groupAccount.balanceVerified = bool(abs(groupBalance) < 1e-9)
+  return groupAccount

@@ -1,17 +1,13 @@
-from base.forms import LoginForm, UserCreateForm
+from groupaccount.models import addGroupAccountInfo
 from userprofile.models import UserProfile
 from transaction.models import Transaction
-from groupaccount.forms import NewGroupAccountForm
 from groupaccountinvite.models import GroupAccountInvite 
 
+from userprofile.models import getBalance
+
 from registration.backends.simple.views import RegistrationView
-from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.contrib import auth
 from django.views.generic.edit import UpdateView
-from django.views.generic.edit import FormView
 
 from itertools import chain
 import logging
@@ -76,7 +72,7 @@ class HomeView(BaseView):
     return transactions
   
   def get_context_data(self, **kwargs):
-    from groupaccount.views import MyTransactionView
+    from transaction.views import MyTransactionView
     # Call the base implementation first to get a context
     context = super(HomeView, self).get_context_data(**kwargs)
     user = self.request.user
@@ -100,7 +96,10 @@ class HomeView(BaseView):
     myTotalBalanceFloat = 0.0
     
     for groupAccount in groupAccounts:
-      groupAccount.myBalanceFloat = MyTransactionView.getBalance(transactionView, groupAccount.id, userProfile.id)
+      groupAccount = addGroupAccountInfo(groupAccount)
+    
+    for groupAccount in groupAccounts:
+      groupAccount.myBalanceFloat = getBalance(groupAccount.id, userProfile.id)
       groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
       myTotalBalanceFloat += groupAccount.myBalanceFloat
     
@@ -121,7 +120,7 @@ class HomeView(BaseView):
     invitesAll = set(invitesAll)
     invitesAllSorted = sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
     
-    slowLastN = 10
+    slowLastN = 5
     context['invitesAll'] = invitesAllSorted[0:slowLastN]
     context['friends'] = friends
     context['transactionsAll'] = transactionsAllSorted[0:slowLastN]

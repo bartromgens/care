@@ -35,24 +35,6 @@ class MyRealTransactionView(BaseView):
       transaction.amountPerPerson = '%.2f' % (1*transaction.amount)
       transaction.amountPerPersonFloat = (1*transaction.amount)
     return transactions
-    
-  def getBalance(self, groupAccountId, userProfileId):
-    senderRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, sender__id=userProfileId)
-    receiverRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, receiver__id=userProfileId)
-    
-    totalBought = 0.0
-    totalConsumed = 0.0
-    totalSent = 0.0
-    totalReceived = 0.0
-      
-    for transaction in senderRealTransactions:
-      totalSent += transaction.amount
-      
-    for transaction in receiverRealTransactions:
-      totalReceived += transaction.amount
-      
-    balance = (totalBought + totalSent - totalConsumed - totalReceived)
-    return balance
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context

@@ -58,34 +58,6 @@ class MyTransactionView(BaseView):
       transaction.amountPerPerson = '%.2f' % (1*transaction.amount)
       transaction.amountPerPersonFloat = (1*transaction.amount)
     return transactions
-    
-  def getBalance(self, groupAccountId, userProfileId):
-    buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)
-    consumerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, consumers__id=userProfileId)
-
-    senderRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, sender__id=userProfileId)
-    receiverRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, receiver__id=userProfileId)
-    
-    totalBought = 0.0
-    totalConsumed = 0.0
-    totalSent = 0.0
-    totalReceived = 0.0
-
-    for transaction in buyerTransactions:
-      totalBought += transaction.amount
-      
-    for transaction in consumerTransactions:
-      nConsumers = transaction.consumers.count()
-      totalConsumed += transaction.amount / nConsumers
-      
-    for transaction in senderRealTransactions:
-      totalSent += transaction.amount
-      
-    for transaction in receiverRealTransactions:
-      totalReceived += transaction.amount
-      
-    balance = (totalBought + totalSent - totalConsumed - totalReceived)
-    return balance
   
   def getNumberOfBuyerTransactions(self, buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
