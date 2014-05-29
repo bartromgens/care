@@ -1,8 +1,11 @@
 from userprofile.forms import EditUserProfileForm
 from userprofile.models import UserProfile
-from base.views import BaseUpdateView, BaseView
+from base.views import BaseView
 
-class EditUserProfileView(BaseUpdateView):
+from django.views.generic.edit import UpdateView
+
+
+class EditUserProfileView(BaseView, UpdateView):
   model = UserProfile
   form_class = EditUserProfileForm
   template_name = 'userprofile/edit.html'

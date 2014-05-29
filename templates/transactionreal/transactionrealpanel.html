@@ -4,10 +4,10 @@
   <div class="panel-heading">
     <div class="panel-title">
       <a data-toggle="collapse" data-parent="#{{ parentId }}" href="#collapsetransactionreal{{ forloop.counter }}">
-        <h5> 
+        <h5>
           <table> 
             <tr> 
-              <td style="padding-left:1em; width:6em;" align="left"> 
+              <td style="padding-left:0em; width:5em;" align="left"> 
               {% if transaction.amountPerPersonFloat <= 0.0 %}
                 <b>&#8364<font class="text-warning">{{ transaction.amountPerPerson }}</font></b>
               {% else %}
@@ -15,11 +15,11 @@
               {% endif %}
               </td>
               
-              <td style="padding-left:1em; width:10em;">{{ transaction.sender }}</td>   
+              <td style="padding-left:1em; width:8em;">{{ transaction.sender }}</td>   
 
-              <td style="padding-left:1em; width:4em;" align="center">{% bootstrap_icon "arrow-right" %}</td>   
+              <td style="padding-left:0em; width:0em;" align="center">{% bootstrap_icon "arrow-right" %}</td>   
 
-              <td style="padding-left:1em; width:10em;">  {{ transaction.receiver }}</td>   
+              <td style="padding-left:1em; width:8em;">  {{ transaction.receiver }}</td>   
               
             </tr>
           </table>
@@ -32,19 +32,19 @@
       <div class="row">
 
         <div class="col-sm-12" align="center">
-          {{ transaction.comment }}
+          <h5>Comment: {{ transaction.comment }}</h5>
         </div>
        
         <div class="col-sm-12" align="center">
-          {{ transaction.groupAccount }}
+          <h5> {{ transaction.groupAccount }}</h5>
         </div>
 
         <div class="col-sm-12" align="center">
-        {{ transaction.date|date:"d M" }}
+          <h5>{{ transaction.date|date:"d M Y" }}</h5> 
         </div>
         
         <div class="col-sm-12" align="center">
-          <a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a>
+          <h5><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></h5> 
         </div>
       </div>
     </div>

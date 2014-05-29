@@ -1,4 +1,4 @@
-from groupaccount.models import addGroupAccountInfo
+from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 from transaction.models import Transaction
 from groupaccountinvite.models import GroupAccountInvite 
@@ -7,7 +7,6 @@ from userprofile.models import getBalance
 
 from registration.backends.simple.views import RegistrationView
 from django.views.generic import TemplateView
-from django.views.generic.edit import UpdateView
 
 from itertools import chain
 import logging
@@ -32,24 +31,6 @@ class BaseView(TemplateView):
       context['nInvites'] = invites.count()
       context['displayname'] = userProfile.displayname
       context['activeMenu'] = self.getActiveMenu()
-      context['isLoggedin'] = True
-    return context
-
-
-class BaseUpdateView(UpdateView):
-  template_name = "base/base.html"
-  context_object_name = "base"
-  
-  def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-    context = super(BaseUpdateView, self).get_context_data(**kwargs)
-    if self.request.user.is_authenticated():
-      userProfile = UserProfile.objects.get(user=self.request.user)
-      invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)
-      context['user'] = self.request.user
-      context['hasInvites'] = invites.exists()
-      context['nInvites'] = invites.count()
-      context['displayname'] = userProfile.displayname
       context['isLoggedin'] = True
     return context
 
@@ -96,7 +77,7 @@ class HomeView(BaseView):
     myTotalBalanceFloat = 0.0
     
     for groupAccount in groupAccounts:
-      groupAccount = addGroupAccountInfo(groupAccount)
+      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount)
     
     for groupAccount in groupAccounts:
       groupAccount.myBalanceFloat = getBalance(groupAccount.id, userProfile.id)

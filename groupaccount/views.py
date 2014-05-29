@@ -1,9 +1,8 @@
 from base.views import BaseView
 from groupaccount.forms import NewGroupAccountForm
-from groupaccount.models import addGroupAccountInfo
+from groupaccount.models import GroupAccount
 from transaction.models import Transaction
 from userprofile.models import UserProfile
-from userprofile.models import getBalance
 
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.models import Group
@@ -47,7 +46,7 @@ class MyGroupAccountsView(BaseView):
     groupAccounts = userProfile.groupAccounts.all()
     
     for groupAccount in groupAccounts:
-      groupAccount = addGroupAccountInfo(groupAccount)
+      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount)
 
     context['groups'] = groupAccounts
     context['groupssection'] = True
@@ -60,10 +59,10 @@ class NewGroupAccountView(FormView, BaseView):
   success_url = '/account/new/success/'
   
   def getActiveMenu(self):
-    return 'accounts'
+    return 'group'
 
   def form_valid(self, form):
-    context = super(NewGroupAccountView, self).form_valid(form)
+    super(NewGroupAccountView, self).form_valid(form)
     groupAccount = form.save()
     userProfile = UserProfile.objects.get(user=self.request.user)
     userProfile.groupAccounts.add(groupAccount)
