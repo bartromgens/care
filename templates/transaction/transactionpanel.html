@@ -7,7 +7,7 @@
         <h5> 
           <table> 
             <tr> 
-              <td style="padding-left:1em; width:6em;" align="left"> 
+              <td style="padding-left:0em; width:5em;" align="right"> 
               {% if transaction.amountPerPersonFloat <= 0.0 %}
                 <b>&#8364<font class="text-warning">{{ transaction.amountPerPerson }}</font></b>
               {% else %}
@@ -15,9 +15,9 @@
               {% endif %}
               </td>
               
-              <td style="padding-left:2em; width:20em;">  <b>{{ transaction.what }}</b></td>   
+              <td style="padding-left:2em; width:10em;"><b>{{ transaction.what }}</b></td>   
 
-              <td style="padding-left:2em;">  {{ transaction.buyer }}</td>   
+              <td style="padding-left:2em; width:6em;" align="left">{{ transaction.buyer }}</td>   
               
             </tr>
           </table>
@@ -45,11 +45,10 @@
           </h5>
         </div>
         
-        <div class="col-lg-12" align="center" style="padding-left:2em;">
+        <div class="col-lg-12" align="center">
           <h5>
           {% for consumer in transaction.consumers.all %}
-            {% ifequal consumer.displayname displayname %}
-            <font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
+            {% ifequal consumer.displayname displayname %}<font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
           {% endfor %}
           </h5>
         </div>

@@ -126,25 +126,26 @@ class NewTransactionView(FormView, BaseView):
     
   def form_valid(self, form):
     logger.debug('NewTransactionView::form_valid()')
-    context = super(NewTransactionView, self).form_valid(form)
-    
+    super(NewTransactionView, self).form_valid(form)
     form.save()
-    
     return HttpResponseRedirect( '/')
   
   def form_invalid(self, form):
     logger.debug('NewTransactionView::form_invalid()')
-    groupAccount = form.cleaned_data['groupAccount']  
-    super(NewTransactionView, self).form_invalid(form)
-    
-    return HttpResponseRedirect( '/transactions/new/' + str(groupAccount.id))
+    groupAccount = form.cleaned_data['groupAccount'] 
+    logger.debug('groupAccount.id = ' + str(groupAccount.id))
+    logger.debug('getGroupAccountId = ' + str(self.getGroupAccountId()))
+    if int(groupAccount.id) != int(self.getGroupAccountId()): 
+      return HttpResponseRedirect( '/transactions/new/' + str(groupAccount.id))
+    else:
+      return super(NewTransactionView, self).form_invalid(form)
   
   def get_context_data(self, **kwargs):
     logger.debug('NewTransactionView::get_context_data() - groupAccountId: ' + str(self.getGroupAccountId()))
     context = super(NewTransactionView, self).get_context_data(**kwargs)
     
     if (self.getGroupAccountId()):
-      form = NewTransactionForm(self.getGroupAccountId(), self.request.user)
+      form = NewTransactionForm(self.getGroupAccountId(), self.request.user, **self.get_form_kwargs())
       context['form'] = form
       context['nogroup'] = False
     else:
@@ -156,7 +157,7 @@ class NewTransactionView(FormView, BaseView):
 class EditTransactionView(FormView, BaseView):
   template_name = 'transaction/edit.html'
   form_class = EditTransactionForm
-  success_url = '/transactions/'
+  success_url = '/transactions/0'
   
   def getActiveMenu(self):
     return 'shares'
@@ -166,25 +167,20 @@ class EditTransactionView(FormView, BaseView):
     transaction = Transaction.objects.get(pk=pk)
     return EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())   
 
-  def get_initial(self):
-    return { 'consumers': UserProfile.objects.filter(groupAccounts=2)}
+#   def get_initial(self):
+#     return { 'consumers': UserProfile.objects.filter(groupAccounts=2)}
 
   def form_valid(self, form):
     logger.debug('EditTransactionView::form_valid()')
     super(EditTransactionView, self).form_valid(form)
     form.save()
-    return HttpResponseRedirect( '/transactions/' )
-  
-  def form_invalid(self, form):
-    logger.debug('EditTransactionView::form_invalid()')
-    super(EditTransactionView, self).form_invalid(form)
-    return HttpResponseRedirect( '/transactions/edit/' + str(self.kwargs['pk']))
+    return HttpResponseRedirect( '/transactions/0' )
   
   def get_context_data(self, **kwargs):
     logger.debug('EditTransactionView::get_context_data()')
     context = super(EditTransactionView, self).get_context_data(**kwargs)
-    
-    form = EditTransactionForm(self.kwargs['pk'], self.request.user)
+    transaction = Transaction.objects.get(pk=self.kwargs['pk'])
+    form = EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
     context['form'] = form
     
     return context

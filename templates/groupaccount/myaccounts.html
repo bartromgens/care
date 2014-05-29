@@ -18,61 +18,17 @@
 
 {% if groups %}
 <div class="row">
-<div class="col-xs-10 col-xs-offset-1" align="center">
-
-{% for group in groups %}
- 
-{% if forloop.first or forloop.counter0|divisibleby:2 %}
-  <div class="row">
-{% endif %}
-  <div class="col-sm-6" align="center">
-    <div class="panel panel-primary">
-      <div class="panel-heading"><b>{{ group.name }}</b></div>
-      <div class="panel-body">
-        <table class="table table-striped table-hover">
-          
-      		{% for member in group.userProfiles %}  
-          <tr>
-      		  {% ifequal member.user user %}
-    		      <td class="text-info"><b>{{ member.displayname }}</td>
-      		  {% else %}
-    		      <td> {{ member.displayname }}</b></td>
-      		  {% endifequal %}
-              <td>
-              {% if member.balanceFloat < -100.0 %}
-                <div class="text-danger"> <b>{{member.balance}}</b> </div>
-              {% elif member.balanceFloat < 0.0 %}
-                <div class="text-warning"> <b>{{member.balance}}</b> </div>
-              {% elif member.balanceFloat > 100.0 %}
-                <div class="text-success"> <b>{{member.balance}}</b></div>
-              {% elif member.balanceFloat > -0.001 %}
-                <div class="text-info"> <b>{{member.balance}}</b></div>
-              {% endif %}
-              </td>
-          </tr>
-          {% endfor %}
-          
-          <tr>
-            <td> <b>Total</b></td>
-            <td>        
-              {% if group.balanceVerified %}
-              <div> {{group.groupBalance}} &nbsp;&nbsp; <font class="text-success">{% bootstrap_icon "ok-circle" %}</font></div>
-              {% else %}
-              <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{group.groupBalanceFloat}}</b></div>
-              {% endif %}
-            </td>
-          </tr>
-          
-        </table>
-      </div>
-    </div>
-    </div>
-{% if forloop.last or forloop.counter|divisibleby:2 %}
+  <div class="col-xs-12" align="center">
+  
+      {% with "accordiongroups" as parentId %}
+        <div class="panel-group" id="{{ parentId }}">
+        {% for group in groups %}
+          {% include "groupaccount/groupaccountpanel.html" %}
+        {% endfor %}
+        </div>
+      {% endwith %}
+      
   </div>
-{% endif %}
-
-{% endfor %}
-</div>
 </div>
 
 {% else %}
