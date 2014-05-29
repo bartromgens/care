@@ -3,8 +3,6 @@ from userprofile.models import UserProfile
 from transaction.models import Transaction
 from groupaccountinvite.models import GroupAccountInvite 
 
-from userprofile.models import getBalance
-
 from registration.backends.simple.views import RegistrationView
 from django.views.generic import TemplateView
 
@@ -80,8 +78,6 @@ class HomeView(BaseView):
       groupAccount = GroupAccount.addGroupAccountInfo(groupAccount)
     
     for groupAccount in groupAccounts:
-      groupAccount.myBalanceFloat = getBalance(groupAccount.id, userProfile.id)
-      groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
       myTotalBalanceFloat += groupAccount.myBalanceFloat
     
     myTotalBalance = '%.2f' % myTotalBalanceFloat

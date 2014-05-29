@@ -25,33 +25,33 @@ class UserProfile(models.Model):
   def __unicode__(self):
     return str(self.displayname)
   
+  @staticmethod
+  def getBalance(groupAccountId, userProfileId):
+    from transaction.models import Transaction
+    from transactionreal.models import TransactionReal
+    buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)
+    consumerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, consumers__id=userProfileId)
   
-def getBalance(groupAccountId, userProfileId):
-  from transaction.models import Transaction
-  from transactionreal.models import TransactionReal
-  buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)
-  consumerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, consumers__id=userProfileId)
-
-  senderRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, sender__id=userProfileId)
-  receiverRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, receiver__id=userProfileId)
+    senderRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, sender__id=userProfileId)
+    receiverRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, receiver__id=userProfileId)
+    
+    totalBought = 0.0
+    totalConsumed = 0.0
+    totalSent = 0.0
+    totalReceived = 0.0
   
-  totalBought = 0.0
-  totalConsumed = 0.0
-  totalSent = 0.0
-  totalReceived = 0.0
-
-  for transaction in buyerTransactions:
-    totalBought += transaction.amount
-    
-  for transaction in consumerTransactions:
-    nConsumers = transaction.consumers.count()
-    totalConsumed += transaction.amount / nConsumers
-    
-  for transaction in senderRealTransactions:
-    totalSent += transaction.amount
-    
-  for transaction in receiverRealTransactions:
-    totalReceived += transaction.amount
-    
-  balance = (totalBought + totalSent - totalConsumed - totalReceived)
-  return balance
+    for transaction in buyerTransactions:
+      totalBought += transaction.amount
+      
+    for transaction in consumerTransactions:
+      nConsumers = transaction.consumers.count()
+      totalConsumed += transaction.amount / nConsumers
+      
+    for transaction in senderRealTransactions:
+      totalSent += transaction.amount
+      
+    for transaction in receiverRealTransactions:
+      totalReceived += transaction.amount
+      
+    balance = (totalBought + totalSent - totalConsumed - totalReceived)
+    return balance

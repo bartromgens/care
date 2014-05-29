@@ -51,17 +51,7 @@ class EditTransactionForm(forms.ModelForm):
                                                          label='Group')
     
     self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
-    
     self.fields['groupAccount'].widget.attrs['readonly'] = True
-    
-    logger.debug(transaction.consumers)
-    
-    self.fields['consumers'].initial = transaction.consumers.all()
-#     self.fields['buyer'].initial = transaction.buyer
-#     self.fields['what'].initial = transaction.what
-#     self.fields['amount'].initial = transaction.amount
-#     self.fields['groupAccount'].initial = GroupAccount.objects.get(id=transaction.groupAccount.id)
-#     self.fields['date'].initial = transaction.date
   
   class Meta:
     model = Transaction
