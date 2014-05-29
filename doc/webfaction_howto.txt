@@ -34,4 +34,4 @@ read errors:
 less ~/logs/user/error_care.log
 
 apache restart:
-~/webapps/malt/apache2/bin/restart
+~/webapps/care/apache2/bin/restart
