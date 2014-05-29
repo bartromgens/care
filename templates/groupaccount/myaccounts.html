@@ -17,19 +17,15 @@
 <div align="center"><h4>Groups</h4></div>
 
 {% if groups %}
-<div class="row">
-  <div class="col-xs-12" align="center">
   
-      {% with "accordiongroups" as parentId %}
-        <div class="panel-group" id="{{ parentId }}">
-        {% for group in groups %}
-          {% include "groupaccount/groupaccountpanel.html" %}
-        {% endfor %}
-        </div>
-      {% endwith %}
-      
+{% with "accordiongroups" as parentId %}
+  <div class="panel-group" id="{{ parentId }}">
+  {% for group in groups %}
+    {% include "groupaccount/groupaccountpanel.html" %}
+  {% endfor %}
   </div>
-</div>
+{% endwith %}
+      
 
 {% else %}
 <div class="container">
