@@ -92,18 +92,15 @@ class NewRealTransactionView(FormView, BaseView):
   def form_valid(self, form):
     logger.debug('form_valid()')
     super(NewRealTransactionView, self).form_valid(form)
-    
     form.save()
-    
     return HttpResponseRedirect( '/')
   
   def form_invalid(self, form):
     logger.debug('form_invalid()')
     groupAccount = form.cleaned_data['groupAccount']  
     super(NewRealTransactionView, self).form_invalid(form)
-    
     return HttpResponseRedirect( '/transactionsreal/new/' + str(groupAccount.id))
-  
+    
   def get_context_data(self, **kwargs):
     logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.getGroupAccountId()))
     context = super(NewRealTransactionView, self).get_context_data(**kwargs)

@@ -15,6 +15,8 @@ class NewRealTransactionForm(forms.ModelForm):
     
     self.fields['comment'] = forms.CharField(required=False)
     
+    self.fields['amount'].label = '€'
+    
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).groupAccounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
     if GroupAccount.objects.filter(id=groupAccountId).count():
       self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)

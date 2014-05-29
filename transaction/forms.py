@@ -17,7 +17,8 @@ class NewTransactionForm(forms.ModelForm):
     self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None)
     self.fields['buyer'].initial = user
     self.fields['what'].label = 'What'
-    
+    self.fields['amount'].label = 'Cost (€)'
+        
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).groupAccounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
     if GroupAccount.objects.filter(id=groupAccountId).count():
       self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
@@ -43,6 +44,7 @@ class EditTransactionForm(forms.ModelForm):
     self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount), 
                                                   empty_label=None)
     self.fields['what'].label = 'What'
+    self.fields['amount'].label = 'Cost (€)'
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=GroupAccount.objects.filter(id=transaction.groupAccount.id), 
                                                          empty_label=None, 

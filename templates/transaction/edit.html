@@ -6,11 +6,13 @@
 {% block content %}
 <center><h3>Edit share</h3></center>
 
-<form action="" method="post">
-{% csrf_token %}
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="well well-md">
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="well well-md">
+    
+      <form action="" method="post">
+      {% csrf_token %}
       <div class="row">
         
         <div class="col-sm-6">
@@ -45,10 +47,10 @@
            Save
         </button>
       {% endbuttons %}
-    </div>
-    </div>
+      </form>
+      
     </div>
   </div>
-</form>
+</div>
 
 {% endblock %} 
