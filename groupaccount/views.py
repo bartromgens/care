@@ -68,7 +68,7 @@ class NewGroupAccountView(FormView, BaseView):
     userProfile.groupAccounts.add(groupAccount)
     userProfile.save()
     
-    return HttpResponseRedirect('/accounts/new/success/')
+    return HttpResponseRedirect('/group/new/success/')
   
   def get_context_data(self, **kwargs):
     context = super(NewGroupAccountView, self).get_context_data(**kwargs)

@@ -16,7 +16,7 @@
     {% for group in groups %}
     <tr>
 <!--      <td >{{ group.id }}</td>-->
-      <td><a href="/accounts/{{ group.id }}/">{{ group.name }}</a></td>
+      <td><a href="/group/{{ group.id }}/">{{ group.name }}</a></td>
       <td>
 	{% for user in group.user_set.all %}
 	  {{user.username}}, 
