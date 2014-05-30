@@ -1,5 +1,7 @@
 # Django settings for Care project.
 
+from base.secret_settings import * 
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -21,9 +23,6 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
 
 ALLOWED_HOSTS = ['*']
 

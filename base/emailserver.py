@@ -1,3 +1,5 @@
+from base import settings
+
 from smtplib import SMTP
 
 from email.mime.multipart import MIMEMultipart
@@ -20,7 +22,7 @@ def sendMail(toAddress, fromAddress, subject, message):
 
   # Credentials (if needed)  
   username = 'computerautomatedremoteexchange'  
-  password = ''  
+  password = settings.MAILPASSWORD  
   
   # The actual mail send  
   server = SMTP('smtp.webfaction.com:587')  
