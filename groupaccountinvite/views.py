@@ -3,6 +3,7 @@ from groupaccount.models import GroupAccount
 from groupaccountinvite.models import GroupAccountInvite
 from groupaccountinvite.forms import NewInviteForm
 from userprofile.models import UserProfile
+from base import emailserver
 
 from django.contrib.auth.models import User
 from itertools import chain
@@ -122,8 +123,8 @@ class NewInviteView(FormView, BaseView):
   def form_valid(self, form):
     logger.debug('NewInviteView::form_valid()')
     context = super(NewInviteView, self).form_valid(form)
-    
-    form.save()
+    invite = form.save()
+    emailserver.sendNewInviteMail(self.request.user.username, invite.invitee.user.username, invite.groupAccount.name, invite.invitee.user.email)
     return context
   
   def form_invalid(self, form):

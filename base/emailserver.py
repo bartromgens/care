@@ -5,6 +5,9 @@ from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def main():
   username = 'Bart'
@@ -35,6 +38,7 @@ def sendWelcomeMail(username, emailaddress):
   fromAddress = 'CARE <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
   subject = 'Welcome to CARE!' 
+  logging.debug('sendWelcomeMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
 
   message = """\
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -76,6 +80,47 @@ CareBot
 
   sendMail(toAddress, fromAddress, subject, message)
   sendMail(fromAddress, fromAddress, subject, message)
+  
+  
+def sendNewInviteMail(usernameFrom, usernameTo, groupName, emailaddress):
+  fromAddress = 'CARE <info@computerautomatedremoteexchange.com>'
+  toAddress = emailaddress
+  subject = 'New invitation' 
+  
+  logging.debug('sendWelcomeMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+
+  message = """\
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Demystifying Email Design</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body style="margin: 0; padding: 0;">
+<p>Hi %s,</p>
+
+<p>
+%s has invited you to the group "%s",
+<br>
+
+<p>
+Visit <a href="http://www.computerautomatedremoteexchange.com/invites/">my invites</a> to accept or decline the invitation. 
+</p>
+
+<p>
+Have fun sharing,
+<br>
+CareBot
+</p>
+
+</body>
+
+</html>
+  """ % (usernameTo, usernameFrom, groupName)
+
+  sendMail(toAddress, fromAddress, subject, message)
   
   
 if __name__ == "__main__":
