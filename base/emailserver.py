@@ -14,6 +14,7 @@ def main():
   toAddress = 'bart@romgens.com'
   sendWelcomeMail(username, toAddress)
 
+
 def sendMail(toAddress, fromAddress, subject, message):
 #   header = "From: %s\r\nTo: %s\r\nSubject: %s\r\nX-Mailer: My-Mail\r\n\r\n" % (fromAddress, toAddress, subject)
   msg = MIMEMultipart('alternative')
@@ -33,6 +34,7 @@ def sendMail(toAddress, fromAddress, subject, message):
   server.login(username, password)  
   server.sendmail(fromAddress, toAddress, msg.as_string())  
   server.quit()
+
 
 def sendWelcomeMail(username, emailaddress):
   fromAddress = 'CARE <info@computerautomatedremoteexchange.com>'

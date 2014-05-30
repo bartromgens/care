@@ -20,7 +20,8 @@ class EditUserProfileForm(forms.ModelForm):
     
     self.fields['groupAccounts'] = forms.ModelMultipleChoiceField(widget=forms.MultipleHiddenInput, 
                                                                   queryset=userProfile.groupAccounts.all(), 
-                                                                  label='Groups')
+                                                                  label='Groups', 
+                                                                  required=False)
   
   class Meta:
     model = UserProfile
