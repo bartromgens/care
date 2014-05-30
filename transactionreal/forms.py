@@ -10,7 +10,7 @@ class NewRealTransactionForm(forms.ModelForm):
     
 #     self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user), widget = forms.HiddenInput, empty_label=None, label='From')
     self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(user=user), empty_label=None, label='From', widget=forms.HiddenInput)
-    self.fields['sender'].initial = UserProfile.objects.get(user=user).id    
+    self.fields['sender'].initial = UserProfile.objects.get(user=user)    
     self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None, label='To')
     
     self.fields['comment'] = forms.CharField(required=False)

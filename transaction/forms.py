@@ -15,7 +15,7 @@ class NewTransactionForm(forms.ModelForm):
     self.fields['consumers'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), label='Shared by')
     
     self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None)
-    self.fields['buyer'].initial = user
+    self.fields['buyer'].initial = UserProfile.objects.get(user=user)
     self.fields['what'].label = 'What'
     self.fields['amount'].label = 'Cost (€)'
         
