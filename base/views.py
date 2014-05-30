@@ -76,7 +76,7 @@ class HomeView(BaseView):
     myTotalBalanceFloat = 0.0
     
     for groupAccount in groupAccounts:
-      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount)
+      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount, userProfile)
     
     for groupAccount in groupAccounts:
       myTotalBalanceFloat += groupAccount.myBalanceFloat

@@ -46,7 +46,7 @@ class MyGroupAccountsView(BaseView):
     groupAccounts = userProfile.groupAccounts.all()
     
     for groupAccount in groupAccounts:
-      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount)
+      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount, userProfile)
 
     context['groups'] = groupAccounts
     context['groupssection'] = True

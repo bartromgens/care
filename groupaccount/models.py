@@ -11,7 +11,7 @@ class GroupAccount(models.Model):
     return self.name
   
   @staticmethod
-  def addGroupAccountInfo(groupAccount):
+  def addGroupAccountInfo(groupAccount, myUserProfile):
     from userprofile.models import UserProfile
     
     groupBalance = 0.0
@@ -23,6 +23,6 @@ class GroupAccount(models.Model):
     groupAccount.groupBalance = '%.2f' % groupBalance
     groupAccount.groupBalanceFloat = '%.3g' % groupBalance
     groupAccount.balanceVerified = bool(abs(groupBalance) < 1e-9)
-    groupAccount.myBalanceFloat = UserProfile.getBalance(groupAccount.id, userProfile.id)
+    groupAccount.myBalanceFloat = UserProfile.getBalance(groupAccount.id, myUserProfile.id)
     groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
     return groupAccount
