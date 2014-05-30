@@ -17,13 +17,14 @@
 <div class="row"> 
   <div class="col-sm-4 col-sm-offset-4" align="center" >
     <h4>Balance</h4>
+    <h3><b>&#8364 
     {% if myTotalBalanceFloat < 0.0 %} 
     <font style="color:red">
     {% else %}
     <font style="color:green">
     {% endif %}
-    <h3><b>&#8364 {{ myTotalBalance }}</b> </h3>
-    </font>
+    {{ myTotalBalance }}
+    </font></b> </h3>
   </div>
 </div>
 
@@ -34,40 +35,49 @@
   <div class="col-lg-4">
     <div align="center"><h4>Shares</h4></div>
     
-    {% with "accordiontransaction" as parentId %}
-      <div class="panel-group" id="{{ parentId }}">
-      {% for transaction in transactionsAll %}
-        {% include "transaction/transactionpanel.html" %}
-      {% endfor %}
-      </div>
-    {% endwith %}
-       
+    {% if transactionsAll %}
+      {% with "accordiontransaction" as parentId %}
+        <div class="panel-group" id="{{ parentId }}">
+        {% for transaction in transactionsAll %}
+          {% include "transaction/transactionpanel.html" %}
+        {% endfor %}
+        </div>
+      {% endwith %}
+    {% else %}
+      <div align="center">No shares to show</div>
+    {% endif %}   
   </div>
   
   <div class="col-lg-4">
     <div align="center"><h4>Transactions</h4></div>
     
-    {% with "accordiontransactionreal" as parentId %}
-      <div class="panel-group" id="{{ parentId }}">
-      {% for transaction in transactionsRealAll %}
-        {% include "transactionreal/transactionrealpanel.html" %}
-      {% endfor %}
-      </div>
-    {% endwith %}
-       
+    {% if transactionsRealAll %}
+      {% with "accordiontransactionreal" as parentId %}
+        <div class="panel-group" id="{{ parentId }}">
+        {% for transaction in transactionsRealAll %}
+          {% include "transactionreal/transactionrealpanel.html" %}
+        {% endfor %}
+        </div>
+      {% endwith %}
+    {% else %}
+      <div align="center">No transactions to show</div>
+    {% endif %}     
   </div>
 
   <div class="col-lg-4">
     <div align="center"><h4>Groups</h4></div>
-    
-    {% with "accordiongroups" as parentId %}
-      <div class="panel-group" id="{{ parentId }}">
-      {% for group in groups %}
-        {% include "groupaccount/groupaccountpanel.html" %}
-      {% endfor %}
-      </div>
-    {% endwith %}
-       
+ 
+    {% if transactionsRealAll %}   
+      {% with "accordiongroups" as parentId %}
+        <div class="panel-group" id="{{ parentId }}">
+        {% for group in groups %}
+          {% include "groupaccount/groupaccountpanel.html" %}
+        {% endfor %}
+        </div>
+      {% endwith %}
+    {% else %}
+      <div align="center">No groups to show</div>
+    {% endif %}     
   </div>
    
 </div>
