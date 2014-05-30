@@ -56,23 +56,20 @@ class AcceptInviteView(MyGroupAccountInvitesView):
   context_object_name = "my invites"
 
   def get_context_data(self, **kwargs):
-    context = super(AcceptInviteView, self).get_context_data(**kwargs)
     user = self.request.user
     logger.warning("accepted " + self.kwargs['inviteId'])
     invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
-    groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
-    invite.isAccepted = True
-    invite.isDeclined = False
-    userProfile = UserProfile.objects.get(user=user)
-    userProfile.groupAccounts.add(groupAccount)
-    userProfile.save()
-    invite.save()
-    
-    invitesSent = self.getSentInvites(user)
-    invitesReceived = self.getReceivedInvites(user)
-    invites = list(chain(invitesSent, invitesReceived))
-
-    context['invites'] = invites
+    # make sure accepter is the invitee
+    if invite.invitee.user == user:
+      groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
+      invite.isAccepted = True
+      invite.isDeclined = False
+      userProfile = UserProfile.objects.get(user=user)
+      userProfile.groupAccounts.add(groupAccount)
+      userProfile.save()
+      invite.save()
+  
+    context = super(AcceptInviteView, self).get_context_data(**kwargs)
     context['groupssection'] = True
     return context
 
@@ -82,8 +79,6 @@ class DeclineInviteView(MyGroupAccountInvitesView):
   context_object_name = "my invites"
 
   def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-    context = super(DeclineInviteView, self).get_context_data(**kwargs)
     logger.warning("declined " + self.kwargs['inviteId'])
     invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
     user = self.request.user
@@ -104,12 +99,8 @@ class DeclineInviteView(MyGroupAccountInvitesView):
       userProfile.save()
     
     invite.save()
-    
-    invitesSent = self.getSentInvites(user)
-    invitesReceived = self.getReceivedInvites(user)
-    invites = list(chain(invitesSent, invitesReceived))
 
-    context['invites'] = invites
+    context = super(DeclineInviteView, self).get_context_data(**kwargs)
     context['groupssection'] = True
     return context
 
