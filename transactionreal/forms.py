@@ -26,3 +26,26 @@ class NewRealTransactionForm(forms.ModelForm):
   
   class Meta:
     model = TransactionReal
+
+
+class EditRealTransactionForm(forms.ModelForm):
+  def __init__(self, transactionId, user, *args, **kwargs):
+    super(EditRealTransactionForm, self).__init__(*args, **kwargs)
+    
+    transaction = TransactionReal.objects.get(id=transactionId)
+    
+    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(user=user), empty_label=None, label='From', widget=forms.HiddenInput)
+    
+    self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), empty_label=None, label='To')
+    
+    self.fields['groupAccount'] = forms.ModelChoiceField(queryset=GroupAccount.objects.filter(id=transaction.groupAccount.id), 
+                                                         empty_label=None, 
+                                                         label='Group')
+    
+    self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
+    self.fields['groupAccount'].widget.attrs['readonly'] = True
+    
+    self.fields['amount'].label = '€'
+  
+  class Meta:
+    model = TransactionReal

@@ -167,9 +167,6 @@ class EditTransactionView(FormView, BaseView):
     transaction = Transaction.objects.get(pk=pk)
     return EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())   
 
-#   def get_initial(self):
-#     return { 'consumers': UserProfile.objects.filter(groupAccounts=2)}
-
   def form_valid(self, form):
     logger.debug('EditTransactionView::form_valid()')
     super(EditTransactionView, self).form_valid(form)

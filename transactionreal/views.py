@@ -1,6 +1,6 @@
 # Create your views here.
 from base.views import BaseView
-from transactionreal.forms import NewRealTransactionForm
+from transactionreal.forms import NewRealTransactionForm, EditRealTransactionForm
 from transactionreal.models import TransactionReal
 from userprofile.models import UserProfile
 
@@ -112,3 +112,36 @@ class NewRealTransactionView(FormView, BaseView):
     else:
       context['nogroup'] = True
     return context
+
+
+class EditRealTransactionView(FormView, BaseView):
+  template_name = 'transactionreal/edit.html'
+  form_class = EditRealTransactionForm
+  success_url = '/transactionsreal/0'
+  
+  def getActiveMenu(self):
+    return 'shares'
+   
+  def get_form(self, form_class):
+    pk = self.kwargs['pk']
+    transaction = TransactionReal.objects.get(pk=pk)
+    return EditRealTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())   
+
+  def form_valid(self, form):
+    logger.debug('EditRealTransactionView::form_valid()')
+    super(EditRealTransactionView, self).form_valid(form)
+    transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
+    if self.request.user == transaction.sender.user:
+      form.save()
+    return HttpResponseRedirect( '/transactionsreal/0' )
+  
+  def get_context_data(self, **kwargs):
+    context = super(EditRealTransactionView, self).get_context_data(**kwargs)
+    transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
+    
+    if self.request.user == transaction.sender.user:
+      form = EditRealTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
+      context['form'] = form
+    
+    return context
+
