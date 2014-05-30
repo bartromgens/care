@@ -43,9 +43,11 @@
           <h5>{{ transaction.date|date:"d M Y" }}</h5> 
         </div>
         
+        {% if transaction.sender == userprofile %}
         <div class="col-sm-12" align="center">
           <h4><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></h4> 
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

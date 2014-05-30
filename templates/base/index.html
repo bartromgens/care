@@ -43,13 +43,20 @@
         {% endfor %}
         </div>
       {% endwith %}
+      
+      <div align="center">
+        <h6>most recent {{ transactionsRealAll|length }} shown</h6>
+      </div>
+      
     {% else %}
       <div align="center">No shares to show</div>
     {% endif %}   
   </div>
   
   <div class="col-lg-4">
-    <div align="center"><h4>Transactions</h4></div>
+    <div align="center">
+      <h4>Transactions</h4>
+    </div>
     
     {% if transactionsRealAll %}
       {% with "accordiontransactionreal" as parentId %}
@@ -59,15 +66,21 @@
         {% endfor %}
         </div>
       {% endwith %}
+      
+      <div align="center">
+        <h6>most recent {{ transactionsRealAll|length }} shown</h6>
+      </div>
+    
     {% else %}
       <div align="center">No transactions to show</div>
-    {% endif %}     
+    {% endif %}  
+       
   </div>
 
   <div class="col-lg-4">
     <div align="center"><h4>Groups</h4></div>
  
-    {% if transactionsRealAll %}   
+    {% if groups %}   
       {% with "accordiongroups" as parentId %}
         <div class="panel-group" id="{{ parentId }}">
         {% for group in groups %}
@@ -75,6 +88,7 @@
         {% endfor %}
         </div>
       {% endwith %}
+        
     {% else %}
       <div align="center">No groups to show</div>
     {% endif %}     
