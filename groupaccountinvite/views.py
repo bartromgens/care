@@ -4,6 +4,7 @@ from groupaccountinvite.models import GroupAccountInvite
 from groupaccountinvite.forms import NewInviteForm
 from userprofile.models import UserProfile
 
+from django.contrib.auth.models import User
 from itertools import chain
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -122,7 +123,9 @@ class NewInviteView(FormView, BaseView):
     return 'invites'
     
   def get_form(self, form_class):
-    return NewInviteForm(self.request.user, **self.get_form_kwargs())   
+    userProfileToInvite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
+    form = NewInviteForm(self.request.user, userProfileToInvite, **self.get_form_kwargs())
+    return form  
     
   def form_valid(self, form):
     logger.debug('NewInviteView::form_valid()')
@@ -138,8 +141,8 @@ class NewInviteView(FormView, BaseView):
   
   def get_context_data(self, **kwargs):
     context = super(NewInviteView, self).get_context_data(**kwargs)
-    
-    form = NewInviteForm(self.request.user, **self.get_form_kwargs())
+    userProfileToInvite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
+    form = NewInviteForm(self.request.user, userProfileToInvite, **self.get_form_kwargs())
     context['form'] = form
     return context
   

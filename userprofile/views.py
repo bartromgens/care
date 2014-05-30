@@ -1,9 +1,10 @@
-from userprofile.forms import EditUserProfileForm
+from userprofile.forms import EditUserProfileForm, SearchUserProfileForm
 from userprofile.models import UserProfile
 from base.views import BaseView
 
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 
 import logging
 logger = logging.getLogger(__name__)
@@ -52,4 +53,34 @@ class SuccessEditUserProfileView(BaseView):
     context['transactionssection'] = True
     
     return context
+
+
+class SearchUserProfileView(BaseView, FormView):
+  template_name = 'userprofile/search.html'
+  form_class = SearchUserProfileForm
+  success_url = '/userprofile/search'  
+    
+  def get_form(self, form_class):
+    return SearchUserProfileForm(self.request.user, **self.get_form_kwargs())   
+# 
+  def form_valid(self, form):
+    context = super(SearchUserProfileView, self).form_valid(form)
+    username = form.cleaned_data['username']
+    users = User.objects.filter(username__icontains=username)
+    userProfiles = UserProfile.objects.filter(user=users)
+    for user in userProfiles:
+      logger.debug(str(user.displayname))
+      
+    context = super(SearchUserProfileView, self).get_context_data()  
+    form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
+    context['form'] = form
+    context['hasSearched'] = True
+    context['searchresults'] = userProfiles
+    return self.render_to_response(context)
   
+  def get_context_data(self, **kwargs):
+    context = super(SearchUserProfileView, self).get_context_data(**kwargs)
+    form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
+    context['form'] = form
+    
+    return context  

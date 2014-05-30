@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)  
 
 class NewInviteForm(forms.ModelForm):
-  def __init__(self, user, *args, **kwargs):
+  def __init__(self, user, userProfileToInvite, *args, **kwargs):
 #    groupAccountId = kwargs.pop('groupAccountId')
     
     userProfile = UserProfile.objects.get(user=user);
@@ -21,7 +21,9 @@ class NewInviteForm(forms.ModelForm):
     
     logger.debug(userProfile.groupAccounts)
         
-    self.fields['invitee'] = forms.ModelChoiceField(queryset=UserProfile.objects.all(), label='invite')
+    self.fields['invitee'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(id=userProfileToInvite.id), empty_label=None, label='invite')
+    self.fields['invitee'].initial = userProfileToInvite
+    self.fields['invitee'].widget.attrs['readonly'] = True
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=userProfile.groupAccounts, empty_label=None, label='to group')
 

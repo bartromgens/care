@@ -14,7 +14,7 @@ class EditUserProfileForm(forms.ModelForm):
                                                  queryset=User.objects.filter(id=user.id), 
                                                  empty_label=None)
     
-    self.fields['displayname'] = forms.CharField(max_length=15, label='Display name')
+    self.fields['displayname'] = forms.CharField(max_length=15, label='Display name *')
     self.fields['firstname'] = forms.CharField(max_length=100, label='First name', required=False)
     self.fields['lastname'] = forms.CharField(max_length=100, label='Last name', required=False)
     
@@ -24,3 +24,11 @@ class EditUserProfileForm(forms.ModelForm):
   
   class Meta:
     model = UserProfile
+
+
+class SearchUserProfileForm(forms.Form):
+  
+  def __init__(self, user, *args, **kwargs):
+    super(SearchUserProfileForm, self).__init__(*args, **kwargs)
+    
+    self.fields['username'] = forms.CharField(min_length=3, max_length=100, label='Username', required=True)
