@@ -86,19 +86,20 @@ class DeclineInviteView(MyGroupAccountInvitesView):
     
     logger.debug( userProfile.groupAccounts.get(id=invite.groupAccount.id) )
     
-    if userProfile.groupAccounts.get(id=invite.groupAccount.id):
-      logger.debug( 'Group is already accepted. Groups cannot be removed.' )
-      invite.isAccepted = False
-      invite.isDeclined = True
-    else:
-      logger.debug( 'Group is declined.' )
-      invite.isDeclined = True
-      groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
-      userProfile = UserProfile.objects.get(user=user)
-      userProfile.groupAccounts.remove(groupAccount)
-      userProfile.save()
-    
-    invite.save()
+    # make sure the decliner is the invitee
+    if invite.invitee.user == user:
+      if userProfile.groupAccounts.get(id=invite.groupAccount.id):
+        logger.debug( 'Group is already accepted. Groups cannot be removed.' )
+        invite.isAccepted = False
+        invite.isDeclined = True
+      else:
+        logger.debug( 'Group is declined.' )
+        invite.isDeclined = True
+        groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
+        userProfile = UserProfile.objects.get(user=user)
+        userProfile.groupAccounts.remove(groupAccount)
+        userProfile.save()
+      invite.save()
 
     context = super(DeclineInviteView, self).get_context_data(**kwargs)
     context['groupssection'] = True
