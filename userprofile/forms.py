@@ -14,8 +14,9 @@ class EditUserProfileForm(forms.ModelForm):
                                                  queryset=User.objects.filter(id=user.id), 
                                                  empty_label=None)
     
-    self.fields['displayname'] = forms.CharField(max_length=100, label='Display name')
-#     self.fields['displayname'].widget.attrs['readonly'] = True
+    self.fields['displayname'] = forms.CharField(max_length=15, label='Display name')
+    self.fields['firstname'] = forms.CharField(max_length=100, label='First name', required=False)
+    self.fields['lastname'] = forms.CharField(max_length=100, label='Last name', required=False)
     
     self.fields['groupAccounts'] = forms.ModelMultipleChoiceField(widget=forms.MultipleHiddenInput, 
                                                                   queryset=userProfile.groupAccounts.all(), 

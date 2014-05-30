@@ -1,3 +1,4 @@
+from base import emailserver
 from groupaccount.models import GroupAccount
 
 from django.db import models
@@ -13,12 +14,15 @@ def createUserProfile(sender, user, request, **kwargs):
   logger.debug('signal createUserProfile()')
   profile = UserProfile(user=user, displayname=user.username)
   profile.save()
+  emailserver.sendWelcomeMail(user.username, user.email)
 
 user_registered.connect(createUserProfile)
 
 class UserProfile(models.Model):
   user = models.ForeignKey(User)
-  displayname = models.CharField(max_length=200)
+  displayname = models.CharField(max_length=15)
+  firstname = models.CharField(max_length=100, blank=True)
+  lastname = models.CharField(max_length=100, blank=True)
   groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
   #settings = models.ForeignKey(UserSettings)
   

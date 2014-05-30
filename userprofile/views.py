@@ -52,3 +52,4 @@ class SuccessEditUserProfileView(BaseView):
     context['transactionssection'] = True
     
     return context
+  
