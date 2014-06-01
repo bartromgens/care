@@ -7,7 +7,7 @@ class GroupAccount(models.Model):
   number = models.IntegerField(unique=True)
   #settings = models.ForeignKey(GroupSettings)
   
-  def __unicode__(self):
+  def __str__(self):
     return self.name
   
   @staticmethod
