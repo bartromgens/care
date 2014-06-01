@@ -11,7 +11,7 @@ from datetime import datetime
 
 class Transaction(models.Model):
   amount = models.DecimalField(max_digits=6, decimal_places=2)
-  what = models.CharField(max_length=200)
+  what = models.CharField(max_length=24)
   buyer = models.ForeignKey(UserProfile, related_name='buyer')
   consumers = models.ManyToManyField(UserProfile, related_name='consumers')
   groupAccount = models.ForeignKey(GroupAccount)
