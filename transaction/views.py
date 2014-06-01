@@ -72,7 +72,7 @@ class MyTransactionView(BaseView):
     consumerTransactions = self.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     
-    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)[:10]
+    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
 #     sentTransactions = self.getSentTransactionsReal(userProfile.id)
 #     receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
