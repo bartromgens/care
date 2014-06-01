@@ -3,6 +3,7 @@ from groupaccount.models import GroupAccount
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from registration.signals import user_registered 
 
 import logging
@@ -20,7 +21,7 @@ user_registered.connect(createUserProfile)
 
 class UserProfile(models.Model):
   user = models.ForeignKey(User)
-  displayname = models.CharField(max_length=15)
+  displayname = models.CharField(max_length=15, validators=[RegexValidator(r"^\S.*\S$|^\S$|^$", "This field cannot start or end with spaces.")])
   firstname = models.CharField(max_length=100, blank=True)
   lastname = models.CharField(max_length=100, blank=True)
   groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
