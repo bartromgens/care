@@ -62,8 +62,6 @@ class HomeView(BaseView):
     buyerTransactions = Transaction.getBuyerTransactions(userProfile.id)
     consumerTransactions = Transaction.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
-    for transaction in transactionsAll:
-      logger.debug(transaction.date)
     transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
     sentTransactions = TransactionReal.getSentTransactionsReal(userProfile.id)
@@ -84,7 +82,6 @@ class HomeView(BaseView):
     context['myTotalBalanceFloat'] = myTotalBalanceFloat
 
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
-    logger.debug(friends)
     
     from groupaccountinvite.views import MyGroupAccountInvitesView
     
