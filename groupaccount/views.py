@@ -58,6 +58,9 @@ class NewGroupAccountView(FormView, BaseView):
   form_class = NewGroupAccountForm
   success_url = '/account/new/success/'
   
+  def get_form(self, form_class):
+    return NewGroupAccountForm(**self.get_form_kwargs())   
+  
   def getActiveMenu(self):
     return 'group'
 
@@ -73,7 +76,7 @@ class NewGroupAccountView(FormView, BaseView):
   def get_context_data(self, **kwargs):
     context = super(NewGroupAccountView, self).get_context_data(**kwargs)
     
-    form = NewGroupAccountForm()
+    form = NewGroupAccountForm(**self.get_form_kwargs())
     context['form'] = form
     
     return context

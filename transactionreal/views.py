@@ -92,7 +92,7 @@ class NewRealTransactionView(FormView, BaseView):
     context = super(NewRealTransactionView, self).get_context_data(**kwargs)
     
     if (self.getGroupAccountId()):
-      form = NewRealTransactionForm(self.getGroupAccountId(), self.request.user)
+      form = NewRealTransactionForm(self.getGroupAccountId(), self.request.user, **self.get_form_kwargs())
       context['form'] = form
       context['nogroup'] = False
     else:
