@@ -85,8 +85,6 @@ class DeclineInviteView(MyGroupAccountInvitesView):
     user = self.request.user
     userProfile = UserProfile.objects.get(user=user)
     
-    logger.debug( userProfile.groupAccounts.get(id=invite.groupAccount.id) )
-    
     # make sure the decliner is the invitee
     if invite.invitee.user == user:
       if userProfile.groupAccounts.get(id=invite.groupAccount.id):
