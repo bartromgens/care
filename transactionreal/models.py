@@ -6,7 +6,7 @@ from userprofile.models import UserProfile
 from datetime import datetime
 
 class TransactionReal(models.Model):
-  amount = models.FloatField('amount')
+  amount = models.DecimalField(max_digits=6, decimal_places=2)
   sender = models.ForeignKey(UserProfile, related_name='sender')
   receiver = models.ForeignKey(UserProfile, related_name='receiver')
   comment = models.CharField(max_length=200)
