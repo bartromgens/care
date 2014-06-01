@@ -5,6 +5,7 @@ from base.views import BaseView
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 import logging
 logger = logging.getLogger(__name__)
@@ -67,7 +68,7 @@ class SearchUserProfileView(BaseView, FormView):
     context = super(SearchUserProfileView, self).form_valid(form)
     username = form.cleaned_data['username']
     users = User.objects.filter(username__icontains=username)
-    userProfiles = UserProfile.objects.filter(user=users)
+    userProfiles = UserProfile.objects.filter(Q(user=users) | Q(displayname__icontains=username) | Q(firstname__icontains=username) | Q(lastname__icontains=username))
     for user in userProfiles:
       logger.debug(str(user.displayname))
       
@@ -83,4 +84,5 @@ class SearchUserProfileView(BaseView, FormView):
     form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
     context['form'] = form
     
-    return context  
+    return context
+  
