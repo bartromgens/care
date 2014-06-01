@@ -13,5 +13,21 @@ class TransactionReal(models.Model):
   groupAccount = models.ForeignKey(GroupAccount)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
-  def __unicode__(self):
+  @staticmethod
+  def getSentTransactionsReal(senderId):
+    transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("date")
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % transaction.amount
+      transaction.amountPerPersonFloat = transaction.amount
+    return transactions
+  
+  @staticmethod  
+  def getReceivedTransactionsReal(receiverId):
+    transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("date")
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % transaction.amount
+      transaction.amountPerPersonFloat = transaction.amount
+    return transactions
+  
+  def __str__(self):
     return self.comment

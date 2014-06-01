@@ -14,5 +14,5 @@ class GroupAccountInvite(models.Model):
   isDeclined = models.BooleanField(default=False)
   createdDateAndTime = models.DateTimeField(default=datetime.now, editable=True, blank=True)
 
-  def __unicode__(self):
+  def __str__(self):
     return self.groupAccount.name

@@ -1,6 +1,5 @@
 from base.views import BaseView
 from transaction.models import Transaction
-from transactionreal.models import TransactionReal
 from transaction.forms import NewTransactionForm, EditTransactionForm
 from userprofile.models import UserProfile
 
@@ -31,34 +30,6 @@ class MyTransactionView(BaseView):
   def getActiveMenu(self):
     return 'shares'
   
-  def getBuyerTransactions(self, buyerId):
-    transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("date")
-    for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % (transaction.amount)
-      transaction.amountPerPersonFloat = transaction.amount
-    return transactions
-    
-  def getConsumerTransactions(self, consumerId):
-    transactions = Transaction.objects.filter(consumers__id=consumerId).order_by("date")
-    for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount/transaction.consumers.count())
-      transaction.amountPerPersonFloat = (-1*transaction.amount/transaction.consumers.count())
-    return transactions
-    
-  def getSentTransactionsReal(self, senderId):
-    transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("date")
-    for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount)
-      transaction.amountPerPersonFloat = (-1*transaction.amount)
-    return transactions
-    
-  def getReceivedTransactionsReal(self, receiverId):
-    transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("date")
-    for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % (1*transaction.amount)
-      transaction.amountPerPersonFloat = (1*transaction.amount)
-    return transactions
-  
   def getNumberOfBuyerTransactions(self, buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
     return len(transactions)
@@ -68,8 +39,8 @@ class MyTransactionView(BaseView):
     # Call the base implementation first to get a context
     context = super(MyTransactionView, self).get_context_data(**kwargs)
     userProfile = UserProfile.objects.get(user=self.request.user)
-    buyerTransactions = self.getBuyerTransactions(userProfile.id)
-    consumerTransactions = self.getConsumerTransactions(userProfile.id)
+    buyerTransactions = Transaction.getBuyerTransactions(userProfile.id)
+    consumerTransactions = Transaction.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     
     transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)

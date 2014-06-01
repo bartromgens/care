@@ -1,6 +1,7 @@
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 from transaction.models import Transaction
+from transactionreal.models import TransactionReal
 from groupaccountinvite.models import GroupAccountInvite 
 
 from registration.backends.simple.views import RegistrationView
@@ -52,24 +53,21 @@ class HomeView(BaseView):
     return transactions
   
   def get_context_data(self, **kwargs):
-    from transaction.views import MyTransactionView
-    # Call the base implementation first to get a context
     context = super(HomeView, self).get_context_data(**kwargs)
     user = self.request.user
 
     userProfile = UserProfile.objects.get(user=user)
     groupAccounts = userProfile.groupAccounts.all()
     
-    transactionView = MyTransactionView()
-    buyerTransactions = transactionView.getBuyerTransactions(userProfile.id)
-    consumerTransactions = transactionView.getConsumerTransactions(userProfile.id)
+    buyerTransactions = Transaction.getBuyerTransactions(userProfile.id)
+    consumerTransactions = Transaction.getConsumerTransactions(userProfile.id)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     for transaction in transactionsAll:
       logger.debug(transaction.date)
     transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
     
-    sentTransactions = transactionView.getSentTransactionsReal(userProfile.id)
-    receivedTransactions = transactionView.getReceivedTransactionsReal(userProfile.id)
+    sentTransactions = TransactionReal.getSentTransactionsReal(userProfile.id)
+    receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfile.id)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
     transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     

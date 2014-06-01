@@ -17,5 +17,21 @@ class Transaction(models.Model):
   groupAccount = models.ForeignKey(GroupAccount)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
-  def __unicode__(self):
+  @staticmethod
+  def getBuyerTransactions(buyerId):
+    transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("date")
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % (transaction.amount)
+      transaction.amountPerPersonFloat = transaction.amount
+    return transactions
+  
+  @staticmethod  
+  def getConsumerTransactions(consumerId):
+    transactions = Transaction.objects.filter(consumers__id=consumerId).order_by("date")
+    for transaction in transactions:
+      transaction.amountPerPerson = '%.2f' % (-1*transaction.amount/transaction.consumers.count())
+      transaction.amountPerPersonFloat = (-1*transaction.amount/transaction.consumers.count())
+    return transactions
+  
+  def __str__(self):
     return self.what

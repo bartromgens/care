@@ -21,28 +21,14 @@ class MyRealTransactionView(BaseView):
   
   def getActiveMenu(self):
     return 'transactions'
-    
-  def getSentTransactionsReal(self, senderId):
-    transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("date")
-    for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % transaction.amount
-      transaction.amountPerPersonFloat = transaction.amount
-    return transactions
-    
-  def getReceivedTransactionsReal(self, receiverId):
-    transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("date")
-    for transaction in transactions:
-      transaction.amountPerPerson = '%.2f' % transaction.amount
-      transaction.amountPerPersonFloat = transaction.amount
-    return transactions
   
   def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
     context = super(MyRealTransactionView, self).get_context_data(**kwargs)
     userProfile = UserProfile.objects.get(user=self.request.user)
      
-    sentTransactions = self.getSentTransactionsReal(userProfile.id)
-    receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
+    sentTransactions = TransactionReal.getSentTransactionsReal(userProfile.id)
+    receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfile.id)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
     transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
     
