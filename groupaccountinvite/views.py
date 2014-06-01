@@ -87,7 +87,7 @@ class DeclineInviteView(MyGroupAccountInvitesView):
     
     # make sure the decliner is the invitee
     if invite.invitee.user == user:
-      if userProfile.groupAccounts.get(id=invite.groupAccount.id):
+      if userProfile.groupAccounts.filter(id=invite.groupAccount.id):
         logger.debug( 'Group is already accepted. Groups cannot be removed.' )
         invite.isAccepted = False
         invite.isDeclined = True
