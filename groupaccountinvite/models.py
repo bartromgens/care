@@ -1,10 +1,14 @@
-from django.db import models
-
 from userprofile.models import UserProfile
 from groupaccount.models import GroupAccount
 
 from datetime import datetime
-# Create your models here.
+from itertools import chain
+
+from django.db import models
+
+import logging
+logger = logging.getLogger(__name__)
+
 
 class GroupAccountInvite(models.Model):
   groupAccount = models.ForeignKey(GroupAccount)
@@ -13,6 +17,22 @@ class GroupAccountInvite(models.Model):
   isAccepted = models.BooleanField(default=False)
   isDeclined = models.BooleanField(default=False)
   createdDateAndTime = models.DateTimeField(default=datetime.now, editable=True, blank=True)
+
+  @staticmethod
+  def getSentInvites(userProfile):
+    return GroupAccountInvite.objects.filter(inviter=userProfile)
+  
+  @staticmethod
+  def getReceivedInvites(userProfile):
+    return GroupAccountInvite.objects.filter(invitee=userProfile)
+ 
+  @staticmethod
+  def getInvitesAllSortedByDate(userProfile):
+    invitesSent = GroupAccountInvite.getSentInvites(userProfile);
+    invitesReceived = GroupAccountInvite.getReceivedInvites(userProfile);
+    invitesAll = list(chain(invitesSent, invitesReceived))
+    invitesAll = set(invitesAll)
+    return sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
 
   def __str__(self):
     return self.groupAccount.name

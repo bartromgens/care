@@ -8,6 +8,7 @@ from registration.backends.simple.views import RegistrationView
 from django.views.generic import TemplateView
 
 from itertools import chain
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -72,18 +73,11 @@ class HomeView(BaseView):
     myTotalBalance = '%.2f' % myTotalBalanceFloat
     context['myTotalBalance'] = myTotalBalance
     context['myTotalBalanceFloat'] = myTotalBalanceFloat
-    
-    from groupaccountinvite.views import MyGroupAccountInvitesView
-    groupAccountView = MyGroupAccountInvitesView()    
-    
-    invitesSent = groupAccountView.getSentInvites(user);
-    invitesReceived = groupAccountView.getReceivedInvites(user);
-    invitesAll = list(chain(invitesSent, invitesReceived))
-    invitesAll = set(invitesAll)
-    invitesAllSorted = sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
+  
+#     invitesAllSorted = GroupAccountInvite.getInvitesAllSortedByDate(userProfile)
     
     slowLastN = 5
-    context['invitesAll'] = invitesAllSorted[0:slowLastN]
+#     context['invitesAll'] = invitesAllSorted[0:slowLastN]
     context['friends'] = friends
     context['transactionsAll'] = transactionsAllSorted[0:slowLastN]
     context['transactionsRealAll'] = transactionsRealAllSorted[0:slowLastN]

@@ -23,17 +23,6 @@ class MyGroupAccountInvitesView(BaseView):
   def getActiveMenu(self):
     return 'invites'
   
-  def getSentInvites(self, user):
-    logger.debug('user.id: ' + str(user.id))
-    userProfile = UserProfile.objects.get(user=user)
-    invites = GroupAccountInvite.objects.filter(inviter=userProfile)
-    return invites
-  
-  def getReceivedInvites(self, user):
-    userProfile = UserProfile.objects.get(user=user)
-    invitees = GroupAccountInvite.objects.filter(invitee=userProfile)
-    return invitees
-  
   def getNumberOfInvites(self, buyerId):
     invite = GroupAccountInvite.objects.all()
     return len(invite)
@@ -41,10 +30,9 @@ class MyGroupAccountInvitesView(BaseView):
   def get_context_data(self, **kwargs):
     context = super(MyGroupAccountInvitesView, self).get_context_data(**kwargs)
     user = self.request.user
-    
-    invitesSent = self.getSentInvites(user).order_by('-createdDateAndTime')
-    logger.debug(str(len(invitesSent)))
-    invitesReceived = self.getReceivedInvites(user).order_by('-createdDateAndTime')
+    userProfile = UserProfile.objects.get(user=user)
+    invitesSent = GroupAccountInvite.getSentInvites(userProfile).order_by('-createdDateAndTime')
+    invitesReceived = GroupAccountInvite.getReceivedInvites(userProfile).order_by('-createdDateAndTime')
 #    invites = list(chain(invitesSent, invitesReceived))
 
     context['invitesSent'] = invitesSent
