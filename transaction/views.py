@@ -6,8 +6,6 @@ from userprofile.models import UserProfile
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 
-from itertools import chain
-
 import logging
 logger = logging.getLogger(__name__)
 
@@ -35,24 +33,9 @@ class MyTransactionView(BaseView):
     return len(transactions)
   
   def get_context_data(self, **kwargs):
-    logger.debug("start")
-    # Call the base implementation first to get a context
     context = super(MyTransactionView, self).get_context_data(**kwargs)
     userProfile = UserProfile.objects.get(user=self.request.user)
-    buyerTransactions = Transaction.getBuyerTransactions(userProfile.id)
-    consumerTransactions = Transaction.getConsumerTransactions(userProfile.id)
-    transactionsAll = list(chain(buyerTransactions, consumerTransactions))
-    
-    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
-    
-#     sentTransactions = self.getSentTransactionsReal(userProfile.id)
-#     receivedTransactions = self.getReceivedTransactionsReal(userProfile.id)
-#     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
-#     transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
-    
-#     context['buyer_transactions'] = self.getBuyerTransactions(userProfile.id)
-#     context['consumer_transactions'] = self.getConsumerTransactions(userProfile.id)
-#     context['transactionsRealAll'] = transactionsRealAllSorted
+    transactionsAllSorted = Transaction.getTransactionsAllSortedByDate(userProfile.id)
     context['transactionsAll'] = transactionsAllSorted
     if int(context['tableView']) == 0:
       context['tableView'] = False
@@ -69,7 +52,6 @@ class SelectGroupTransactionView(BaseView):
     userProfile = UserProfile.objects.get(user=self.request.user)
     groupaccounts = userProfile.groupAccounts.all
     context['groupaccounts'] = groupaccounts
-    
     return context
 
 
@@ -121,7 +103,6 @@ class NewTransactionView(FormView, BaseView):
       context['nogroup'] = False
     else:
       context['nogroup'] = True
-    
     return context
 
 
@@ -150,6 +131,4 @@ class EditTransactionView(FormView, BaseView):
     transaction = Transaction.objects.get(pk=self.kwargs['pk'])
     form = EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
     context['form'] = form
-    
     return context
-

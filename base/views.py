@@ -55,9 +55,9 @@ class HomeView(BaseView):
   def get_context_data(self, **kwargs):
     context = super(HomeView, self).get_context_data(**kwargs)
     user = self.request.user
-
     userProfile = UserProfile.objects.get(user=user)
     groupAccounts = userProfile.groupAccounts.all()
+    friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     
     transactionsAllSorted = Transaction.getTransactionsAllSortedByDate(userProfile.id) 
     transactionsRealAllSorted = TransactionReal.getTransactionsRealAllSortedByDate(userProfile.id)
@@ -72,12 +72,9 @@ class HomeView(BaseView):
     myTotalBalance = '%.2f' % myTotalBalanceFloat
     context['myTotalBalance'] = myTotalBalance
     context['myTotalBalanceFloat'] = myTotalBalanceFloat
-
-    friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     
     from groupaccountinvite.views import MyGroupAccountInvitesView
-    
-    groupAccountView = MyGroupAccountInvitesView()
+    groupAccountView = MyGroupAccountInvitesView()    
     
     invitesSent = groupAccountView.getSentInvites(user);
     invitesReceived = groupAccountView.getReceivedInvites(user);
