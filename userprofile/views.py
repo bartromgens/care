@@ -65,7 +65,6 @@ class SearchUserProfileView(BaseView, FormView):
     return SearchUserProfileForm(self.request.user, **self.get_form_kwargs())   
 # 
   def form_valid(self, form):
-    context = super(SearchUserProfileView, self).form_valid(form)
     username = form.cleaned_data['username']
     users = User.objects.filter(username__icontains=username)
     userProfiles = UserProfile.objects.filter(Q(user=users) | Q(displayname__icontains=username) | Q(firstname__icontains=username) | Q(lastname__icontains=username))

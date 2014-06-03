@@ -17,6 +17,10 @@ class BaseView(TemplateView):
   template_name = "base/base.html"
   context_object_name = "base"
   
+  def getUserProfile(self):
+    user = self.request.user
+    return UserProfile.objects.get(user=user)
+  
   def getActiveMenu(self):
     return ''
   
@@ -55,8 +59,8 @@ class HomeView(BaseView):
   
   def get_context_data(self, **kwargs):
     context = super(HomeView, self).get_context_data(**kwargs)
-    user = self.request.user
-    userProfile = UserProfile.objects.get(user=user)
+    userProfile = self.getUserProfile()
+    
     groupAccounts = userProfile.groupAccounts.all()
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     

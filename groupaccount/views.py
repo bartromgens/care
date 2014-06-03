@@ -17,13 +17,11 @@ class GroupsView(BaseView):
   context_object_name = "groups"
   
   def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
     context = super(GroupsView, self).get_context_data(**kwargs)
     groups = Group.objects.all()
-
     context['groups'] = groups
     context['groupssection'] = True
-    return context# Create your views here.
+    return context
     
     
 class MyGroupAccountsView(BaseView):
@@ -38,7 +36,6 @@ class MyGroupAccountsView(BaseView):
     return transactions
   
   def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
     context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
     user = self.request.user
 
@@ -78,7 +75,6 @@ class NewGroupAccountView(FormView, BaseView):
     
     form = NewGroupAccountForm(**self.get_form_kwargs())
     context['form'] = form
-    
     return context
 
 

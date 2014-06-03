@@ -17,6 +17,7 @@ def createUserProfile(sender, user, request, **kwargs):
   profile.save()
   emailserver.sendWelcomeMail(user.username, user.email)
 
+# create a new userprofile when a user registers
 user_registered.connect(createUserProfile)
 
 class UserProfile(models.Model):
@@ -25,7 +26,6 @@ class UserProfile(models.Model):
   firstname = models.CharField(max_length=100, blank=True)
   lastname = models.CharField(max_length=100, blank=True)
   groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
-  #settings = models.ForeignKey(UserSettings)
   
   def __str__(self):
     return str(self.displayname)

@@ -23,20 +23,16 @@ class MyRealTransactionView(BaseView):
     return 'transactions'
   
   def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
     context = super(MyRealTransactionView, self).get_context_data(**kwargs)
     userProfile = UserProfile.objects.get(user=self.request.user)
      
-    sentTransactions = TransactionReal.getSentTransactionsReal(userProfile.id)
-    receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfile.id)
-    transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
-    transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
+    transactionsRealAllSorted = TransactionReal.getTransactionsRealAllSortedByDate(userProfile.id)
     
     if int(context['tableView']) == 0:
       context['tableView'] = False
     
     context['transactionsRealAll'] = transactionsRealAllSorted
-    return context# Create your views here.
+    return context
 
 
 class SelectGroupRealTransactionView(BaseView):
@@ -111,7 +107,7 @@ class EditRealTransactionView(FormView, BaseView):
   def get_form(self, form_class):
     pk = self.kwargs['pk']
     transaction = TransactionReal.objects.get(pk=pk)
-    return EditRealTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())   
+    return EditRealTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())   
 
   def form_valid(self, form):
     logger.debug('EditRealTransactionView::form_valid()')
