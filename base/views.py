@@ -7,8 +7,6 @@ from groupaccountinvite.models import GroupAccountInvite
 from registration.backends.simple.views import RegistrationView
 from django.views.generic import TemplateView
 
-from itertools import chain
-
 import logging
 logger = logging.getLogger(__name__)
 

@@ -4,7 +4,6 @@ from groupaccountinvite.views import MyGroupAccountInvitesView, AcceptInviteView
 
 urlpatterns = patterns('',
   url(r'^$', login_required(MyGroupAccountInvitesView.as_view())),
-#   url(r'^new/$', 'groupaccountinvite.views.newInvite'), 
   url(r'^new/(?P<userProfileId>\d+)$', login_required(NewInviteView.as_view())), 
   url(r'^accept/(?P<inviteId>\d+)/$', login_required(AcceptInviteView.as_view())),
   url(r'^decline/(?P<inviteId>\d+)/$', login_required(DeclineInviteView.as_view())),

@@ -3,8 +3,6 @@ from django import forms
 from groupaccountinvite.models import GroupAccountInvite
 from userprofile.models import UserProfile
 
-from datetime import datetime
-
 import logging
 logger = logging.getLogger(__name__)  
 
@@ -30,7 +28,7 @@ class NewInviteForm(forms.ModelForm):
     self.fields['isAccepted'] = forms.BooleanField(widget=forms.HiddenInput, required=False)
     self.fields['isDeclined'] = forms.BooleanField(widget=forms.HiddenInput, required=False)
 
-    self.fields['createdDateAndTime'] = forms.DateTimeField(widget=forms.HiddenInput, initial=datetime.now, required=False)
+    self.fields['createdDateAndTime'] = forms.DateTimeField(widget=forms.HiddenInput, initial=datetime.datetime.now, required=False)
   
   class Meta:
     model = GroupAccountInvite

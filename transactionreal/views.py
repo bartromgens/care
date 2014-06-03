@@ -1,15 +1,10 @@
-# Create your views here.
 from base.views import BaseView
 from transactionreal.forms import NewRealTransactionForm, EditRealTransactionForm
 from transactionreal.models import TransactionReal
 from userprofile.models import UserProfile
 
-from django.template import RequestContext
-from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-
-from itertools import chain
 
 import logging
 logger = logging.getLogger(__name__)

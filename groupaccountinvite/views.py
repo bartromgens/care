@@ -5,11 +5,6 @@ from groupaccountinvite.forms import NewInviteForm
 from userprofile.models import UserProfile
 from base import emailserver
 
-from django.contrib.auth.models import User
-from itertools import chain
-from django.template import RequestContext
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 
 import logging

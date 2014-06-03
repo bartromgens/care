@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
 class EditUserProfileForm(forms.ModelForm):
