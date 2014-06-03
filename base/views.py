@@ -59,21 +59,13 @@ class HomeView(BaseView):
     userProfile = UserProfile.objects.get(user=user)
     groupAccounts = userProfile.groupAccounts.all()
     
-    buyerTransactions = Transaction.getBuyerTransactions(userProfile.id)
-    consumerTransactions = Transaction.getConsumerTransactions(userProfile.id)
-    transactionsAll = list(chain(buyerTransactions, consumerTransactions))
-    transactionsAllSorted = sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
-    
-    sentTransactions = TransactionReal.getSentTransactionsReal(userProfile.id)
-    receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfile.id)
-    transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
-    transactionsRealAllSorted = sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
-    
-    myTotalBalanceFloat = 0.0
-    
+    transactionsAllSorted = Transaction.getTransactionsAllSortedByDate(userProfile.id) 
+    transactionsRealAllSorted = TransactionReal.getTransactionsRealAllSortedByDate(userProfile.id)
+        
     for groupAccount in groupAccounts:
       groupAccount = GroupAccount.addGroupAccountInfo(groupAccount, userProfile)
     
+    myTotalBalanceFloat = 0.0
     for groupAccount in groupAccounts:
       myTotalBalanceFloat += groupAccount.myBalanceFloat
     

@@ -3,6 +3,7 @@ from django.db import models
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
+from itertools import chain
 from datetime import datetime
 
 class TransactionReal(models.Model):
@@ -29,5 +30,12 @@ class TransactionReal(models.Model):
       transaction.amountPerPersonFloat = transaction.amount
     return transactions
   
+  @staticmethod
+  def getTransactionsRealAllSortedByDate(userProfileId):
+    sentTransactions = TransactionReal.getSentTransactionsReal(userProfileId)
+    receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfileId)
+    transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
+    return sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
+    
   def __str__(self):
     return self.comment

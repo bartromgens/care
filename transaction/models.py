@@ -1,13 +1,13 @@
-from django.db import models
-
-# from django.contrib.auth.models import User
-
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
+from django.db import models
+
+from itertools import chain
 from datetime import datetime
 
 # users = User.objects.filter(groups__name='monkeys')
+
 
 class Transaction(models.Model):
   amount = models.DecimalField(max_digits=6, decimal_places=2)
@@ -32,6 +32,13 @@ class Transaction(models.Model):
       transaction.amountPerPerson = '%.2f' % (-1*transaction.amount/transaction.consumers.count())
       transaction.amountPerPersonFloat = (-1*transaction.amount/transaction.consumers.count())
     return transactions
+  
+  @staticmethod
+  def getTransactionsAllSortedByDate(userProfileId):
+    buyerTransactions = Transaction.getBuyerTransactions(userProfileId)
+    consumerTransactions = Transaction.getConsumerTransactions(userProfileId)
+    transactionsAll = list(chain(buyerTransactions, consumerTransactions))
+    return sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
   
   def __str__(self):
     return self.what
