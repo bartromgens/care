@@ -10,7 +10,7 @@
       <ul class="nav navbar-nav">
         <li><a href="/transactions/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New share</font></b></a></li>
         {% if userprofile.showTableView %}  
-        <li><a href="/transactions/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Compact view</font></b></a></li>
+        <li><a href="/transactions/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
         {% else %}
         <li><a href="/transactions/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
         {% endif %}
@@ -39,7 +39,7 @@
 {% if userprofile.showTableView %}  
 <div class="row">
   <div class="col-md-10 col-md-offset-1" align="center">
-    <table class="table table-striped table-hover table-condensed">
+    <table class="table table-striped table-hover">
     <tr>
       <th><b>&#8364</b></th>
       <th><b>What</b></th>
@@ -47,26 +47,29 @@
       <th><b>Who</b></th>
       <th><b>Shared with</b></th>
       <th><b>Date</b></th>
+      <th><b>Edit</b></th>
     </tr>
-      {% for transaction in transactionsAll %}
+      
+    {% for transaction in transactionsAll %}
     <tr>
     
-    {% if transaction.amountPerPersonFloat <= 0.0 %}
-     	<td  style="color:red" align="right">
-    {% else %}
-     	<td  style="color:green" align="right">
-	  {% endif %}
-        
+      <td align="left">&#8364
+      {% if transaction.amountPerPersonFloat <= 0.0 %}
+     	  <font class="text-warning">
+      {% else %}
+     	  <font class="text-info">
+	    {% endif %}
   	    <b>{{ transaction.amountPerPerson }}</b>
+        </font>
       </td>
     
-      <td > <b>{{ transaction.what }}</b> </td> 
+      <td >{{ transaction.what }}</td> 
     
       <td>{{ transaction.groupAccount }}</td>
     
       <td>
         {% ifequal transaction.buyer.displayname displayname %}
-        	<b>{{ transaction.buyer }}</b>
+        	{{ transaction.buyer }}
         {% else %}
         	{{ transaction.buyer }}
         {% endifequal %}
@@ -74,15 +77,13 @@
       
       <td>
       {% for consumer in transaction.consumers.all %}
-        {% ifequal consumer.displayname displayname %}
-        <b>{{ consumer }}</b>
-        {% else %}
-        {{ consumer }}
-        {% endifequal %}
+            {% ifequal consumer.displayname displayname %}<font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
       {% endfor %}
       </td>
       
       <td>{{ transaction.date|date:"Y-m-d"  }}</td>
+
+      <td><a href="/transactions/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
     
     </tr>
   	{% endfor %}

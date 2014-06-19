@@ -9,7 +9,7 @@
       <ul class="nav navbar-nav">
         <li><a href="/transactionsreal/new"><b class="text-info">{% bootstrap_icon "plus" %} New transaction</b></a></li>
         {% if userprofile.showTableView %}  
-        <li><a href="/transactionsreal/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Compact view</font></b></a></li>
+        <li><a href="/transactionsreal/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
         {% else %}
         <li><a href="/transactionsreal/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
         {% endif %}
@@ -46,17 +46,18 @@
       <th><b>Comment</b></th>
       <th><b>Group</b></th>
       <th><b>Date</b></th>
+      <th><b>Edit</b></th>
     </tr>
     {% for transaction in transactionsRealAll %}
     <tr>
-    	<td {% if transaction.amountPerPersonFloat <= 0.0 %} style="color:red" {% else %}
-    	    style="color:green"
-    	    {% endif %}>
-    	    <b>{{ transaction.amountPerPerson }}</b>
+      <td align="left">&#8364
+        <font class="text-info">
+          <b>{{ transaction.amountPerPerson }}</b>
+        </font>
       </td>
     	<td>
     	  {% ifequal transaction.sender.displayname displayname %}
-    	  	<b>{{ transaction.sender }}</b>
+    	  	{{ transaction.sender }}
     	  {% else %}
     	  	{{ transaction.sender }}
     	  {% endifequal %}
@@ -66,14 +67,15 @@
       </td>
     	<td>
     	  {% ifequal transaction.receiver.displayname displayname %}
-    	  	<b>{{ transaction.receiver }}</b>
+    	  	{{ transaction.receiver }}
     	  {% else %}
     	  	{{ transaction.receiver }}
     	  {% endifequal %}
     	</td>
     	<td >{{ transaction.comment }}</td> 
     	<td >{{ transaction.groupAccount }}</td> 
-    	<td>{{ transaction.date|date:"SHORT_DATE_FORMAT"  }}</td>
+    	<td>{{ transaction.date|date:"Y-m-d"  }}</td>
+    	<td><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
     </tr>
   	{% endfor %}
   	</table>
