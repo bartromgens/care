@@ -93,7 +93,7 @@ class EditRealTransactionView(FormView, BaseView):
   success_url = '/transactionsreal/0'
   
   def getActiveMenu(self):
-    return 'shares'
+    return 'transactions'
    
   def get_form(self, form_class):
     pk = self.kwargs['pk']
@@ -104,7 +104,7 @@ class EditRealTransactionView(FormView, BaseView):
     logger.debug('EditRealTransactionView::form_valid()')
     super(EditRealTransactionView, self).form_valid(form)
     transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
-    if self.request.user == transaction.sender.user:
+    if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
       form.save()
     return HttpResponseRedirect( '/transactionsreal/0' )
   
@@ -112,7 +112,7 @@ class EditRealTransactionView(FormView, BaseView):
     context = super(EditRealTransactionView, self).get_context_data(**kwargs)
     transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
     
-    if self.request.user == transaction.sender.user:
+    if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
       form = EditRealTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
       context['form'] = form
     

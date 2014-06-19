@@ -111,7 +111,7 @@ class EditTransactionView(FormView, BaseView):
   def get_form(self, form_class):
     pk = self.kwargs['pk']
     transaction = Transaction.objects.get(pk=pk)
-    return EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())   
+    return EditTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())   
 
   def form_valid(self, form):
     super(EditTransactionView, self).form_valid(form)

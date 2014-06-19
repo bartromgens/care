@@ -34,7 +34,7 @@ class EditRealTransactionForm(forms.ModelForm):
     
     transaction = TransactionReal.objects.get(id=transactionId)
     
-    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(user=user), empty_label=None, label='From', widget=forms.HiddenInput)
+    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), empty_label=None, label='From', widget=forms.HiddenInput)
     
     self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), empty_label=None, label='To')
     
