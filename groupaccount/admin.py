@@ -7,6 +7,7 @@ class GroupAccountAdmin(admin.ModelAdmin):
         (None, {'fields': ['number']}),
         (None, {'fields': ['name']}),
     ]
+    list_display = ('name', 'number')
     
 #class AccountAdmin(admin.ModelAdmin):
     #fieldsets = [
