@@ -18,6 +18,13 @@
   -->
   </style>
   
+  <style type="text/css">
+  <!--
+  @import url("{{ STATIC_URL }}bootstrap-sortable/Contents/bootstrap-sortable.css");
+  -->
+  </style>
+ 
+  
   {% block headcontent %}{% endblock %}
 
 </head>
@@ -117,6 +124,9 @@
 <script src={% bootstrap_jquery_url %} ></script>
 
 {% bootstrap_javascript %}
+
+<script src="{{ STATIC_URL }}bootstrap-sortable/Scripts/bootstrap-sortable.js" ></script>
+<script src="{{ STATIC_URL }}bootstrap-sortable/Scripts/moment.min.js" ></script>
 
 </body>
 
