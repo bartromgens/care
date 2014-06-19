@@ -26,9 +26,19 @@ class UserProfile(models.Model):
   firstname = models.CharField(max_length=100, blank=True)
   lastname = models.CharField(max_length=100, blank=True)
   groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
+  showTableView = models.BooleanField(default=False)
   
   def __str__(self):
     return str(self.displayname)
+  
+  def setShowTable(self, doShowTable):
+    if int(doShowTable) == 1 and self.showTableView:
+      self.showTableView = False
+      self.save()
+    if int(doShowTable) == 2 and not self.showTableView:
+      self.showTableView = True
+      self.save()
+    
   
   @staticmethod
   def getBalance(groupAccountId, userProfileId):

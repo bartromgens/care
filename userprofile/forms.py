@@ -17,6 +17,8 @@ class EditUserProfileForm(forms.ModelForm):
     self.fields['firstname'] = forms.CharField(max_length=100, label='First name', required=False)
     self.fields['lastname'] = forms.CharField(max_length=100, label='Last name', required=False)
     
+    self.fields['showTableView'] = forms.BooleanField(widget=forms.HiddenInput, required=False)
+    
     self.fields['groupAccounts'] = forms.ModelMultipleChoiceField(widget=forms.MultipleHiddenInput, 
                                                                   queryset=userProfile.groupAccounts.all(), 
                                                                   label='Groups', 
@@ -31,4 +33,4 @@ class SearchUserProfileForm(forms.Form):
   def __init__(self, user, *args, **kwargs):
     super(SearchUserProfileForm, self).__init__(*args, **kwargs)
     
-    self.fields['username'] = forms.CharField(min_length=3, max_length=100, label='Username', required=True)
+    self.fields['username'] = forms.CharField(min_length=3, max_length=100, label='Name or part of name', required=True)

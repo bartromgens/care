@@ -33,12 +33,11 @@ class MyTransactionView(BaseView):
     return len(transactions)
   
   def get_context_data(self, **kwargs):
-    context = super(MyTransactionView, self).get_context_data(**kwargs)
     userProfile = UserProfile.objects.get(user=self.request.user)
+    userProfile.setShowTable(self.kwargs['tableView'])   
+    context = super(MyTransactionView, self).get_context_data(**kwargs)
     transactionsAllSorted = Transaction.getTransactionsAllSortedByDate(userProfile.id)
     context['transactionsAll'] = transactionsAllSorted
-    if int(context['tableView']) == 0:
-      context['tableView'] = False
     return context
 
 

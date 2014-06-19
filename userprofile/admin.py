@@ -7,9 +7,10 @@ class UserProfileAdmin(admin.ModelAdmin):
     (None, {'fields': ['user']}),
     (None, {'fields': ['displayname']}),
     (None, {'fields': ['groupAccounts']}),
+    (None, {'fields': ['showTableView']}),
   ]
   
-  list_display = ('user', 'displayname',)
+  list_display = ('user', 'displayname','showTableView',)
     
 #class AccountAdmin(admin.ModelAdmin):
     #fieldsets = [
