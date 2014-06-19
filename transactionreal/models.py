@@ -19,7 +19,7 @@ class TransactionReal(models.Model):
     transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % transaction.amount
-      transaction.amountPerPersonFloat = transaction.amount
+      transaction.amountPerPersonFloat = float(transaction.amount)
     return transactions
   
   @staticmethod  
@@ -27,7 +27,7 @@ class TransactionReal(models.Model):
     transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % transaction.amount
-      transaction.amountPerPersonFloat = transaction.amount
+      transaction.amountPerPersonFloat = float(transaction.amount)
     return transactions
   
   @staticmethod

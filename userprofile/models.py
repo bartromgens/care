@@ -56,17 +56,17 @@ class UserProfile(models.Model):
     totalReceived = 0.0
   
     for transaction in buyerTransactions:
-      totalBought += transaction.amount
+      totalBought += float(transaction.amount)
       
     for transaction in consumerTransactions:
       nConsumers = transaction.consumers.count()
-      totalConsumed += transaction.amount / nConsumers
+      totalConsumed += float(transaction.amount) / nConsumers
       
     for transaction in senderRealTransactions:
-      totalSent += transaction.amount
+      totalSent += float(transaction.amount)
       
     for transaction in receiverRealTransactions:
-      totalReceived += transaction.amount
+      totalReceived += float(transaction.amount)
       
     balance = (totalBought + totalSent - totalConsumed - totalReceived)
     return balance
