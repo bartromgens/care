@@ -47,6 +47,7 @@
         <th><b>Group</b></th>
         <th><b>Who</b></th>
         <th><b>Shared with</b></th>
+        <th><b>Comment</b></th>
         <th><b>Date</b></th>
         <th><b>Edit</b></th>
       </tr>
@@ -82,6 +83,8 @@
             {% ifequal consumer.displayname displayname %}<font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
       {% endfor %}
       </td>
+      
+      <td>{{ transaction.comment }}</td>
       
       <td data-value="{{ transaction.date|date:"Y-m-d H:i:s" }}">{{ transaction.date|date:"Y-m-d" }}</td>
 
