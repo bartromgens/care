@@ -10,19 +10,7 @@ from django.views.generic.edit import FormView
 
 import logging
 logger = logging.getLogger(__name__)
-
-
-class GroupsView(BaseView):
-  template_name = "groupaccount/index.html"
-  context_object_name = "groups"
-  
-  def get_context_data(self, **kwargs):
-    context = super(GroupsView, self).get_context_data(**kwargs)
-    groups = Group.objects.all()
-    context['groups'] = groups
-    context['groupssection'] = True
-    return context
-    
+   
     
 class MyGroupAccountsView(BaseView):
   template_name = "groupaccount/myaccounts.html"
@@ -36,15 +24,15 @@ class MyGroupAccountsView(BaseView):
     return transactions
   
   def get_context_data(self, **kwargs):
-    context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
     user = self.request.user
-
     userProfile = UserProfile.objects.get(user=user)
+    userProfile.setShowTable(self.kwargs['tableView'])   
     groupAccounts = userProfile.groupAccounts.all()
     
     for groupAccount in groupAccounts:
       groupAccount = GroupAccount.addGroupAccountInfo(groupAccount, userProfile)
 
+    context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
     context['groups'] = groupAccounts
     context['groupssection'] = True
     return context# Create your views here.

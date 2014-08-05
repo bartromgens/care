@@ -54,7 +54,10 @@ class EditTransactionForm(forms.ModelForm):
                                                          label='Group')
     
     self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
-    self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), required=False, widget=forms.MultipleHiddenInput()) 
+    self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), 
+                                                                  required=False, 
+                                                                  widget=forms.MultipleHiddenInput()) 
+    
     self.fields['groupAccount'].widget.attrs['readonly'] = True
   
   class Meta:

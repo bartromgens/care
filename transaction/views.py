@@ -8,18 +8,7 @@ from django.views.generic.edit import FormView
 
 import logging
 logger = logging.getLogger(__name__)
-
-  
-class TransactionView(BaseView):
-  template_name = "transaction/index.html"
-  context_object_name = "transaction"
-  
-  def get_context_data(self, **kwargs):
-    context = super(TransactionView, self).get_context_data(**kwargs)
-    transactions = Transaction.objects.order_by('date')[:50].reverse()
-    context['latest_transactions_list'] = transactions
-    return context
-    
+ 
     
 class MyTransactionView(BaseView):
   template_name = "transaction/mytransactions.html"

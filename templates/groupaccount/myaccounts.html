@@ -10,6 +10,11 @@
       <li><a href="/group/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New group</font></b></a></li>
       <li><a href="/userprofile/search/"><b class="text-info">{% bootstrap_icon "send" %}<font style="padding-left:0.5em;">Invite</font></b></a></li>
       <li><a href="/invites/"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">My invites</font></b></a></li>
+      {% if userprofile.showTableView %}  
+      <li><a href="/group/my/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
+      {% else %}
+      <li><a href="/group/my/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
+      {% endif %}
     </ul>
   </div>
 </div>
@@ -17,6 +22,8 @@
 <div align="center"><h4>Groups</h4></div>
 
 {% if groups %}
+
+{% if not userprofile.showTableView %} 
   
 {% with "accordiongroups" as parentId %}
   <div class="panel-group" id="{{ parentId }}">
@@ -25,7 +32,17 @@
   {% endfor %}
   </div>
 {% endwith %}
-      
+
+{% endif %}
+
+
+{% if userprofile.showTableView %}  
+<div class="row">
+  <div class="col-md-8 col-md-offset-2" align="center">
+  {% include "groupaccount/groupaccounttable.html" %}  
+  </div>
+</div>
+{% endif %}
 
 {% else %}
 <div class="container">
