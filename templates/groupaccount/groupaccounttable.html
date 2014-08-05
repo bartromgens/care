@@ -1,0 +1,50 @@
+{% load bootstrap3 %}
+ 
+<table class="table table-striped table-hover sortable">
+<thead>
+  <tr>
+    <th><b>Name</b></th>
+    <th><b>My balance</b></th>
+    <th><b>Number</b></th>
+    <th><b>Status</b></th>
+  </tr>
+</thead>
+  
+{% for group in groups %}
+<tr>
+
+  <td align="left"> {{ group.name }}</td>
+
+  <td align="left" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
+    {% if group.myBalance < -100.0 %}
+      &#8364<font class="text-danger"><b>{{ group.myBalance }}
+    {% elif group.myBalanceFloat < 0.0 %}
+      &#8364<font class="text-warning"><b>{{ group.myBalance }}
+    {% elif group.myBalanceFloat > 100.0 %}
+      &#8364<font class="text-success"><b>{{ group.myBalance }}
+    {% elif group.myBalanceFloat > -0.001 %}
+      &#8364<font class="text-info"><b>{{ group.myBalance }}
+    {% endif %}
+    </b></font>
+  </td>
+  
+  <td align="left"> {{ group.number }}</td>
+  
+  <td style="padding-left:1em; width:6em;" align="right">        
+    {% if group.balanceVerified %}
+    <div><font class="text-success" data-toggle="tooltip" data-placement="left" title="Tooltip on left">{% bootstrap_icon "ok-circle" %}</font></div>
+    {% else %}
+    <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
+    {% endif %}
+  </td>
+              
+</tr>
+{% endfor %}
+</table>
+
+<script>
+$('.text-success').tooltip({
+  selector: '[data-toggle=tooltip]',
+  container: 'body'
+});
+</script>
