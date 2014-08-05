@@ -106,6 +106,7 @@ class EditRealTransactionView(FormView, BaseView):
     transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
     if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
       form.save()
+      transaction.modifications.create(user=UserProfile.objects.get(user=self.request.user))
     return HttpResponseRedirect( '/transactionsreal/0' )
   
   def get_context_data(self, **kwargs):

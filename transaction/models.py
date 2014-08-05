@@ -9,6 +9,11 @@ from datetime import datetime
 # users = User.objects.filter(groups__name='monkeys')
 
 
+class Modification(models.Model):
+  user = models.ForeignKey(UserProfile, blank=True)
+  date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
+  
+
 class Transaction(models.Model):
   amount = models.DecimalField(max_digits=6, decimal_places=2)
   what = models.CharField(max_length=24)
@@ -16,6 +21,7 @@ class Transaction(models.Model):
   consumers = models.ManyToManyField(UserProfile, related_name='consumers')
   groupAccount = models.ForeignKey(GroupAccount)
   comment = models.CharField(max_length=200,  blank=True)
+  modifications = models.ManyToManyField(Modification, blank=True)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
   @staticmethod
@@ -43,3 +49,4 @@ class Transaction(models.Model):
   
   def __str__(self):
     return self.what
+  

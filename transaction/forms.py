@@ -1,6 +1,7 @@
 from datetime import datetime
 from django import forms
 from transaction.models import Transaction
+from transaction.models import Modification
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
@@ -23,6 +24,8 @@ class NewTransactionForm(forms.ModelForm):
     if GroupAccount.objects.filter(id=groupAccountId).count():
       self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
     self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput, initial=datetime.now)
+    
+    self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), required=False, widget=forms.MultipleHiddenInput())
   
   def setGroupAccount(self, groupAccount):
     self.fields['groupAccount'].initial = groupAccount
@@ -51,6 +54,7 @@ class EditTransactionForm(forms.ModelForm):
                                                          label='Group')
     
     self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
+    self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), required=False, widget=forms.MultipleHiddenInput()) 
     self.fields['groupAccount'].widget.attrs['readonly'] = True
   
   class Meta:

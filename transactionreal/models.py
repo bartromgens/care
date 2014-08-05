@@ -2,6 +2,7 @@ from django.db import models
 
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
+from transaction.models import Modification
 
 from itertools import chain
 from datetime import datetime
@@ -12,6 +13,7 @@ class TransactionReal(models.Model):
   receiver = models.ForeignKey(UserProfile, related_name='receiver')
   comment = models.CharField(max_length=200)
   groupAccount = models.ForeignKey(GroupAccount)
+  modifications = models.ManyToManyField(Modification, blank=True)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
   @staticmethod

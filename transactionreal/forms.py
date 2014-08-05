@@ -1,17 +1,24 @@
-from datetime import datetime
-from django import forms
 from transactionreal.models import TransactionReal
+from transaction.models import Modification
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
+
+from django import forms
+
+from datetime import datetime
+
 
 class NewRealTransactionForm(forms.ModelForm):
   def __init__(self, groupAccountId, user, *args, **kwargs):
     super(NewRealTransactionForm, self).__init__(*args, **kwargs)
     
 #     self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user), widget = forms.HiddenInput, empty_label=None, label='From')
-    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(user=user), empty_label=None, label='From', widget=forms.HiddenInput)
+    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(user=user), 
+                                                   empty_label=None, label='From', widget=forms.HiddenInput())
+    
     self.fields['sender'].initial = UserProfile.objects.get(user=user)    
-    self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), empty_label=None, label='To')
+    self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId), 
+                                                     empty_label=None, label='To')
     
     self.fields['comment'] = forms.CharField(required=False)
     
@@ -22,7 +29,10 @@ class NewRealTransactionForm(forms.ModelForm):
       self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
 #     self.fields['groupAccount'].widget.attrs['readonly'] = True
 
-    self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput, initial=datetime.now)
+    self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), 
+                                                                  required=False, 
+                                                                  widget=forms.MultipleHiddenInput())
+    self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput(), initial=datetime.now)
   
   class Meta:
     model = TransactionReal
@@ -34,18 +44,26 @@ class EditRealTransactionForm(forms.ModelForm):
     
     transaction = TransactionReal.objects.get(id=transactionId)
     
-    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), empty_label=None, label='From', widget=forms.HiddenInput)
+    self.fields['amount'].label = '€'
+    self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), 
+                                                   empty_label=None, label='From', 
+                                                   widget=forms.HiddenInput)
     
-    self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), empty_label=None, label='To')
+    self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id), 
+                                                     empty_label=None, label='To')
     
     self.fields['groupAccount'] = forms.ModelChoiceField(queryset=GroupAccount.objects.filter(id=transaction.groupAccount.id), 
                                                          empty_label=None, 
                                                          label='Group')
     
-    self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
     self.fields['groupAccount'].widget.attrs['readonly'] = True
     
-    self.fields['amount'].label = '€'
+    
+    self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), 
+                                                                  required=False, 
+                                                                  widget=forms.MultipleHiddenInput())
+    
+    self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
   
   class Meta:
     model = TransactionReal

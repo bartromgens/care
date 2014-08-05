@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from transaction.models import Transaction
+from transaction.models import Modification
 
 class TransactionAdmin(admin.ModelAdmin):
   fieldsets = [
@@ -15,5 +16,14 @@ class TransactionAdmin(admin.ModelAdmin):
   date_hierarchy = 'date'
 
 admin.site.register(Transaction, TransactionAdmin)
+
+
+class ModificationAdmin(admin.ModelAdmin):
+  fieldsets = [
+    (None, {'fields': ['date']}),
+    (None, {'fields': ['user']}), ]
+  list_display = ('date', 'user')
+
+admin.site.register(Modification, ModificationAdmin)
 
 #admin.site.register(Account, AccountAdmin)

@@ -48,6 +48,16 @@
           <h4><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></h4> 
         </div>
         {% endif %}
+        
+        <div class="col-lg-12" align="center">
+          <h5>
+          {% for modification in transaction.modifications.all %}
+            <font size=2 class="text-info">*{{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
+            <br>
+          {% endfor %}
+          </h5>
+        </div>
+        
       </div>
     </div>
   </div>

@@ -115,7 +115,9 @@ class EditTransactionView(FormView, BaseView):
 
   def form_valid(self, form):
     super(EditTransactionView, self).form_valid(form)
+    transaction = Transaction.objects.get(pk=self.kwargs['pk'])
     form.save()
+    transaction.modifications.create(user=UserProfile.objects.get(user=self.request.user))
     return HttpResponseRedirect( '/transactions/0' )
   
   def get_context_data(self, **kwargs):

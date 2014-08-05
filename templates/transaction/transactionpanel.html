@@ -67,12 +67,21 @@
 
         <div class="col-lg-12" align="center">
           <h5>
-            {{ transaction.date|date:"d M" }}
+            {{ transaction.date|date:"j M" }}
           </h5>
         </div>
         
         <div class="col-lg-12" align="center">
           <h4><a href="/transactions/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></h4>
+        </div>
+        
+        <div class="col-lg-12" align="center">
+          <h5>
+          {% for modification in transaction.modifications.all %}
+            <font size=2 class="text-info">*{{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
+            <br>
+          {% endfor %}
+          </h5>
         </div>
         
       </div>
