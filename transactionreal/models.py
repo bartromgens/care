@@ -18,7 +18,7 @@ class TransactionReal(models.Model):
   
   @staticmethod
   def getSentTransactionsReal(senderId):
-    transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("date")
+    transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % transaction.amount
       transaction.amountPerPersonFloat = float(transaction.amount)
@@ -26,7 +26,7 @@ class TransactionReal(models.Model):
   
   @staticmethod  
   def getReceivedTransactionsReal(receiverId):
-    transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("date")
+    transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % transaction.amount
       transaction.amountPerPersonFloat = float(transaction.amount)

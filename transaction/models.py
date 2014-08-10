@@ -26,7 +26,7 @@ class Transaction(models.Model):
   
   @staticmethod
   def getBuyerTransactions(buyerId):
-    transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("date")
+    transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % float(transaction.amount)
       transaction.amountPerPersonFloat = float(transaction.amount)
@@ -34,7 +34,7 @@ class Transaction(models.Model):
   
   @staticmethod  
   def getConsumerTransactions(consumerId):
-    transactions = Transaction.objects.filter(consumers__id=consumerId).order_by("date")
+    transactions = Transaction.objects.filter(consumers__id=consumerId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % (-1*float(transaction.amount)/transaction.consumers.count())
       transaction.amountPerPersonFloat = (-1*float(transaction.amount)/transaction.consumers.count())
