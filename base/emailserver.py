@@ -5,124 +5,96 @@ from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import threading
+
+import os
+module_dir = os.path.dirname(__file__)  # get current directory
+
 import logging
 logger = logging.getLogger(__name__)
 
 
 def main():
   username = 'Bart'
+  usernameTo = 'Jaap'
   toAddress = 'bart@romgens.com'
-  sendWelcomeMail(username, toAddress)
+#   sendWelcomeMail(username, toAddress)
+  sendNewInviteMail(username, usernameTo, "testgroup", toAddress)
+  logger.info("main() end")
 
 
-def sendMail(toAddress, fromAddress, subject, message):
-#   header = "From: %s\r\nTo: %s\r\nSubject: %s\r\nX-Mailer: My-Mail\r\n\r\n" % (fromAddress, toAddress, subject)
-  msg = MIMEMultipart('alternative')
-  msg['Subject'] = subject
-  msg['From'] = fromAddress
-  msg['To'] = toAddress
+class EmailThread(threading.Thread):
+  def __init__(self, toAddress, fromAddress, subject, message):
+      self.toAddress = toAddress
+      self.fromAddress = fromAddress
+      self.subject = subject
+      self.message = message
+      threading.Thread.__init__(self)
+
+  def run(self):
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = self.subject
+    msg['From'] = self.fromAddress
+    msg['To'] = self.toAddress
+    
+    msg.attach(MIMEText(self.message, 'html'))
   
-  msg.attach(MIMEText(message, 'html'))
+    # Credentials (if needed)  
+    username = 'computerautomatedremoteexchange'  
+    password = settings.MAILPASSWORD  
+    
+    # The actual mail send  
+    server = SMTP('smtp.webfaction.com:587')  
+    server.starttls()  
+    server.login(username, password)  
+    server.sendmail(self.fromAddress, self.toAddress, msg.as_string())  
+    server.quit()
+    logger.info("finished sending mail")
 
-  # Credentials (if needed)  
-  username = 'computerautomatedremoteexchange'  
-  password = settings.MAILPASSWORD  
-  
-  # The actual mail send  
-  server = SMTP('smtp.webfaction.com:587')  
-  server.starttls()  
-  server.login(username, password)  
-  server.sendmail(fromAddress, toAddress, msg.as_string())  
-  server.quit()
+def send_html_mail(toAddress, fromAddress, subject, message):
+    EmailThread(toAddress, fromAddress, subject, message).start()
 
 
 def sendWelcomeMail(username, emailaddress):
-  fromAddress = 'CARE <info@computerautomatedremoteexchange.com>'
+  fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
-  subject = 'Welcome to CARE!' 
+  subject = 'Welcome to Care!' 
   logging.debug('sendWelcomeMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  
+  message = ''
+  
+  with open( os.path.join(module_dir, 'welcomemail.html'), 'r' ) as filein:
+    data = filein.readlines()
+    for row in data:
+      message += row
+      
+  message = message.replace('{% username %}', username)
+  message = message.replace('{% email %}', emailaddress)
 
-  message = """\
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Demystifying Email Design</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-
-<body style="margin: 0; padding: 0;">
-<p>Hi %s,</p>
-
-<p>Welkom to CARE!</p>
-
-<p>
-You have created an account on CARE with the following information,
-<br>
-<br>
-username: %s
-<br>
-email: %s
-</p>
-
-<p>
-Log-in at <a href="http://www.computerautomatedremoteexchange.com">CARE</a> to get started. 
-</p>
-
-<p>
-Have fun sharing,
-<br>
-CareBot
-</p>
-
-</body>
-
-</html>
-  """ % (username, username, emailaddress)
-
-  sendMail(toAddress, fromAddress, subject, message)
-  sendMail(fromAddress, fromAddress, subject, message)
+  send_html_mail(toAddress, fromAddress, subject, message)
+  send_html_mail(fromAddress, fromAddress, subject, message)
   
   
 def sendNewInviteMail(usernameFrom, usernameTo, groupName, emailaddress):
-  fromAddress = 'CARE <info@computerautomatedremoteexchange.com>'
+  fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
   subject = 'New invitation' 
   
   logging.debug('sendWelcomeMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
 
-  message = """\
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Demystifying Email Design</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
+  message = ''
+  
+  with open( os.path.join(module_dir, 'invitemail.html'), 'r' ) as filein:
+    data = filein.readlines()
+    for row in data:
+      message += row
+      
+  message = message.replace('{% usernameTo %}', usernameTo)
+  message = message.replace('{% usernameFrom %}', usernameFrom)
+  message = message.replace('{% groupName %}', groupName)
 
-<body style="margin: 0; padding: 0;">
-<p>Hi %s,</p>
-
-<p>
-%s has invited you to the group "%s",
-<br>
-
-<p>
-Visit <a href="http://www.computerautomatedremoteexchange.com/invites/">my invites</a> to accept or decline the invitation. 
-</p>
-
-<p>
-Have fun sharing,
-<br>
-CareBot
-</p>
-
-</body>
-
-</html>
-  """ % (usernameTo, usernameFrom, groupName)
-
-  sendMail(toAddress, fromAddress, subject, message)
+#   sendMail(toAddress, fromAddress, subject, message)
+  send_html_mail(toAddress, fromAddress, subject, message)
   
   
 if __name__ == "__main__":
