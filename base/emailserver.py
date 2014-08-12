@@ -55,6 +55,32 @@ def send_html_mail(toAddress, fromAddress, subject, message):
     EmailThread(toAddress, fromAddress, subject, message).start()
 
 
+def sendTransactionHistory(username, emailaddress, transactionTable, startDate, endDate):
+  fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
+  toAddress = emailaddress
+  subject = 'Care transaction history' 
+  logging.debug('sendTransactionHistory from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  
+  message = ''
+  
+  with open( os.path.join(module_dir, 'transactionhistorymail.html'), 'r' ) as filein:
+    data = filein.readlines()
+    for row in data:
+      message += row
+  
+  message = message.replace('{% transactionTable %}', transactionTable)    
+  message = message.replace('{% username %}', username)
+  message = message.replace('{% startDate %}', startDate.strftime('%d %B %Y') )
+  message = message.replace('{% endDate %}', endDate.strftime('%d %B %Y') )
+  
+  logger.info(message)
+  
+  with open('test.hml', 'w') as fileout:
+    fileout.write(message)
+
+#   send_html_mail(toAddress, fromAddress, subject, message)
+  
+
 def sendWelcomeMail(username, emailaddress):
   fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
@@ -70,9 +96,9 @@ def sendWelcomeMail(username, emailaddress):
       
   message = message.replace('{% username %}', username)
   message = message.replace('{% email %}', emailaddress)
+  
 
   send_html_mail(toAddress, fromAddress, subject, message)
-  send_html_mail(fromAddress, fromAddress, subject, message)
   
   
 def sendNewInviteMail(usernameFrom, usernameTo, groupName, emailaddress):
@@ -80,7 +106,7 @@ def sendNewInviteMail(usernameFrom, usernameTo, groupName, emailaddress):
   toAddress = emailaddress
   subject = 'New invitation' 
   
-  logging.debug('sendWelcomeMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  logging.debug('sendNewInviteMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
 
   message = ''
   
@@ -93,7 +119,6 @@ def sendNewInviteMail(usernameFrom, usernameTo, groupName, emailaddress):
   message = message.replace('{% usernameFrom %}', usernameFrom)
   message = message.replace('{% groupName %}', groupName)
 
-#   sendMail(toAddress, fromAddress, subject, message)
   send_html_mail(toAddress, fromAddress, subject, message)
   
   
