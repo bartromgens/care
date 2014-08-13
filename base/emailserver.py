@@ -55,30 +55,27 @@ def send_html_mail(toAddress, fromAddress, subject, message):
     EmailThread(toAddress, fromAddress, subject, message).start()
 
 
-def sendTransactionHistory(username, emailaddress, transactionTable, startDate, endDate):
+def sendTransactionHistory(username, emailaddress, transactionTable, transactionRealTable, startDate, endDate):
   fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
   subject = 'Care transaction history' 
-  logging.debug('sendTransactionHistory from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  logging.info('sendTransactionHistory from: ' + str(fromAddress) + ' to: ' + str(toAddress))
   
   message = ''
-  
   with open( os.path.join(module_dir, 'transactionhistorymail.html'), 'r' ) as filein:
     data = filein.readlines()
     for row in data:
       message += row
   
   message = message.replace('{% transactionTable %}', transactionTable)    
+  message = message.replace('{% transactionRealTable %}', transactionRealTable)    
   message = message.replace('{% username %}', username)
   message = message.replace('{% startDate %}', startDate.strftime('%d %B %Y') )
   message = message.replace('{% endDate %}', endDate.strftime('%d %B %Y') )
   
-  logger.info(message)
-  
-  with open('test.hml', 'w') as fileout:
-    fileout.write(message)
-
-#   send_html_mail(toAddress, fromAddress, subject, message)
+#   with open('test.hml', 'w') as fileout:
+#     fileout.write(message)
+  send_html_mail(toAddress, fromAddress, subject, message)
   
 
 def sendWelcomeMail(username, emailaddress):
@@ -97,7 +94,6 @@ def sendWelcomeMail(username, emailaddress):
   message = message.replace('{% username %}', username)
   message = message.replace('{% email %}', emailaddress)
   
-
   send_html_mail(toAddress, fromAddress, subject, message)
   
   

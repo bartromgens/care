@@ -121,8 +121,13 @@ td {
             <p>Hi {% username %},</p>
             <p>Here is an overview of your Care shares and transactions since {% startDate %}.</p>
             
+            <h4>Shares</h4>
             <p>
               {% transactionTable %}
+            </p>
+            <h4>Transactions</h4>
+            <p>
+              {% transactionRealTable %}
             </p>
             <p>
             Visit <a href="http://www.computerautomatedremoteexchange.com/">Care</a> for more information about your transactions. 

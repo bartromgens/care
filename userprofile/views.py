@@ -86,5 +86,8 @@ class SendMyTransactionHistoryMailLastMonth(BaseView):
     date_end = date.today() + timedelta(1)
     date_start = date_end - timedelta(30)
     transactionTableHtml = mailnotification.createTransactionHistoryTableHtml(userprofile, date_start, date_end) 
-    emailserver.sendTransactionHistory(userprofile.user.username, userprofile.user.email, transactionTableHtml, date_start, date_end)  
+    transactionRealTable = mailnotification.createTransactionRealHistoryTableHtml(userprofile, date_start, date_end)
+    
+    emailserver.sendTransactionHistory(userprofile.user.username, userprofile.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)  
+    
     return context
