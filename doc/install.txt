@@ -4,13 +4,16 @@ django
 south
 django-registration
 django-bootstrap3
+django-cron 
 
-Ubuntu using pip3:
-sudo apt-get install python3-pip
-sudo pip3 install django
-sudo pip3 install south
-sudo pip3 install django-registration
-sudo pip3 install django-bootstrap3
+Create a virtualenviroment:
+$ virtualenv venv
+
+Activate the enviroment (NOT as root):
+$ source ./venv/bin/activate
+
+Install dependecies:
+$ pip install -r requirements.txt
 
 Create initial database migrations for the following apps:
 userprofile
