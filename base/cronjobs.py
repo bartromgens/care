@@ -10,6 +10,7 @@ from userprofile.models import UserProfile, NotificationInterval
 from django_cron import CronJobBase, Schedule
 
 import shutil
+import os
 from datetime import datetime
 
 import logging
@@ -26,7 +27,10 @@ class DailyBackup(CronJobBase):
     logger.info('backup database')
     now = datetime.now()
     nowStr = now.strftime('%Y%m%d')
-    shutil.copy(APP_DIR + 'care.sqlite', './backup/' + nowStr + 'care.sqlite')
+    directory = './backup/' 
+    if not os.path.exists(directory):
+      os.makedirs(directory)
+    shutil.copy(APP_DIR + 'care.sqlite', directory + nowStr + 'care.sqlite')
 
 
 class DailyEmails(CronJobBase):
