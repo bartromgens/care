@@ -35,3 +35,6 @@ less ~/logs/user/error_care.log
 
 apache restart:
 ~/webapps/care/apache2/bin/restart
+
+cronjob (python):
+*/05 * * * * cd /home/bartromgens/webapps/care/care/ && PYTHONPATH=$HOME/webapps/care/lib/python3.3 /usr/local/bin/python3.3 manage.py runcrons >> $HOME/logs/user/cron.log 2>&1
