@@ -1,4 +1,4 @@
-from userprofile.models import UserProfile
+from userprofile.models import UserProfile, NotificationInterval
 #from accounts.models import Account
 from django.contrib import admin
 
@@ -8,9 +8,19 @@ class UserProfileAdmin(admin.ModelAdmin):
     (None, {'fields': ['displayname']}),
     (None, {'fields': ['groupAccounts']}),
     (None, {'fields': ['showTableView']}),
+    (None, {'fields': ['historyEmailInterval']}),
   ]
   
-  list_display = ('user', 'displayname','showTableView',)
+  list_display = ('user', 'displayname', 'showTableView', 'historyEmailInterval')
+
+
+class NotificationIntervalAdmin(admin.ModelAdmin):
+  fieldsets = [
+    (None, {'fields': ['name']}),
+    (None, {'fields': ['days']}),
+  ]
+  
+  list_display = ('name', 'days',)
     
 #class AccountAdmin(admin.ModelAdmin):
     #fieldsets = [
@@ -21,5 +31,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     #list_display = ('name', 'owner',)
 
 admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(NotificationInterval, NotificationIntervalAdmin)
 
 #admin.site.register(Account, AccountAdmin)
