@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from userprofile.models import UserProfile
+from userprofile.models import UserProfile, NotificationInterval
 
 class EditUserProfileForm(forms.ModelForm):
   
@@ -23,6 +23,10 @@ class EditUserProfileForm(forms.ModelForm):
                                                                   queryset=userProfile.groupAccounts.all(), 
                                                                   label='Groups', 
                                                                   required=False)
+
+    self.fields['historyEmailInterval'] = forms.ModelChoiceField(queryset=NotificationInterval.objects.all(),
+                                                                 label='Transaction history email',
+                                                                 empty_label=None)
   
   class Meta:
     model = UserProfile

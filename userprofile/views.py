@@ -83,11 +83,7 @@ class SendMyTransactionHistoryMailLastMonth(BaseView):
   def get_context_data(self, **kwargs):    
     context = super(SendMyTransactionHistoryMailLastMonth, self).get_context_data(**kwargs)   
     userprofile = UserProfile.objects.get(user=self.request.user)
-    date_end = date.today() + timedelta(1)
-    date_start = date_end - timedelta(30)
-    transactionTableHtml = mailnotification.createTransactionHistoryTableHtml(userprofile, date_start, date_end) 
-    transactionRealTable = mailnotification.createTransactionRealHistoryTableHtml(userprofile, date_start, date_end)
-    
-    emailserver.sendTransactionHistory(userprofile.user.username, userprofile.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)  
-    
+    force_send = True
+    userprofile.sendTransactionHistory(force_send);
     return context
+  

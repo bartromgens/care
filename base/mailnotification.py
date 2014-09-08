@@ -5,7 +5,7 @@ def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
   consumerTransactions = Transaction.getConsumerTransactions(userprofile.id)
   consumerTransactions = consumerTransactions.filter(date__range=[date_start, date_end])
   if not consumerTransactions:
-    return '- No shares in date range. -'
+    return 'No shares in date range.'
   transactionTableHtml = '<table>'
   transactionTableHtml += '<tr align=\'left\'>'
   transactionTableHtml += '<th>&#8364;/pp</th>'
@@ -28,22 +28,26 @@ def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
 
 def createTransactionRealHistoryTableHtml(userprofile, date_start, date_end):
   transactionsRealAll = TransactionReal.getTransactionsRealAllSortedByDate(userprofile.id)
-  if not transactionsRealAll:
-    return '- No transactions in date range. -' 
+  transactionsInRange = []
+  for transaction in transactionsRealAll:
+    if transaction.date.date() > date_start and transaction.date.date() < date_end:
+      transactionsInRange.append(transaction)
+      
+  if not transactionsInRange:
+    return 'No transactions in date range.' 
   transactionTableHtml = '<table>'
   transactionTableHtml += '<tr align=\'left\'>'
   transactionTableHtml += '<th>&#8364;</th>'
   transactionTableHtml += '<th>From</th>'
   transactionTableHtml += '<th>To</th>'
   transactionTableHtml += '<th>Date</th>'
-  for transaction in transactionsRealAll:
-    if transaction.date.date() > date_start and transaction.date.date() < date_end:
-      transactionTableHtml += '<tr>'
-      transactionTableHtml += '<td>&#8364;' + '%.2f' % float(transaction.amount) + '</td>'
-      transactionTableHtml += '<td>' + transaction.sender.displayname + '</td>'
-      transactionTableHtml += '<td>' + transaction.receiver.displayname + '</td>'
-      transactionTableHtml += '<td>' + transaction.date.strftime('%d %b') + '</td>'
-      transactionTableHtml += '</tr>'
+  for transaction in transactionsInRange:
+    transactionTableHtml += '<tr>'
+    transactionTableHtml += '<td>&#8364;' + '%.2f' % float(transaction.amount) + '</td>'
+    transactionTableHtml += '<td>' + transaction.sender.displayname + '</td>'
+    transactionTableHtml += '<td>' + transaction.receiver.displayname + '</td>'
+    transactionTableHtml += '<td>' + transaction.date.strftime('%d %b') + '</td>'
+    transactionTableHtml += '</tr>'
   
   transactionTableHtml += '</table>'
   return transactionTableHtml

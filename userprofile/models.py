@@ -1,10 +1,12 @@
-from base import emailserver
 from groupaccount.models import GroupAccount
+import base.emailserver as emailserver
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from registration.signals import user_registered 
+
+from datetime import date, timedelta
 
 import logging
 logger = logging.getLogger(__name__)
@@ -14,11 +16,22 @@ logger = logging.getLogger(__name__)
 def createUserProfile(sender, user, request, **kwargs):
   logger.debug('signal createUserProfile()')
   profile = UserProfile(user=user, displayname=user.username)
+  if NotificationInterval.objects.get(name="Monthly"):
+    profile.historyEmailInterval = NotificationInterval.objects.get(name="Monthly")
   profile.save()
   emailserver.sendWelcomeMail(user.username, user.email)
 
 # create a new userprofile when a user registers
 user_registered.connect(createUserProfile)
+
+
+class NotificationInterval(models.Model):
+  name = models.CharField(max_length=100, unique=True)
+  days = models.IntegerField()
+  
+  def __str__(self):
+    return str(self.name)
+
 
 class UserProfile(models.Model):
   user = models.ForeignKey(User)
@@ -27,6 +40,7 @@ class UserProfile(models.Model):
   lastname = models.CharField(max_length=100, blank=True)
   groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
   showTableView = models.BooleanField(default=False)
+  historyEmailInterval = models.ForeignKey(NotificationInterval, null=True)
   
   def __str__(self):
     return str(self.displayname)
@@ -38,7 +52,18 @@ class UserProfile(models.Model):
     if int(doShowTable) == 2 and not self.showTableView:
       self.showTableView = True
       self.save()
+
+  def sendTransactionHistory(self, force_send=False):
+    if self.historyEmailInterval.days == 0 and not force_send:
+      return # do not send anything when it is not forced and user set to 0 days
+    date_end = date.today() + timedelta(1)
+    date_start = date_end - timedelta(self.historyEmailInterval.days)
+    import base.mailnotification as mailnotification
+    transactionTableHtml = mailnotification.createTransactionHistoryTableHtml(self, date_start, date_end) 
+    transactionRealTable = mailnotification.createTransactionRealHistoryTableHtml(self, date_start, date_end)
     
+    emailserver.sendTransactionHistory(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)  
+ 
   
   @staticmethod
   def getBalance(groupAccountId, userProfileId):
@@ -70,3 +95,4 @@ class UserProfile(models.Model):
       
     balance = (totalBought + totalSent - totalConsumed - totalReceived)
     return balance
+  

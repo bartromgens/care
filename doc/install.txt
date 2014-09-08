@@ -20,7 +20,7 @@ userprofile
 groupaccount
 transaction
 transactionreal
-groupaacountinvite
+groupaccountinvite
 
 $ python3.3 manage.py schemamigration <appname>
 
