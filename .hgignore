@@ -7,3 +7,4 @@ base/secret_settings.py
 care.log
 care.sqlite
 .settings/*
+backup/*
