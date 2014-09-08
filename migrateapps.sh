@@ -12,6 +12,6 @@ python manage.py migrate transaction
 python manage.py schemamigration transactionreal --auto
 python manage.py migrate transactionreal
 
-python manage.py schemamigration groupaacountinvite --auto
-python manage.py migrate groupaacountinvite
+python manage.py schemamigration groupaccountinvite --auto
+python manage.py migrate groupaccountinvite
 
