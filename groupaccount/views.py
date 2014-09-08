@@ -5,7 +5,6 @@ from transaction.models import Transaction
 from userprofile.models import UserProfile
 
 from django.shortcuts import HttpResponseRedirect
-from django.contrib.auth.models import Group
 from django.views.generic.edit import FormView
 
 import logging
