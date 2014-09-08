@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class DailyBackup(CronJobBase):
-  RUN_EVERY_MINS = 5
+  RUN_EVERY_MINS = 1*24*60
 
   schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
   code = 'care.daily_backup'    # a unique code
