@@ -4,12 +4,29 @@ Created on Aug 25, 2014
 @author: Bart Romgens
 '''
 
+from base.settings import APP_DIR
+from userprofile.models import UserProfile, NotificationInterval
+
 from django_cron import CronJobBase, Schedule
 
-from userprofile.models import UserProfile, NotificationInterval
+import shutil
+from datetime import datetime
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+class DailyBackup(CronJobBase):
+  RUN_EVERY_MINS = 5
+
+  schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+  code = 'care.daily_backup'    # a unique code
+
+  def do(self):
+    logger.info('backup database')
+    now = datetime.now()
+    nowStr = now.strftime('%Y%m%d')
+    shutil.copy(APP_DIR + 'care.sqlite', './backup/' + nowStr + 'care.sqlite')
 
 
 class DailyEmails(CronJobBase):
