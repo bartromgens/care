@@ -139,6 +139,7 @@ INSTALLED_APPS = (
     'south', # for database migration
     'bootstrap3', #bootstrap3 see: https://github.com/dyve/django-bootstrap3 
     'registration', #django-registration 
+    'django_cron', # for job scheduling (for example, sending mails)
     'base',
     'userprofile',
     'groupaccount',
@@ -224,4 +225,13 @@ BOOTSTRAP3 = {
     'horizontal_label_class': 'col-md-2',
     'horizontal_field_class': 'col-md-4',
 }
+
+CRON_CLASSES = [
+    'base.cronjobs.DailyBackup',
+    'base.cronjobs.DailyEmails',
+    'base.cronjobs.WeeklyEmails',
+    'base.cronjobs.MonthlyEmails',
+#     'base.cronjobs.TestEmails',
+    # ...
+]
 
