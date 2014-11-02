@@ -3,10 +3,10 @@
 
 from base.user_settings import *
 
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = DEBUG 
 
 MANAGERS = ADMINS
-
+ 
 DATABASES = { 
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -139,7 +139,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'care.log',
+            'filename': APP_DIR + 'care.log',
             'formatter': 'verbose'
         },
     },
