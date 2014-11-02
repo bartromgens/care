@@ -102,7 +102,9 @@
             <ul class="dropdown-menu">
               <li><a href="/userprofile/edit/">{{ displayname }}</a></li>
               <li><a href="/userprofile/edit/"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
+              {% if user.is_superuser %}
               <li><a href="/admin"><i class="glyphicon glyphicon-wrench"></i> Admin</a></li>
+              {% endif %}
               <li><a href="/accounts/logout"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
             </ul>
           </li>
