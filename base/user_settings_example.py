@@ -1,3 +1,7 @@
+# user settings, included in settings.py
+
+DEBUG = False
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 
@@ -29,6 +33,7 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 #STATIC_URL = 'http://www.computerautomatedremoteexchange.com/carestatic/'
 STATIC_URL = APP_DIR + 'static/'
+
 
 # password used for outgoing smtp
 MAILPASSWORD = ''
