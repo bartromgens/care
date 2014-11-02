@@ -170,8 +170,6 @@ LOGGING = {
     },
 }
 
-REGISTRATION_OPEN = True
-
 # redirect here when used is not logged in and logged in is required
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'

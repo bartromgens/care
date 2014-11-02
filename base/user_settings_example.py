@@ -36,3 +36,5 @@ MAILPASSWORD = ''
 MAILUSERNAME = ''
 # SMTP url and port
 MAILSMTPSERVER = 'smtp.domain.com:587'
+
+REGISTRATION_OPEN = True
