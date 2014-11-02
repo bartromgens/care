@@ -10,3 +10,4 @@ backup/*
 .pydevproject
 .project
 base/user_settings.py
+env/*
