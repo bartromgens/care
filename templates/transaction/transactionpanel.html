@@ -38,9 +38,9 @@
             {% endif %}
 
             {% if transaction.amount <= 0.0 %}
-              <b>&#8364<font class="text-warning">{{ transaction.amount }}</font></b>
+              <b>&#8364<font class="text-warning">{{ transaction.amount|floatformat:2 }}</font></b>
             {% else %}
-              <b>&#8364<font class="text-info">{{ transaction.amount }}</font></b>
+              <b>&#8364<font class="text-info">{{ transaction.amount|floatformat:2 }}</font></b>
             {% endif %}
           </h5>
         </div>
