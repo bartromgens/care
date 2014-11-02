@@ -1,21 +1,28 @@
 from transaction.models import Transaction
 from transactionreal.models import TransactionReal
 
+from datetime import timedelta
+
 def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
-  consumerTransactions = Transaction.getTransactionsAllSortedByDateLastModified(userprofile.id)
-  consumerTransactions = consumerTransactions.filter(date__range=[date_start, date_end])
-  if not consumerTransactions:
+  transactionsAll = Transaction.getTransactionsAllSortedByDateLastModified(userprofile.id)
+  
+  transactionsInRange = []
+  for transaction in transactionsAll:
+    if (transaction.lastModified.date() > date_start) and (transaction.lastModified.date() < date_end + timedelta(1)):
+      transactionsInRange.append(transaction)
+  
+  if not transactionsInRange:
     return 'No shares in date range.'
   transactionTableHtml = '<table>'
   transactionTableHtml += '<tr align=\'left\'>'
-  transactionTableHtml += '<th>&#8364;/pp</th>'
-  transactionTableHtml += '<th>&#8364;</th>'
-  transactionTableHtml += '<th>What</th>'
-  transactionTableHtml += '<th>Who</th>'
-  transactionTableHtml += '<th>Date</th>'
-  for transaction in consumerTransactions:
-    transactionTableHtml += '<tr>'
-    transactionTableHtml += '<td>&#8364;' + '%.2f' % (float(transaction.amount) / transaction.consumers.count()) + '</td>'
+  transactionTableHtml += '<th><b>&#8364;/pp</b></th>'
+  transactionTableHtml += '<th><b>&#8364;</b></th>'
+  transactionTableHtml += '<th><b>What</b></th>'
+  transactionTableHtml += '<th><b>Who</b></th>'
+  transactionTableHtml += '<th><b>Date</b></th>'
+  for transaction in transactionsInRange:
+    transactionTableHtml += '<tr style="font-size: 12px">'
+    transactionTableHtml += '<td>&#8364;' + transaction.amountPerPerson + '</td>'
     transactionTableHtml += '<td>&#8364;' + '%.2f' % float(transaction.amount) + '</td>'
     transactionTableHtml += '<td>' + transaction.what + '</td>'
     transactionTableHtml += '<td>' + transaction.buyer.displayname + '</td>'
@@ -30,17 +37,17 @@ def createTransactionRealHistoryTableHtml(userprofile, date_start, date_end):
   transactionsRealAll = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userprofile.id)
   transactionsInRange = []
   for transaction in transactionsRealAll:
-    if transaction.date.date() > date_start and transaction.date.date() < date_end:
+    if transaction.lastModified.date() > date_start and transaction.lastModified.date() < date_end + timedelta(1):
       transactionsInRange.append(transaction)
       
   if not transactionsInRange:
     return 'No transactions in date range.' 
-  transactionTableHtml = '<table>'
+  transactionTableHtml = '<table style="font-size: 12px">'
   transactionTableHtml += '<tr align=\'left\'>'
-  transactionTableHtml += '<th>&#8364;</th>'
-  transactionTableHtml += '<th>From</th>'
-  transactionTableHtml += '<th>To</th>'
-  transactionTableHtml += '<th>Date</th>'
+  transactionTableHtml += '<th><b>&#8364;</b></th>'
+  transactionTableHtml += '<th><b>From</b></th>'
+  transactionTableHtml += '<th><b>To</b></th>'
+  transactionTableHtml += '<th><b>Date</b></th>'
   for transaction in transactionsInRange:
     transactionTableHtml += '<tr>'
     transactionTableHtml += '<td>&#8364;' + '%.2f' % float(transaction.amount) + '</td>'

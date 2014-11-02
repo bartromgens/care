@@ -77,11 +77,11 @@ class SearchUserProfileView(BaseView, FormView):
     return context
   
   
-class SendMyTransactionHistoryMailLastMonth(BaseView):
-  template_name = "userprofile/editsuccess.html"
+class SendMyTransactionHistory(BaseView):
+  template_name = "userprofile/historysentsuccess.html"
   
   def get_context_data(self, **kwargs):    
-    context = super(SendMyTransactionHistoryMailLastMonth, self).get_context_data(**kwargs)   
+    context = super(SendMyTransactionHistory, self).get_context_data(**kwargs)   
     userprofile = UserProfile.objects.get(user=self.request.user)
     force_send = True
     userprofile.sendTransactionHistory(force_send);
