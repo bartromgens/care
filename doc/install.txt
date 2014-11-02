@@ -6,11 +6,11 @@ django-registration
 django-bootstrap3
 django-cron 
 
-Create a virtualenviroment:
-$ virtualenv venv
+Create a virtualenviroment for a python 3 version:
+$ virtualenv -p /usr/bin/python3.4 env
 
 Activate the enviroment (NOT as root):
-$ source ./venv/bin/activate
+$ source ./env/bin/activate
 
 Install dependecies:
 $ pip install -r requirements.txt
