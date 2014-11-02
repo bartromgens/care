@@ -2,9 +2,11 @@ syntax: glob
 *.*~
 *.pyc
 virtualenv/*
-base/settings.py
 base/secret_settings.py
 care.log
 care.sqlite
 .settings/*
 backup/*
+.pydevproject
+.project
+base/user_settings.py
