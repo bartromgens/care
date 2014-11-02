@@ -19,9 +19,9 @@
 {% for member in group.userProfiles %}  
 <tr>
   {% ifequal member.user user %}
-    <td class="text-info" style="padding-left:1em; width:10em;"><b>{{ member.displayname }}</td>
+    <td class="text-info" style="padding-left:2em; width:10em;"><b>{{ member.displayname }}</td>
   {% else %}
-    <td style="padding-left:1em; width:10em;">{{ member.displayname }}</b></td>
+    <td style="padding-left:2em; width:10em;">{{ member.displayname }}</b></td>
   {% endifequal %}
     <td>
     {% if member.balanceFloat < -100.0 %}
