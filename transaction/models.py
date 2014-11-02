@@ -24,6 +24,13 @@ class Transaction(models.Model):
   modifications = models.ManyToManyField(Modification, blank=True)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
+  def getDateTimeLastModified(self):
+    if self.modifications.all():
+      modification = self.modifications.latest('date')
+      return modification.date
+    else:
+      return self.date
+  
   @staticmethod
   def getBuyerTransactions(buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("-date")
@@ -41,11 +48,13 @@ class Transaction(models.Model):
     return transactions
   
   @staticmethod
-  def getTransactionsAllSortedByDate(userProfileId):
+  def getTransactionsAllSortedByDateLastModified(userProfileId):
     buyerTransactions = Transaction.getBuyerTransactions(userProfileId)
     consumerTransactions = Transaction.getConsumerTransactions(userProfileId)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
-    return sorted(transactionsAll, key=lambda instance: instance.date, reverse=True)
+    for transaction in transactionsAll:
+      transaction.lastModified = transaction.getDateTimeLastModified();
+    return sorted(transactionsAll, key=lambda instance: instance.lastModified, reverse=True)
   
   def __str__(self):
     return self.what

@@ -15,6 +15,13 @@ class TransactionReal(models.Model):
   groupAccount = models.ForeignKey(GroupAccount)
   modifications = models.ManyToManyField(Modification, blank=True)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
+
+  def getDateTimeLastModified(self):
+    if self.modifications.all():
+      modification = self.modifications.latest('date')
+      return modification.date
+    else:
+      return self.date
   
   @staticmethod
   def getSentTransactionsReal(senderId):
@@ -33,11 +40,13 @@ class TransactionReal(models.Model):
     return transactions
   
   @staticmethod
-  def getTransactionsRealAllSortedByDate(userProfileId):
+  def getTransactionsRealAllSortedByDateLastModified(userProfileId):
     sentTransactions = TransactionReal.getSentTransactionsReal(userProfileId)
     receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfileId)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
-    return sorted(transactionsRealAll, key=lambda instance: instance.date, reverse=True)
+    for transaction in transactionsRealAll:
+      transaction.lastModified = transaction.getDateTimeLastModified();
+    return sorted(transactionsRealAll, key=lambda instance: instance.lastModified, reverse=True)
     
   def __str__(self):
     return self.comment

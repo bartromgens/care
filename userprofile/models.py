@@ -56,7 +56,7 @@ class UserProfile(models.Model):
   def sendTransactionHistory(self, force_send=False):
     if self.historyEmailInterval.days == 0 and not force_send:
       return # do not send anything when it is not forced and user set to 0 days
-    date_end = date.today() + timedelta(1)
+    date_end = date.today()
     date_start = date_end - timedelta(self.historyEmailInterval.days)
     import base.mailnotification as mailnotification
     transactionTableHtml = mailnotification.createTransactionHistoryTableHtml(self, date_start, date_end) 

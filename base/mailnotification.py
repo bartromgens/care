@@ -2,7 +2,7 @@ from transaction.models import Transaction
 from transactionreal.models import TransactionReal
 
 def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
-  consumerTransactions = Transaction.getConsumerTransactions(userprofile.id)
+  consumerTransactions = Transaction.getTransactionsAllSortedByDateLastModified(userprofile.id)
   consumerTransactions = consumerTransactions.filter(date__range=[date_start, date_end])
   if not consumerTransactions:
     return 'No shares in date range.'
@@ -27,7 +27,7 @@ def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
 
 
 def createTransactionRealHistoryTableHtml(userprofile, date_start, date_end):
-  transactionsRealAll = TransactionReal.getTransactionsRealAllSortedByDate(userprofile.id)
+  transactionsRealAll = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userprofile.id)
   transactionsInRange = []
   for transaction in transactionsRealAll:
     if transaction.date.date() > date_start and transaction.date.date() < date_end:
