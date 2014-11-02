@@ -1,11 +1,8 @@
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 
-# password used for outgoing smtp
-MAILPASSWORD = ''
-
 ADMINS = (
-    ('Bart Römgens', ''),
+    ('Your Name', 'email address'),
 )
 
 APP_DIR = '/home/bart/dev/care/'
@@ -32,3 +29,10 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 #STATIC_URL = 'http://www.computerautomatedremoteexchange.com/carestatic/'
 STATIC_URL = APP_DIR + 'static/'
+
+# password used for outgoing smtp
+MAILPASSWORD = ''
+# username used for outgoing smtp
+MAILUSERNAME = ''
+# SMTP url and port
+MAILSMTPSERVER = 'smtp.domain.com:587'

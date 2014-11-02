@@ -40,11 +40,11 @@ class EmailThread(threading.Thread):
     msg.attach(MIMEText(self.message, 'html'))
   
     # Credentials (if needed)  
-    username = 'computerautomatedremoteexchange'  
+    username = settings.MAILUSERNAME
     password = settings.MAILPASSWORD  
     
     # The actual mail send  
-    server = SMTP('smtp.webfaction.com:587')  
+    server = SMTP(settings.MAILSMTPSERVER)    
     server.starttls()  
     server.login(username, password)  
     server.sendmail(self.fromAddress, self.toAddress, msg.as_string())  
