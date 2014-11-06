@@ -74,7 +74,17 @@
           {% endif %}
             <a href="/group/my/0"> Groups </a>
           </li>
-         
+          
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          
+          
+          {% if not isLoggedin %}
+          <li><a href="/about/">About</a></li>
+          <li><a href="/accounts/login"><i class="glyphicon glyphicon-log-in"></i> <b>Log in</b></a></li>
+          <li><a href="/accounts/register"><i class="glyphicon glyphicon-pencil"></i> <b>Register</b></a></li>
+          {% else %}
           {% if activeMenu == "invites" %}
           <li class="active">
           {% else %}
@@ -82,21 +92,8 @@
           {% endif %}
           {% if hasInvites %}
             <a href="/invites/" ><i class="glyphicon glyphicon-envelope" style="color:orange"></i> ({{ nInvites }}) </a>
-          {% else %}
-            <a href="/invites/" ><i class="glyphicon glyphicon-envelope"></i> </a>
           {% endif %}
           </li>
-          
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-          
-          <li><a href="/about/">About</a></li>
-          
-          {% if not isLoggedin %}
-          <li><a href="/accounts/login"><i class="glyphicon glyphicon-log-in"></i> <b>Log in</b></a></li>
-          <li><a href="/accounts/register"><i class="glyphicon glyphicon-pencil"></i> <b>Register</b></a></li>
-          {% else %}
           <li class="dropdown">
             <a href="/" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -105,6 +102,7 @@
               {% if user.is_superuser %}
               <li><a href="/admin"><i class="glyphicon glyphicon-wrench"></i> Admin</a></li>
               {% endif %}
+              <li><a href="https://bitbucket.org/bartromgens/care/issues/new"><i class="glyphicon glyphicon-bullhorn"></i> Report issue</a></li>
               <li><a href="/accounts/logout"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
             </ul>
           </li>
