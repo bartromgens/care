@@ -44,7 +44,7 @@ class EmailThread(threading.Thread):
     password = settings.EMAIL_HOST_PASSWORD  
     
     # The actual mail send  
-    server = SMTP( settings.EMAIL_HOST + ':' + settings.EMAIL_PORT )    
+    server = SMTP( settings.EMAIL_HOST + ':' + str(settings.EMAIL_PORT) )    
     server.starttls()  
     server.login(username, password)  
     server.sendmail(self.fromAddress, self.toAddress, msg.as_string())  
@@ -120,3 +120,4 @@ def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
   
 if __name__ == "__main__":
   main()
+  
