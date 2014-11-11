@@ -19,7 +19,7 @@ def createUserProfile(sender, user, request, **kwargs):
   if NotificationInterval.objects.get(name="Monthly"):
     profile.historyEmailInterval = NotificationInterval.objects.get(name="Monthly")
   profile.save()
-  emailserver.sendWelcomeMail(user.username, user.email)
+  emailserver.send_welcome_email(user.username, user.email)
 
 # create a new userprofile when a user registers
 user_registered.connect(createUserProfile)
@@ -53,16 +53,16 @@ class UserProfile(models.Model):
       self.showTableView = True
       self.save()
 
-  def sendTransactionHistory(self, force_send=False):
+  def send_transaction_history(self, force_send=False):
     if self.historyEmailInterval.days == 0 and not force_send:
       return # do not send anything when it is not forced and user set to 0 days
     date_end = date.today()
     date_start = date_end - timedelta(self.historyEmailInterval.days)
     import base.mailnotification as mailnotification
-    transactionTableHtml = mailnotification.createTransactionHistoryTableHtml(self, date_start, date_end) 
-    transactionRealTable = mailnotification.createTransactionRealHistoryTableHtml(self, date_start, date_end)
+    transactionTableHtml = mailnotification.create_transaction_history_table_html(self, date_start, date_end) 
+    transactionRealTable = mailnotification.create_transaction_real_history_table_html(self, date_start, date_end)
     
-    emailserver.sendTransactionHistory(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)  
+    emailserver.send_transaction_history(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)  
  
   
   @staticmethod

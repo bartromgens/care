@@ -15,7 +15,7 @@ class MyGroupAccountInvitesView(BaseView):
   template_name = "groupaccountinvite/overview.html"
   context_object_name = "my invites"
 
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'invites'
   
   def getNumberOfInvites(self, buyerId):
@@ -24,7 +24,7 @@ class MyGroupAccountInvitesView(BaseView):
   
   def get_context_data(self, **kwargs):
     context = super(MyGroupAccountInvitesView, self).get_context_data(**kwargs)
-    userProfile = self.getUserProfile()
+    userProfile = self.get_userprofile()
     invitesSent = GroupAccountInvite.getSentInvites(userProfile).order_by('-createdDateAndTime')
     invitesReceived = GroupAccountInvite.getReceivedInvites(userProfile).order_by('-createdDateAndTime')
 #    invites = list(chain(invitesSent, invitesReceived))
@@ -47,7 +47,7 @@ class AcceptInviteView(MyGroupAccountInvitesView):
       groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
       invite.isAccepted = True
       invite.isDeclined = False
-      userProfile = self.getUserProfile()
+      userProfile = self.get_userprofile()
       userProfile.groupAccounts.add(groupAccount)
       userProfile.save()
       invite.save()
@@ -91,7 +91,7 @@ class NewInviteView(FormView, BaseView):
   form_class = NewInviteForm
   success_url = '/invites/'
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'invites'
     
   def get_form(self, form_class):
@@ -103,7 +103,7 @@ class NewInviteView(FormView, BaseView):
     logger.debug('NewInviteView::form_valid()')
     context = super(NewInviteView, self).form_valid(form)
     invite = form.save()
-    emailserver.sendNewInviteMail(self.request.user.username, invite.invitee.user.username, invite.groupAccount.name, invite.invitee.user.email)
+    emailserver.send_invite_email(self.request.user.username, invite.invitee.user.username, invite.groupAccount.name, invite.invitee.user.email)
     return context
   
   def form_invalid(self, form):

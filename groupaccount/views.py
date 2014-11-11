@@ -15,7 +15,7 @@ class MyGroupAccountsView(BaseView):
   template_name = "groupaccount/myaccounts.html"
   context_object_name = "my groups"
 
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'group'
   
   def getTransactions(self, buyerId):
@@ -45,7 +45,7 @@ class NewGroupAccountView(FormView, BaseView):
   def get_form(self, form_class):
     return NewGroupAccountForm(**self.get_form_kwargs())   
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'group'
 
   def form_valid(self, form):
@@ -68,5 +68,5 @@ class NewGroupAccountView(FormView, BaseView):
 class SucessNewGroupAccountView(BaseView):
   template_name = 'groupaccount/newsuccess.html'
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'accounts'

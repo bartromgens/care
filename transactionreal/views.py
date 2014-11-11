@@ -14,7 +14,7 @@ class MyRealTransactionView(BaseView):
   template_name = "transactionreal/mytransactionsreal.html"
   context_object_name = "my real transactions"
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'transactions'
   
   def get_context_data(self, **kwargs):
@@ -44,7 +44,7 @@ class NewRealTransactionView(FormView, BaseView):
   form_class = NewRealTransactionForm
   success_url = '/transactionreal/new/success/'
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'transactions'
    
   def getGroupAccountId(self):
@@ -92,7 +92,7 @@ class EditRealTransactionView(FormView, BaseView):
   form_class = EditRealTransactionForm
   success_url = '/transactionsreal/0'
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'transactions'
    
   def get_form(self, form_class):

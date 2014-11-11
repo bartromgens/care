@@ -3,7 +3,7 @@ from transactionreal.models import TransactionReal
 
 from datetime import timedelta
 
-def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
+def create_transaction_history_table_html(userprofile, date_start, date_end):
   transactionsAll = Transaction.getTransactionsAllSortedByDateLastModified(userprofile.id)
   
   transactionsInRange = []
@@ -33,7 +33,7 @@ def createTransactionHistoryTableHtml(userprofile, date_start, date_end):
   return transactionTableHtml
 
 
-def createTransactionRealHistoryTableHtml(userprofile, date_start, date_end):
+def create_transaction_real_history_table_html(userprofile, date_start, date_end):
   transactionsRealAll = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userprofile.id)
   transactionsInRange = []
   for transaction in transactionsRealAll:

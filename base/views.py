@@ -1,11 +1,11 @@
 from groupaccount.models import GroupAccount
-from userprofile.models import UserProfile
+from groupaccountinvite.models import GroupAccountInvite 
 from transaction.models import Transaction
 from transactionreal.models import TransactionReal
-from groupaccountinvite.models import GroupAccountInvite 
+from userprofile.models import UserProfile
 
-from registration.backends.simple.views import RegistrationView
 from django.views.generic import TemplateView
+from registration.backends.simple.views import RegistrationView
 
 import logging
 logger = logging.getLogger(__name__)
@@ -15,11 +15,11 @@ class BaseView(TemplateView):
   template_name = "base/base.html"
   context_object_name = "base"
   
-  def getUserProfile(self):
+  def get_userprofile(self):
     user = self.request.user
     return UserProfile.objects.get(user=user)
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return ''
   
   def get_context_data(self, **kwargs):
@@ -33,7 +33,7 @@ class BaseView(TemplateView):
       context['hasInvites'] = invites.exists()
       context['nInvites'] = invites.count()
       context['displayname'] = userProfile.displayname
-      context['activeMenu'] = self.getActiveMenu()
+      context['activeMenu'] = self.get_active_menu()
       context['isLoggedin'] = True
     return context
 
@@ -48,7 +48,7 @@ class HomeView(BaseView):
   template_name = "base/index.html"
   context_object_name = "homepage"
 
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'account'
   
   def getTransactions(self, buyerId):
@@ -57,7 +57,7 @@ class HomeView(BaseView):
   
   def get_context_data(self, **kwargs):
     context = super(HomeView, self).get_context_data(**kwargs)
-    userProfile = self.getUserProfile()
+    userProfile = self.get_userprofile()
     
     groupAccounts = userProfile.groupAccounts.all()
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
@@ -74,10 +74,8 @@ class HomeView(BaseView):
     
     myTotalBalance = '%.2f' % myTotalBalanceFloat
     context['myTotalBalance'] = myTotalBalance
-    context['myTotalBalanceFloat'] = myTotalBalanceFloat
-  
+    context['myTotalBalanceFloat'] = myTotalBalanceFloat 
 #     invitesAllSorted = GroupAccountInvite.getInvitesAllSortedByDate(userProfile)
-    
     slowLastN = 5
 #     context['invitesAll'] = invitesAllSorted[0:slowLastN]
     context['friends'] = friends
@@ -92,7 +90,7 @@ class AboutView(BaseView):
   template_name = "base/about.html"
   context_object_name = "about"
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'about'
   
   def get_context_data(self, **kwargs):

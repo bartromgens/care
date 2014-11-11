@@ -14,7 +14,7 @@ class MyTransactionView(BaseView):
   template_name = "transaction/mytransactions.html"
   context_object_name = "my transactions"
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'shares'
   
   def getNumberOfBuyerTransactions(self, buyerId):
@@ -48,7 +48,7 @@ class NewTransactionView(FormView, BaseView):
   form_class = NewTransactionForm
   success_url = '/transaction/new/success/'
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'shares'
    
   def getGroupAccountId(self):
@@ -94,7 +94,7 @@ class EditTransactionView(FormView, BaseView):
   form_class = EditTransactionForm
   success_url = '/transactions/0'
   
-  def getActiveMenu(self):
+  def get_active_menu(self):
     return 'shares'
    
   def get_form(self, form_class):

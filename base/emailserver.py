@@ -18,8 +18,8 @@ def main():
   username = 'Bart'
   usernameTo = 'Jaap'
   toAddress = 'bart@romgens.com'
-#   sendWelcomeMail(username, toAddress)
-  sendNewInviteMail(username, usernameTo, "testgroup", toAddress)
+#   send_welcome_email(username, toAddress)
+  send_invite_email(username, usernameTo, "testgroup", toAddress)
   logger.info("main() end")
 
 
@@ -55,11 +55,11 @@ def send_html_mail(toAddress, fromAddress, subject, message):
     EmailThread(toAddress, fromAddress, subject, message).start()
 
 
-def sendTransactionHistory(username, emailaddress, transactionTable, transactionRealTable, startDate, endDate):
+def send_transaction_history(username, emailaddress, transactionTable, transactionRealTable, startDate, endDate):
   fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
   subject = 'Care transaction history' 
-  logging.info('sendTransactionHistory from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  logging.info('send_transaction_history from: ' + str(fromAddress) + ' to: ' + str(toAddress))
   
   message = ''
   with open( os.path.join(module_dir, 'transactionhistorymail.html'), 'r' ) as filein:
@@ -78,11 +78,11 @@ def sendTransactionHistory(username, emailaddress, transactionTable, transaction
   send_html_mail(toAddress, fromAddress, subject, message)
   
 
-def sendWelcomeMail(username, emailaddress):
+def send_welcome_email(username, emailaddress):
   fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
   subject = 'Welcome to Care!' 
-  logging.debug('sendWelcomeMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  logging.debug('send_welcome_email from: ' + str(fromAddress) + ' to: ' + str(toAddress))
   
   message = ''
   
@@ -97,12 +97,12 @@ def sendWelcomeMail(username, emailaddress):
   send_html_mail(toAddress, fromAddress, subject, message)
   
   
-def sendNewInviteMail(usernameFrom, usernameTo, groupName, emailaddress):
+def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
   fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
   toAddress = emailaddress
   subject = 'New invitation' 
   
-  logging.debug('sendNewInviteMail from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+  logging.debug('send_invite_email from: ' + str(fromAddress) + ' to: ' + str(toAddress))
 
   message = ''
   

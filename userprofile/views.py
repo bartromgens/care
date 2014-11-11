@@ -81,7 +81,7 @@ class SendMyTransactionHistory(BaseView):
     context = super(SendMyTransactionHistory, self).get_context_data(**kwargs)   
     userprofile = UserProfile.objects.get(user=self.request.user)
     force_send = True
-    userprofile.sendTransactionHistory(force_send);
+    userprofile.send_transaction_history(force_send);
     return context
   
   

@@ -44,7 +44,7 @@ class DailyEmails(CronJobBase):
     userprofiles = UserProfile.objects.all().filter(historyEmailInterval=interval)
     for userprofile in userprofiles:
       logger.info(userprofile.displayname)
-      userprofile.sendTransactionHistory()
+      userprofile.send_transaction_history()
 
 
 class WeeklyEmails(CronJobBase):
@@ -58,7 +58,7 @@ class WeeklyEmails(CronJobBase):
     userprofiles = UserProfile.objects.all().filter(historyEmailInterval=interval)
     for userprofile in userprofiles:
       logger.info(userprofile.displayname)
-      userprofile.sendTransactionHistory()
+      userprofile.send_transaction_history()
 
 
 class MonthlyEmails(CronJobBase):
@@ -72,7 +72,7 @@ class MonthlyEmails(CronJobBase):
     userprofiles = UserProfile.objects.all().filter(historyEmailInterval=interval)
     for userprofile in userprofiles:
       logger.info(userprofile.displayname)
-      userprofile.sendTransactionHistory()
+      userprofile.send_transaction_history()
 
 
 class TestEmails(CronJobBase):
@@ -88,5 +88,5 @@ class TestEmails(CronJobBase):
     for userprofile in userprofiles:
       logger.info('testtesttest')
       logger.info(userprofile.displayname)
-      userprofile.sendTransactionHistory()
+      userprofile.send_transaction_history()
       logger.info('testtesttest - END')
