@@ -40,11 +40,11 @@ class EmailThread(threading.Thread):
     msg.attach(MIMEText(self.message, 'html'))
   
     # Credentials (if needed)  
-    username = settings.MAILUSERNAME
-    password = settings.MAILPASSWORD  
+    username = settings.EMAIL_HOST_USER
+    password = settings.EMAIL_HOST_PASSWORD  
     
     # The actual mail send  
-    server = SMTP(settings.MAILSMTPSERVER)    
+    server = SMTP( settings.EMAIL_HOST + ':' + settings.EMAIL_PORT )    
     server.starttls()  
     server.login(username, password)  
     server.sendmail(self.fromAddress, self.toAddress, msg.as_string())  

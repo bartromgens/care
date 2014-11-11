@@ -17,15 +17,17 @@
         {% bootstrap_form form %}
         {% buttons %}
           <button type="submit" class="btn btn-primary">
-              {% bootstrap_icon "log-in" %} Log in
+            Login
           </button>
         {% endbuttons %}
         <input name="next" type="hidden" value="{{next}}">
       </form>
-      
+      <a href="/accounts/password/reset">Forgot your password?</a>
+      <hr>
       <h4>
         New? <a href="/accounts/register/">Register here</a>.
       </h4>
+      
     </div>
   </div>
 

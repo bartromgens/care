@@ -98,7 +98,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+#     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
@@ -107,7 +107,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'south', # for database migration
     'bootstrap3', #bootstrap3 see: https://github.com/dyve/django-bootstrap3
-    'registration', #django-registration
+    'registration', #django-registration-redux, https://github.com/macropin/django-registration
     'django_cron', # for job scheduling (for example, sending mails)  
     'base',
     'userprofile',
@@ -201,3 +201,4 @@ CRON_CLASSES = [
 #     'base.cronjobs.TestEmails',
     # ...
 ]
+

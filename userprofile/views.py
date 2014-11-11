@@ -1,15 +1,12 @@
 from userprofile.forms import EditUserProfileForm, SearchUserProfileForm
 from userprofile.models import UserProfile
 from base.views import BaseView
-import base.mailnotification as mailnotification
-import base.emailserver as emailserver
 
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.db.models import Q
-
-from datetime import date, timedelta
+from django.contrib.auth.views import password_reset_confirm
 
 import logging
 logger = logging.getLogger(__name__)
@@ -86,4 +83,10 @@ class SendMyTransactionHistory(BaseView):
     force_send = True
     userprofile.sendTransactionHistory(force_send);
     return context
+  
+  
+def password_reset_confirm_custom(request, uidb64=None, token=None):
+    return password_reset_confirm(request, template_name='registration/password_reset_confirm.html', 
+                                  uidb64=uidb64, token=token, post_reset_redirect='/accounts/login/')
+
   

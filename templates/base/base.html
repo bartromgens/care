@@ -41,6 +41,7 @@
         <a class="navbar-brand" href="/">CARE</a>
       </div>
       <div class="navbar-collapse collapse navbar-responsive-collapse">
+      {% if isLoggedin %}
         <ul class="nav navbar-nav">
           
           {% if activeMenu == "account" %} 
@@ -76,12 +77,11 @@
           </li>
           
         </ul>
-
+      {% endif %}
         <ul class="nav navbar-nav navbar-right">
           
           
           {% if not isLoggedin %}
-          <li><a href="/about/">About</a></li>
           <li><a href="/accounts/login"><i class="glyphicon glyphicon-log-in"></i> <b>Log in</b></a></li>
           <li><a href="/accounts/register"><i class="glyphicon glyphicon-pencil"></i> <b>Register</b></a></li>
           {% else %}
