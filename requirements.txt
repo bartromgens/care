@@ -3,5 +3,5 @@ South==0.8.3
 django-bootstrap3==4.11.0
 django-common-helpers==0.6.1
 django-cron==0.3.4
-django-registration==1.0
+django-registration-redux==1.1
  
