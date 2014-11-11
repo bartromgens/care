@@ -16,7 +16,7 @@ class TransactionReal(models.Model):
   modifications = models.ManyToManyField(Modification, blank=True)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
 
-  def getDateTimeLastModified(self):
+  def get_datetime_last_modified(self):
     if self.modifications.all():
       modification = self.modifications.latest('date')
       return modification.date
@@ -45,7 +45,7 @@ class TransactionReal(models.Model):
     receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfileId)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
     for transaction in transactionsRealAll:
-      transaction.lastModified = transaction.getDateTimeLastModified();
+      transaction.lastModified = transaction.get_datetime_last_modified();
     return sorted(transactionsRealAll, key=lambda instance: instance.lastModified, reverse=True)
     
   def __str__(self):

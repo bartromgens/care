@@ -62,7 +62,7 @@ class HomeView(BaseView):
     groupAccounts = userProfile.groupAccounts.all()
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     
-    transactionsAllSorted = Transaction.getTransactionsAllSortedByDateLastModified(userProfile.id) 
+    transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id) 
     transactionsRealAllSorted = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userProfile.id)
         
     for groupAccount in groupAccounts:

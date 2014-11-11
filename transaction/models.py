@@ -3,11 +3,10 @@ from userprofile.models import UserProfile
 
 from django.db import models
 
-from itertools import chain
 from datetime import datetime
+from itertools import chain
 
 # users = User.objects.filter(groups__name='monkeys')
-
 
 class Modification(models.Model):
   user = models.ForeignKey(UserProfile, blank=True)
@@ -24,7 +23,7 @@ class Transaction(models.Model):
   modifications = models.ManyToManyField(Modification, blank=True)
   date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
   
-  def getDateTimeLastModified(self):
+  def get_datetime_last_modified(self):
     if self.modifications.all():
       modification = self.modifications.latest('date')
       return modification.date
@@ -32,7 +31,7 @@ class Transaction(models.Model):
       return self.date
   
   @staticmethod
-  def getBuyerTransactions(buyerId):
+  def get_buyer_transactions(buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % float(transaction.amount)
@@ -40,7 +39,7 @@ class Transaction(models.Model):
     return transactions
   
   @staticmethod  
-  def getConsumerTransactions(consumerId):
+  def get_consumer_transactions(consumerId):
     transactions = Transaction.objects.filter(consumers__id=consumerId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % (-1*float(transaction.amount)/transaction.consumers.count())
@@ -48,12 +47,12 @@ class Transaction(models.Model):
     return transactions
   
   @staticmethod
-  def getTransactionsAllSortedByDateLastModified(userProfileId):
-    buyerTransactions = Transaction.getBuyerTransactions(userProfileId)
-    consumerTransactions = Transaction.getConsumerTransactions(userProfileId)
+  def get_transactions_sorted_by_last_modified(userProfileId):
+    buyerTransactions = Transaction.get_buyer_transactions(userProfileId)
+    consumerTransactions = Transaction.get_consumer_transactions(userProfileId)
     transactionsAll = list(chain(buyerTransactions, consumerTransactions))
     for transaction in transactionsAll:
-      transaction.lastModified = transaction.getDateTimeLastModified();
+      transaction.lastModified = transaction.get_datetime_last_modified();
     return sorted(transactionsAll, key=lambda instance: instance.lastModified, reverse=True)
   
   def __str__(self):

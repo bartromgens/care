@@ -47,7 +47,7 @@ class NewRealTransactionView(FormView, BaseView):
   def get_active_menu(self):
     return 'transactions'
    
-  def getGroupAccountId(self):
+  def get_groupaccount_id(self):
     if 'groupAccountId' in self.kwargs:
       return self.kwargs['groupAccountId']
     else:
@@ -60,7 +60,7 @@ class NewRealTransactionView(FormView, BaseView):
     
   def get_form(self, form_class):
     logger.debug('get_form()')
-    return NewRealTransactionForm(self.getGroupAccountId(), self.request.user, **self.get_form_kwargs())   
+    return NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())   
     
   def form_valid(self, form):
     logger.debug('form_valid()')
@@ -75,11 +75,11 @@ class NewRealTransactionView(FormView, BaseView):
     return HttpResponseRedirect( '/transactionsreal/new/' + str(groupAccount.id))
     
   def get_context_data(self, **kwargs):
-    logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.getGroupAccountId()))
+    logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.get_groupaccount_id()))
     context = super(NewRealTransactionView, self).get_context_data(**kwargs)
     
-    if (self.getGroupAccountId()):
-      form = NewRealTransactionForm(self.getGroupAccountId(), self.request.user, **self.get_form_kwargs())
+    if (self.get_groupaccount_id()):
+      form = NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
       context['form'] = form
       context['nogroup'] = False
     else:
