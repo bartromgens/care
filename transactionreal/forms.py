@@ -67,3 +67,4 @@ class EditRealTransactionForm(forms.ModelForm):
   
   class Meta:
     model = TransactionReal
+    

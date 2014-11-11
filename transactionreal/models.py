@@ -24,7 +24,7 @@ class TransactionReal(models.Model):
       return self.date
   
   @staticmethod
-  def getSentTransactionsReal(senderId):
+  def get_transactions_real_sent(senderId):
     transactions = TransactionReal.objects.filter(sender__id=senderId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % transaction.amount
@@ -32,7 +32,7 @@ class TransactionReal(models.Model):
     return transactions
   
   @staticmethod  
-  def getReceivedTransactionsReal(receiverId):
+  def get_transactions_real_received(receiverId):
     transactions = TransactionReal.objects.filter(receiver__id=receiverId).order_by("-date")
     for transaction in transactions:
       transaction.amountPerPerson = '%.2f' % transaction.amount
@@ -40,9 +40,9 @@ class TransactionReal(models.Model):
     return transactions
   
   @staticmethod
-  def getTransactionsRealAllSortedByDateLastModified(userProfileId):
-    sentTransactions = TransactionReal.getSentTransactionsReal(userProfileId)
-    receivedTransactions = TransactionReal.getReceivedTransactionsReal(userProfileId)
+  def get_transactions_real_sorted_by_last_modified(userProfileId):
+    sentTransactions = TransactionReal.get_transactions_real_sent(userProfileId)
+    receivedTransactions = TransactionReal.get_transactions_real_received(userProfileId)
     transactionsRealAll = list(chain(sentTransactions, receivedTransactions))
     for transaction in transactionsRealAll:
       transaction.lastModified = transaction.get_datetime_last_modified();

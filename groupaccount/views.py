@@ -18,18 +18,14 @@ class MyGroupAccountsView(BaseView):
   def get_active_menu(self):
     return 'group'
   
-  def getTransactions(self, buyerId):
-    transactions = Transaction.objects.filter(buyer__id=buyerId)
-    return transactions
-  
   def get_context_data(self, **kwargs):
     user = self.request.user
     userProfile = UserProfile.objects.get(user=user)
-    userProfile.setShowTable(self.kwargs['tableView'])   
+    userProfile.get_show_table(self.kwargs['tableView'])   
     groupAccounts = userProfile.groupAccounts.all()
     
     for groupAccount in groupAccounts:
-      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount, userProfile)
+      groupAccount = GroupAccount.add_groupaccount_info(groupAccount, userProfile)
 
     context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
     context['groups'] = groupAccounts

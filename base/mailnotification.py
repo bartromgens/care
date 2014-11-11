@@ -34,7 +34,7 @@ def create_transaction_history_table_html(userprofile, date_start, date_end):
 
 
 def create_transaction_real_history_table_html(userprofile, date_start, date_end):
-  transactionsRealAll = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userprofile.id)
+  transactionsRealAll = TransactionReal.get_transactions_real_sorted_by_last_modified(userprofile.id)
   transactionsInRange = []
   for transaction in transactionsRealAll:
     if transaction.lastModified.date() > date_start and transaction.lastModified.date() < date_end + timedelta(1):

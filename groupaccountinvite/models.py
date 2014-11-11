@@ -19,17 +19,17 @@ class GroupAccountInvite(models.Model):
   createdDateAndTime = models.DateTimeField(default=datetime.now, editable=True, blank=True)
 
   @staticmethod
-  def getSentInvites(userProfile):
+  def get_invites_sent(userProfile):
     return GroupAccountInvite.objects.filter(inviter=userProfile)
   
   @staticmethod
-  def getReceivedInvites(userProfile):
+  def get_invites_received(userProfile):
     return GroupAccountInvite.objects.filter(invitee=userProfile)
  
   @staticmethod
-  def getInvitesAllSortedByDate(userProfile):
-    invitesSent = GroupAccountInvite.getSentInvites(userProfile);
-    invitesReceived = GroupAccountInvite.getReceivedInvites(userProfile);
+  def get_invites_sorted_by_date(userProfile):
+    invitesSent = GroupAccountInvite.get_invites_sent(userProfile);
+    invitesReceived = GroupAccountInvite.get_invites_received(userProfile);
     invitesAll = list(chain(invitesSent, invitesReceived))
     invitesAll = set(invitesAll)
     return sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)

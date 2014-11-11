@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
  
 #users = User.objects.filter(groups__name='monkeys')
 
-def createUserProfile(sender, user, request, **kwargs):
-  logger.debug('signal createUserProfile()')
+def create_userprofile(sender, user, request, **kwargs):
+  logger.debug('signal create_userprofile()')
   profile = UserProfile(user=user, displayname=user.username)
   if NotificationInterval.objects.get(name="Monthly"):
     profile.historyEmailInterval = NotificationInterval.objects.get(name="Monthly")
@@ -22,7 +22,7 @@ def createUserProfile(sender, user, request, **kwargs):
   emailserver.send_welcome_email(user.username, user.email)
 
 # create a new userprofile when a user registers
-user_registered.connect(createUserProfile)
+user_registered.connect(create_userprofile)
 
 
 class NotificationInterval(models.Model):
@@ -45,7 +45,7 @@ class UserProfile(models.Model):
   def __str__(self):
     return str(self.displayname)
   
-  def setShowTable(self, doShowTable):
+  def get_show_table(self, doShowTable):
     if int(doShowTable) == 1 and self.showTableView:
       self.showTableView = False
       self.save()
@@ -66,7 +66,7 @@ class UserProfile(models.Model):
  
   
   @staticmethod
-  def getBalance(groupAccountId, userProfileId):
+  def get_balance(groupAccountId, userProfileId):
     from transaction.models import Transaction
     from transactionreal.models import TransactionReal
     buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)

@@ -23,7 +23,7 @@ class MyTransactionView(BaseView):
   
   def get_context_data(self, **kwargs):
     userProfile = UserProfile.objects.get(user=self.request.user)
-    userProfile.setShowTable(self.kwargs['tableView'])   
+    userProfile.get_show_table(self.kwargs['tableView'])   
     context = super(MyTransactionView, self).get_context_data(**kwargs)
     transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id) 
     context['transactionsAll'] = transactionsAllSorted

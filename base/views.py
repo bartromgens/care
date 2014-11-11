@@ -51,7 +51,7 @@ class HomeView(BaseView):
   def get_active_menu(self):
     return 'account'
   
-  def getTransactions(self, buyerId):
+  def get_transactions(self, buyerId):
     transactions = Transaction.objects.filter(buyer__id=buyerId)
     return transactions
   
@@ -63,10 +63,10 @@ class HomeView(BaseView):
     friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
     
     transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id) 
-    transactionsRealAllSorted = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userProfile.id)
+    transactionsRealAllSorted = TransactionReal.get_transactions_real_sorted_by_last_modified(userProfile.id)
         
     for groupAccount in groupAccounts:
-      groupAccount = GroupAccount.addGroupAccountInfo(groupAccount, userProfile)
+      groupAccount = GroupAccount.add_groupaccount_info(groupAccount, userProfile)
     
     myTotalBalanceFloat = 0.0
     for groupAccount in groupAccounts:
@@ -75,7 +75,7 @@ class HomeView(BaseView):
     myTotalBalance = '%.2f' % myTotalBalanceFloat
     context['myTotalBalance'] = myTotalBalance
     context['myTotalBalanceFloat'] = myTotalBalanceFloat 
-#     invitesAllSorted = GroupAccountInvite.getInvitesAllSortedByDate(userProfile)
+#     invitesAllSorted = GroupAccountInvite.get_invites_sorted_by_date(userProfile)
     slowLastN = 5
 #     context['invitesAll'] = invitesAllSorted[0:slowLastN]
     context['friends'] = friends

@@ -19,9 +19,9 @@ class MyRealTransactionView(BaseView):
   
   def get_context_data(self, **kwargs):
     userProfile = UserProfile.objects.get(user=self.request.user) 
-    userProfile.setShowTable(self.kwargs['tableView'])        
+    userProfile.get_show_table(self.kwargs['tableView'])        
     context = super(MyRealTransactionView, self).get_context_data(**kwargs)
-    transactionsRealAllSorted = TransactionReal.getTransactionsRealAllSortedByDateLastModified(userProfile.id)
+    transactionsRealAllSorted = TransactionReal.get_transactions_real_sorted_by_last_modified(userProfile.id) 
     context['transactionsRealAll'] = transactionsRealAllSorted
     return context
 
