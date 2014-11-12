@@ -5,11 +5,12 @@
   
 <tr>
 
-  <th align="left">
+  <th align="left">{{ group.name }}</th>
+  <th>
     {% if group.balanceVerified %}
-    <div><font class="text-success" data-toggle="tooltip" data-placement="left" title="Balance verified">{{ group.name }} {% bootstrap_icon "ok-circle" %}</font></div>
+    <div><font class="text-success" data-toggle="tooltip" data-placement="left" title="Balance verified">{% bootstrap_icon "ok-circle" %}</font></div>
     {% else %}
-    <div style="color:red">{{ group.name }} {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
+    <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
     {% endif %}
   </th>
               

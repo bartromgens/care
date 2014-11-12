@@ -44,9 +44,10 @@
       <tr>
         <th><b>&#8364</b></th>
         <th><b>What</b></th>
-        <th><b>Group</b></th>
+        <th><b>Cost</b></th>
         <th><b>Who</b></th>
         <th><b>Shared with</b></th>
+        <th><b>Group</b></th>
         <th><b>Comment</b></th>
         <th><b>Date</b></th>
         <th><b>Edit</b></th>
@@ -56,19 +57,19 @@
     {% for transaction in transactionsAll %}
     <tr>
     
-      <td align="left">&#8364
-      {% if transaction.amountPerPersonFloat <= 0.0 %}
-     	  <font class="text-warning">
-      {% else %}
-     	  <font class="text-info">
-	    {% endif %}
-  	    <b>{{ transaction.amountPerPerson }}</b>
-        </font>
+      <td align="left">
+        {% if transaction.amountPerPersonFloat <= 0.0 %}
+          <b>&#8364<font class="text-warning" >{{ transaction.amountPerPerson }}</font></b>
+        {% else %}
+          <b>&#8364<font class="text-info" >{{ transaction.amountPerPerson }}</font></b>
+        {% endif %}
       </td>
     
-      <td >{{ transaction.what }}</td> 
-    
-      <td>{{ transaction.groupAccount }}</td>
+      <td>{{ transaction.what }}</td> 
+
+      <td>
+        &#8364<font class="text-info" >{{ transaction.amount|floatformat:2 }}</font>
+      </td>     
     
       <td>
         {% ifequal transaction.buyer.displayname displayname %}
@@ -83,6 +84,8 @@
             {% ifequal consumer.displayname displayname %}<font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
       {% endfor %}
       </td>
+
+      <td>{{ transaction.groupAccount }}</td>
       
       <td>{{ transaction.comment }}</td>
       
