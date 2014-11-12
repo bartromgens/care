@@ -1,11 +1,7 @@
 webfaction installs:
 
 - Install python modules
-
-modules:
-django-bootstrap3
-django-registration
-south 
+see requirements.txt for required modules
 
 command:
 $ PYTHONPATH=$HOME/webapps/care/lib/python3.3 easy_install-3.3 --install-dir=$HOME/webapps/care/lib/python3.3 --script-dir=$HOME/webapps/care/bin django-bootstrap3
