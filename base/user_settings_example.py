@@ -32,6 +32,6 @@ EMAIL_HOST = 'smtp.domain.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
- 
+
 DEFAULT_FROM_EMAIL = 'info@domain.com'
 SERVER_EMAIL = 'info@domain.com'

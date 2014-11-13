@@ -10,4 +10,4 @@ urlpatterns = patterns('',
   url(r'^new/(?P<groupAccountId>\d+)/$', login_required(NewTransactionView.as_view())),
 )
 
-urlpatterns += staticfiles_urlpatterns() 
+urlpatterns += staticfiles_urlpatterns()

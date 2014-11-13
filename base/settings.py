@@ -3,11 +3,11 @@
 
 from base.user_settings import *
 
-TEMPLATE_DEBUG = DEBUG 
+TEMPLATE_DEBUG = DEBUG
 
 MANAGERS = ADMINS
- 
-DATABASES = { 
+
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': APP_DIR + 'care.sqlite',                      # Or path to database file if using sqlite3.
@@ -108,7 +108,7 @@ INSTALLED_APPS = (
     'south', # for database migration
     'bootstrap3', #bootstrap3 see: https://github.com/dyve/django-bootstrap3
     'registration', #django-registration-redux, https://github.com/macropin/django-registration
-    'django_cron', # for job scheduling (for example, sending mails)  
+    'django_cron', # for job scheduling (for example, sending mails)
     'base',
     'userprofile',
     'groupaccount',
@@ -182,7 +182,7 @@ LOGIN_REDIRECT_URL = '/'
 #         'LOCATION': 'unix:</home/bartromgens/memcached.sock>',
 #     }
 # }
-    
+
 BOOTSTRAP3 = {
     'jquery_url': 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js', #'//code.jquery.com/jquery.min.js',
     'base_url': STATIC_URL + 'bootstrap/', #'//netdna.bootstrapcdn.com/bootstrap/3.0.3/'
@@ -201,4 +201,3 @@ CRON_CLASSES = [
 #     'base.cronjobs.TestEmails',
     # ...
 ]
-
