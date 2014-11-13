@@ -28,7 +28,7 @@ Install the required python modules (with activated virtual env),
 ```bash
 $ pip install -r requirements.txt
 ```
-#### user_settings.py
+#### Configure user_settings.py
 Copy `./base/user_settings_example.py` to `./base/user_settings.py` and change the placeholders in user_settings.py with your personal settings. 
 
 #### Create database
@@ -41,15 +41,14 @@ Create initial database migrations for the following apps:
 ```bash
 $ python manage.py schemamigration <appname> --initial
 ```
-
-Run syncdb and create a Django root user, (you have to create a userprofile for this first user later via the admin)
-```bash
-$ python manage.py syncdb
-```
-
 migrate all apps,
 ```bash
 $ manage.py migrate <appname>
+```
+
+Run syncdb and create a Django root user,
+```bash
+$ python manage.py syncdb
 ```
 
 #### Test run
