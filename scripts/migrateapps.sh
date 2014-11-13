@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ..
+
 python manage.py schemamigration userprofile --auto
 python manage.py migrate userprofile
 
