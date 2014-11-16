@@ -6,23 +6,6 @@ see requirements.txt for required modules
 command:
 $ PYTHONPATH=$HOME/webapps/care/lib/python3.3 easy_install-3.3 --install-dir=$HOME/webapps/care/lib/python3.3 --script-dir=$HOME/webapps/care/bin django-bootstrap3
 
-- Create database for each app
-userprofile
-groupaccount
-transaction
-transactionreal
-groupaacountinvite
-
-command: 
-$ python3.3 manage.py schemamigration <appname>
-
-then create the database,
-$ python3.3 manage.py syncdb
-
-migrate all apps
-$ python3.3 manage.py migrate <appname>
-
-
 - Collect staticfiles
 $ python3.3 manage.py collectstatic
 
