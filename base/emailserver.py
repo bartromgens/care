@@ -14,19 +14,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def main():
-    username = 'Bart'
-    usernameTo = 'Jaap'
-    toAddress = 'bart@romgens.com'
-#   send_welcome_email(username, toAddress)
-    send_invite_email(username, usernameTo, "testgroup", toAddress)
-    logger.info("main() end")
-
-
 class EmailThread(threading.Thread):
-    def __init__(self, toAddress, fromAddress, subject, message):
-        self.toAddress = toAddress
-        self.fromAddress = fromAddress
+    def __init__(self, email_to, email_from, subject, message):
+        self.email_to = email_to
+        self.email_from = email_from
         self.subject = subject
         self.message = message
         threading.Thread.__init__(self)
@@ -34,8 +25,8 @@ class EmailThread(threading.Thread):
     def run(self):
         msg = MIMEMultipart('alternative')
         msg['Subject'] = self.subject
-        msg['From'] = self.fromAddress
-        msg['To'] = self.toAddress
+        msg['From'] = self.email_from
+        msg['To'] = self.email_to
 
         msg.attach(MIMEText(self.message, 'html'))
 
@@ -47,19 +38,19 @@ class EmailThread(threading.Thread):
         server = SMTP( settings.EMAIL_HOST + ':' + str(settings.EMAIL_PORT) )
         server.starttls()
         server.login(username, password)
-        server.sendmail(self.fromAddress, self.toAddress, msg.as_string())
+        server.sendmail(self.email_from, self.email_to, msg.as_string())
         server.quit()
         logger.info("finished sending mail")
 
-def send_html_mail(toAddress, fromAddress, subject, message):
-    EmailThread(toAddress, fromAddress, subject, message).start()
+def send_html_mail(email_to, email_from, subject, message):
+    EmailThread(email_to, email_from, subject, message).start()
 
 
 def send_transaction_history(username, emailaddress, transactionTable, transactionRealTable, startDate, endDate):
-    fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
-    toAddress = emailaddress
+    email_from = 'Care <info@computerautomatedremoteexchange.com>'
+    email_to = emailaddress
     subject = 'Care transaction history'
-    logging.info('send_transaction_history from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+    logging.info('send_transaction_history from: ' + str(email_from) + ' to: ' + str(email_to))
 
     message = ''
     with open( os.path.join(module_dir, 'transactionhistorymail.html'), 'r' ) as filein:
@@ -73,16 +64,14 @@ def send_transaction_history(username, emailaddress, transactionTable, transacti
     message = message.replace('{% startDate %}', startDate.strftime('%d %B %Y') )
     message = message.replace('{% endDate %}', endDate.strftime('%d %B %Y') )
 
-#   with open('test.hml', 'w') as fileout:
-#     fileout.write(message)
-    send_html_mail(toAddress, fromAddress, subject, message)
+    send_html_mail(email_to, email_from, subject, message)
 
 
 def send_welcome_email(username, emailaddress):
-    fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
-    toAddress = emailaddress
+    email_from = 'Care <info@computerautomatedremoteexchange.com>'
+    email_to = emailaddress
     subject = 'Welcome to Care!'
-    logging.debug('send_welcome_email from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+    logging.debug('send_welcome_email from: ' + str(email_from) + ' to: ' + str(email_to))
 
     message = ''
 
@@ -94,15 +83,15 @@ def send_welcome_email(username, emailaddress):
     message = message.replace('{% username %}', username)
     message = message.replace('{% email %}', emailaddress)
 
-    send_html_mail(toAddress, fromAddress, subject, message)
+    send_html_mail(email_to, email_from, subject, message)
 
 
 def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
-    fromAddress = 'Care <info@computerautomatedremoteexchange.com>'
-    toAddress = emailaddress
+    email_from = 'Care <info@computerautomatedremoteexchange.com>'
+    email_to = emailaddress
     subject = 'New invitation'
 
-    logging.debug('send_invite_email from: ' + str(fromAddress) + ' to: ' + str(toAddress))
+    logging.debug('send_invite_email from: ' + str(email_from) + ' to: ' + str(email_to))
 
     message = ''
 
@@ -115,8 +104,5 @@ def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
     message = message.replace('{% usernameFrom %}', usernameFrom)
     message = message.replace('{% groupName %}', groupName)
 
-    send_html_mail(toAddress, fromAddress, subject, message)
+    send_html_mail(email_to, email_from, subject, message)
 
-
-if __name__ == "__main__":
-    main()
