@@ -87,9 +87,7 @@ class EditGroupSettingView(BaseView, FormView):
 
     def form_valid(self, form):
         userprofile = UserProfile.objects.get(user=self.request.user)
-        logger.debug('EditGroupSettingView - groupsettings id: ' + self.kwargs['groupsettings_id'])
         super(EditGroupSettingView, self).form_valid(form)
-        logger.debug( str(form.cleaned_data['notification_lower_limit']) )
         form.save()
         show_tablestr = "1"
         if userprofile.showTableView:
