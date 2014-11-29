@@ -105,5 +105,6 @@ class EditGroupSettingView(BaseView, FormView):
             return context
         form = EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
         context['form'] = form
+        context['group_name'] = group.name
         return context
     
