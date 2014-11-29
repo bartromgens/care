@@ -99,10 +99,13 @@ class EditGroupSettingView(BaseView, FormView):
     def get_context_data(self, **kwargs):
         context = super(EditGroupSettingView, self).get_context_data(**kwargs)
         group_settings = GroupSetting.objects.get(id=self.kwargs['groupsettings_id'])
+        
+        # makes sure the user is allowed to edit these group settings
         group = GroupAccount.objects.get(settings=group_settings)
         userprofiles = UserProfile.objects.all().filter(groupAccounts=group).filter(id=self.get_userprofile().id)
         if not userprofiles:
             return context
+        
         form = EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
         context['form'] = form
         context['group_name'] = group.name
