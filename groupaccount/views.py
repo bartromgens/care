@@ -29,7 +29,7 @@ class MyGroupAccountsView(BaseView):
         context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
         context['groups'] = groupAccounts
         context['groupssection'] = True
-        return context# Create your views here.
+        return context
 
 
 class NewGroupAccountView(FormView, BaseView):
