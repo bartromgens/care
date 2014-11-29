@@ -1,7 +1,7 @@
 Care
 ====
 
-Share expenses with friends
+Share expenses with friends in this Django and Bootstrap based web application.
 
 Features
 ------------------
