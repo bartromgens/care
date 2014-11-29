@@ -24,13 +24,17 @@
 
 {% if not userprofile.showTableView %}  
   
-  {% with "accordiontransactionreal" as parentId %}
-    <div class="panel-group" id="{{ parentId }}">
-      {% for transaction in transactionsRealAll %}
-        {% include "transactionreal/transactionrealpanel.html" %}
-      {% endfor %}
-    </div>
-  {% endwith %}
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3" align="center">
+    {% with "accordiontransactionreal" as parentId %}
+      <div class="panel-group" id="{{ parentId }}">
+        {% for transaction in transactionsRealAll %}
+          {% include "transactionreal/transactionrealpanel.html" %}
+        {% endfor %}
+      </div>
+    {% endwith %}
+  </div>
+</div>
   
 {% endif %}  
   

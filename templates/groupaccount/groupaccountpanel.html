@@ -5,11 +5,11 @@
     <div class="panel-title">
       <a data-toggle="collapse" data-parent="#{{ parentId }}" href="#collapsegroup{{ forloop.counter }}">
         <h5> 
-          <table> 
+          <table width="100%"> 
             <tr> 
             
-              <td style="padding-left:1em; width:10em;" align="left"> 
-                {{ group.name }}
+              <td style="padding-left:0em; width:10em;" align="left"> 
+                <b>{{ group.name }}</b>
               </td>
               <td style="padding-left:1em; width:8em;" align="right">
                 {% if group.myBalance < -100.0 %}
@@ -24,7 +24,7 @@
                 </b></font>
               </td>
              
-              <td style="padding-left:1em; width:6em;" align="right">        
+              <td style="padding-left:1em; width:1em;" align="right">        
                 {% if group.balanceVerified %}
                 <div><font class="text-success">{% bootstrap_icon "ok-circle" %}</font></div>
                 {% else %}

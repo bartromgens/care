@@ -5,21 +5,22 @@
     <div class="panel-title">
       <a data-toggle="collapse" data-parent="#{{ parentId }}" href="#collapsetransactionreal{{ forloop.counter }}">
         <h5>
-          <table> 
+          <table style="width:100%;"> 
             <tr> 
-              <td style="padding-left:0em; width:6em;" align="right"> 
+              
+              <td style="padding-left:0em; width:8em;">{{ transaction.sender }}</td>   
+
+              <td style="padding-left:0em; width:0em;" align="center">{% bootstrap_icon "arrow-right" %}</td>   
+
+              <td style="padding-left:1em; width:8em;" align="right">  {{ transaction.receiver }}</td>   
+
+              <td style="padding-left:0em; width:25%;" align="right"> 
               {% if transaction.amountPerPersonFloat <= 0.0 %}
                 <b>&#8364<font class="text-warning">{{ transaction.amountPerPerson }}</font></b>
               {% else %}
                 <b>&#8364<font class="text-info">{{ transaction.amountPerPerson }}</font></b>
               {% endif %}
               </td>
-              
-              <td style="padding-left:1em; width:8em;">{{ transaction.sender }}</td>   
-
-              <td style="padding-left:0em; width:0em;" align="center">{% bootstrap_icon "arrow-right" %}</td>   
-
-              <td style="padding-left:1em; width:8em;">  {{ transaction.receiver }}</td>   
               
             </tr>
           </table>

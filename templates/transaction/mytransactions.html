@@ -4,6 +4,7 @@
 {% block content %}
 
 <!-- navbar -->
+
 <div class="subnav subnav subnav-fixed-top">
   <div class="container">
     <div class="subnav">
@@ -25,13 +26,17 @@
 
 {% if not userprofile.showTableView %}  
 
-  {% with "accordiontransactionreal" as parentId %}
-    <div class="panel-group" id="{{ parentId }}">
-    {% for transaction in transactionsAll %}
-      {% include "transaction/transactionpanel.html" %}
-    {% endfor %}
-    </div>
-  {% endwith %}
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-4" align="center">
+    {% with "accordiontransactionreal" as parentId %}
+      <div class="panel-group" id="{{ parentId }}">
+      {% for transaction in transactionsAll %}
+        {% include "transaction/transactionpanel.html" %}
+      {% endfor %}
+      </div>
+    {% endwith %}
+  </div>
+</div>
 
 {% endif %}
  
