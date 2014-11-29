@@ -6,5 +6,5 @@ urlpatterns = patterns('',
     url(r'^my/(?P<tableView>\d+)$', login_required(MyGroupAccountsView.as_view())),
     url(r'^new/$', login_required(NewGroupAccountView.as_view())),
     url(r'^new/success/$', login_required(SucessNewGroupAccountView.as_view())),
-    url(r'^settings/(?P<group_id>\d+)$', login_required(EditGroupSettingView.as_view())),
+    url(r'^settings/(?P<groupsettings_id>\d+)$', login_required(EditGroupSettingView.as_view())),
 )

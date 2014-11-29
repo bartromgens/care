@@ -82,12 +82,12 @@ class EditGroupSettingView(BaseView, FormView):
     success_url = '/'
 
     def get_form(self, form_class):
-        group_settings = GroupSetting.objects.get(id=self.kwargs['group_id'])
+        group_settings = GroupSetting.objects.get(id=self.kwargs['groupsettings_id'])
         return EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
 
     def form_valid(self, form):
         userprofile = UserProfile.objects.get(user=self.request.user)
-        logger.debug('EditGroupSettingView - group id: ' + self.kwargs['group_id'])
+        logger.debug('EditGroupSettingView - groupsettings id: ' + self.kwargs['groupsettings_id'])
         super(EditGroupSettingView, self).form_valid(form)
         logger.debug( str(form.cleaned_data['notification_lower_limit']) )
         form.save()
@@ -98,8 +98,11 @@ class EditGroupSettingView(BaseView, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EditGroupSettingView, self).get_context_data(**kwargs)
-        group_settings = GroupSetting.objects.get(id=self.kwargs['group_id'])
-        logging.debug(group_settings)
+        group_settings = GroupSetting.objects.get(id=self.kwargs['groupsettings_id'])
+        group = GroupAccount.objects.get(settings=group_settings)
+        userprofiles = UserProfile.objects.all().filter(groupAccounts=group).filter(id=self.get_userprofile().id)
+        if not userprofiles:
+            return context
         form = EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
         context['form'] = form
         return context

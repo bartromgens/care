@@ -6,11 +6,15 @@
 {% block content %}
   <center><h4>Group settings</h4></center>
 
-<!-- {% if error %}
-  {{ error }}
-{% endif %} -->
+{% if not form %}  
+No permissions to change these group settings.
+{% endif %}
 
-  
+{% if error %}
+  {{ error }}
+{% endif %}
+
+{% if form %}  
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
         <div class="well well-md">
@@ -38,5 +42,6 @@
         </div>      
       </div>
     </div>
+{% endif %}
   
 {% endblock %} 
