@@ -37,11 +37,11 @@ class EditGroupSettingForm(forms.ModelForm):
         self.fields['notification_lower_limit'] = forms.IntegerField( min_value=0, 
                                                                       max_value=100000000000, 
                                                                       initial=0,
-                                                                      label='Balance notification', 
-                                                                      help_text='Send email when group member has balance below this value' )
+                                                                      label='Debt warning threshold (€)', 
+                                                                      help_text='' )
 
         self.fields['notification_lower_limit_interval'] = forms.ModelChoiceField( queryset=NotificationInterval.objects.all(),
-                                                                                   label='Low balance email interval',
+                                                                                   label='Email notification interval',
                                                                                    empty_label=None )
 
 
