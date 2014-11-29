@@ -1,5 +1,6 @@
-Care
+Care 
 ====
+#### Computer automated remote exchange
 
 Share expenses with friends in this Django and Bootstrap based web application.
 
