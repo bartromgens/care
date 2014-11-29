@@ -26,11 +26,15 @@
 {% if not userprofile.showTableView %} 
   
 {% with "accordiongroups" as parentId %}
+<div class="row">
+<div class="col-sm-4 col-sm-offset-4">
   <div class="panel-group" id="{{ parentId }}">
   {% for group in groups %}
     {% include "groupaccount/groupaccountpanel.html" %}
   {% endfor %}
   </div>
+ </div>
+ </div>
 {% endwith %}
 
 {% endif %}
@@ -38,7 +42,7 @@
 
 {% if userprofile.showTableView %}  
 <div class="row">
-  <div class="col-md-8 col-md-offset-2" align="center">
+  <div class="col-md-6 col-md-offset-3" align="center">
   {% include "groupaccount/groupaccounttable.html" %}  
   </div>
 </div>

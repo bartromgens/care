@@ -1,8 +1,8 @@
 {% load bootstrap3 %}
  
 {% for group in groups %}
-  <table class="table table-hover">
-    <tr>
+  <table class="table table-bordered">
+    <tr class="active">
       <th class="text-left" style="padding-left:2em; width:30em;"><b>{{ group.name }}</b></th>
       <th class="text-right" style="width:1em;">
         {% if group.balanceVerified %}
@@ -18,7 +18,7 @@
     </tr>
   </table>
   
-  <table class="table table-striped table-hover sortable">
+  <table class="table table-hover table-bordered">
   {% for member in group.userProfiles %}  
     <tr>
       {% ifequal member.user user %}
@@ -41,13 +41,11 @@
   {% endfor %}
   </table>
   
-  <table class="table table-striped table-hover sortable">
-  <tr style="padding-left:2em; width:10em;">
-    <td align="left">{{ group.settings.id }} {{group.settings.notification_lower_limit_interval }} reminder when balance below &#8364
-    -{{ group.settings.notification_lower_limit }}
-    </td>
-  </tr>
-  </table>
+ <div>
+   <h6>
+     {{group.settings.notification_lower_limit_interval }} reminder when balance below &#8364 -{{ group.settings.notification_lower_limit }} 
+   </h6>
+ </div>
 {% endfor %}
 
 <script>

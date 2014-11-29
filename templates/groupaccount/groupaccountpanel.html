@@ -42,16 +42,16 @@
     <div class="panel-body">
       <div class="row">
       
-        <div class="col-sm-12" align="left">
-          <table> 
+        <div class="col-sm-12">
+          <table style="width:100%;"> 
             {% for member in group.userProfiles %}  
-            <tr>
+            <tr> 
               {% ifequal member.user user %}
                 <td ><b>{{ member.displayname }}</td>
               {% else %}
                 <td > {{ member.displayname }}</b></td>
               {% endifequal %}
-                <td  align="right">
+                <td align="right">
                 {% if member.balanceFloat < -100.0 %}
                   <div>&#8364<font class="text-danger"><b>{{member.balance}}</b></font></div>
                 {% elif member.balanceFloat < 0.0 %}
@@ -65,17 +65,17 @@
             </tr>
             {% endfor %}
             
-            <tr><td><hr></td></tr>
+            <tr><td><br></td></tr>
             
-            <tr class="col-sm-12">
+            <tr>
               <td align="left">        
-                  <font class="text">{{group.settings.notification_lower_limit_interval}} email when debt larger than </b> </font>
+                  <div><font class="text">{{group.settings.notification_lower_limit_interval}} email when debt larger than </b> </font></div>
               </td>
-              <td style="padding-right:1em;" align="right">        
-                  <font class="text">&#8364 -{{group.settings.notification_lower_limit}}</font>
+              <td class="text-right">        
+                  <div><font class="text">&#8364 -{{group.settings.notification_lower_limit}}</font></div>
               </td>
-              <td style="padding-left:1em;" align="right">        
-                  <font class="text"><a href="/group/settings/{{ group.id }}"><i class="glyphicon glyphicon-cog"></i> </a></font>
+              <td style="padding-left:1em; width:1em;" align="right">        
+                  <div><font class="text"><a href="/group/settings/{{ group.id }}"><i class="glyphicon glyphicon-cog"></i> </a></font></div>
               </td>
             </tr>
           </table>
