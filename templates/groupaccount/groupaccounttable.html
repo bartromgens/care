@@ -26,7 +26,7 @@
       {% else %}
         <td style="padding-left:2em; width:10em;">{{ member.displayname }}</b></td>
       {% endifequal %}
-        <td>
+        <td class="text-right">
         {% if member.balanceFloat < -100.0 %}
           <div>&#8364<font class="text-danger"><b>{{member.balance}}</b></font></div>
         {% elif member.balanceFloat < 0.0 %}
