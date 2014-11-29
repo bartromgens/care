@@ -1,4 +1,4 @@
-from groupaccount.models import GroupAccount
+from groupaccount.models import GroupAccount, GroupSetting
 #from accounts.models import Account
 from django.contrib import admin
 
@@ -6,8 +6,16 @@ class GroupAccountAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['number']}),
         (None, {'fields': ['name']}),
+        (None, {'fields': ['settings']}),
     ]
-    list_display = ('name', 'number')
+    list_display = ('id', 'name', 'number', 'settings')
+
+class GroupSettingAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['notification_lower_limit']}),
+        (None, {'fields': ['notification_lower_limit_interval']}),
+    ]
+    list_display = ('id', 'notification_lower_limit', 'notification_lower_limit_interval')
 
 #class AccountAdmin(admin.ModelAdmin):
     #fieldsets = [
@@ -18,5 +26,6 @@ class GroupAccountAdmin(admin.ModelAdmin):
     #list_display = ('name', 'owner',)
 
 admin.site.register(GroupAccount, GroupAccountAdmin)
+admin.site.register(GroupSetting, GroupSettingAdmin)
 
 #admin.site.register(Account, AccountAdmin)

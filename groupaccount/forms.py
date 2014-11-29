@@ -1,8 +1,10 @@
-from groupaccount.models import GroupAccount
+from groupaccount.models import GroupAccount, GroupSetting
+from userprofile.models import NotificationInterval
 
 from django import forms
 
 from random import randint
+
 
 class NewGroupAccountForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -17,6 +19,31 @@ class NewGroupAccountForm(forms.ModelForm):
             groupAccount = GroupAccount.objects.filter(number=randomNumber)
 
         self.fields['number'].initial = randomNumber
+        
+        self.fields['settings'] = forms.ModelChoiceField( widget=forms.HiddenInput,
+                                                          queryset=GroupSetting.objects.all(),
+                                                          empty_label=None,
+                                                          required=False )
 
     class Meta:
         model = GroupAccount
+
+
+class EditGroupSettingForm(forms.ModelForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(EditGroupSettingForm, self).__init__(*args, **kwargs)
+
+        self.fields['notification_lower_limit'] = forms.IntegerField( min_value=0, 
+                                                                      max_value=100000000000, 
+                                                                      initial=0,
+                                                                      label='Balance notification', 
+                                                                      help_text='Send email when group member has balance below this value' )
+
+        self.fields['notification_lower_limit_interval'] = forms.ModelChoiceField( queryset=NotificationInterval.objects.all(),
+                                                                                   label='Low balance email interval',
+                                                                                   empty_label=None )
+
+
+    class Meta:
+        model = GroupSetting

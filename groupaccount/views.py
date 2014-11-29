@@ -1,7 +1,6 @@
 from base.views import BaseView
-from groupaccount.forms import NewGroupAccountForm
-from groupaccount.models import GroupAccount
-from transaction.models import Transaction
+from groupaccount.forms import NewGroupAccountForm, EditGroupSettingForm
+from groupaccount.models import GroupAccount, GroupSetting
 from userprofile.models import UserProfile
 
 from django.shortcuts import HttpResponseRedirect
@@ -47,6 +46,15 @@ class NewGroupAccountView(FormView, BaseView):
     def form_valid(self, form):
         super(NewGroupAccountView, self).form_valid(form)
         groupAccount = form.save()
+        
+        settings = GroupSetting()
+        from userprofile.models import NotificationInterval
+        if NotificationInterval.objects.get(name="Weekly"):
+            settings.notification_lower_limit_interval = NotificationInterval.objects.get(name="Weekly")
+        settings.save()
+        groupAccount.settings = settings
+        groupAccount.save()
+        
         userProfile = UserProfile.objects.get(user=self.request.user)
         userProfile.groupAccounts.add(groupAccount)
         userProfile.save()
@@ -66,3 +74,33 @@ class SucessNewGroupAccountView(BaseView):
 
     def get_active_menu(self):
         return 'accounts'
+
+
+class EditGroupSettingView(BaseView, FormView):
+    template_name = 'groupaccount/settings.html'
+    form_class = EditGroupSettingForm
+    success_url = '/'
+
+    def get_form(self, form_class):
+        group_settings = GroupSetting.objects.get(id=self.kwargs['group_id'])
+        return EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        userprofile = UserProfile.objects.get(user=self.request.user)
+        logger.debug('EditGroupSettingView - group id: ' + self.kwargs['group_id'])
+        super(EditGroupSettingView, self).form_valid(form)
+        logger.debug( str(form.cleaned_data['notification_lower_limit']) )
+        form.save()
+        show_tablestr = "1"
+        if userprofile.showTableView:
+            show_tablestr = "0"
+        return HttpResponseRedirect( '/group/my/' + show_tablestr)
+
+    def get_context_data(self, **kwargs):
+        context = super(EditGroupSettingView, self).get_context_data(**kwargs)
+        group_settings = GroupSetting.objects.get(id=self.kwargs['group_id'])
+        logging.debug(group_settings)
+        form = EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
+        context['form'] = form
+        return context
+    

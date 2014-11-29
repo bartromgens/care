@@ -2,10 +2,17 @@ from django.db import models
 
 #users = User.objects.filter(groups__name='monkeys')
 
+class GroupSetting(models.Model):
+    notification_lower_limit = models.IntegerField(default=100) # the max negative balance a user can have in this group before a notification will be sent.
+    notification_lower_limit_interval = models.ForeignKey('userprofile.NotificationInterval', null=True) # the negative balance notification interval in days
+    
+    def __str__(self):
+        return 'id: ' + str(self.id) + ', limit: ' + str(self.notification_lower_limit) + ', interval: ' + str(self.notification_lower_limit_interval.name) 
+
 class GroupAccount(models.Model):
     name = models.CharField(max_length=200)
     number = models.IntegerField(unique=True)
-    #settings = models.ForeignKey(GroupSettings)
+    settings = models.ForeignKey(GroupSetting, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -26,3 +33,4 @@ class GroupAccount(models.Model):
         groupAccount.myBalanceFloat = UserProfile.get_balance(groupAccount.id, myUserProfile.id)
         groupAccount.myBalance = '%.2f' % groupAccount.myBalanceFloat
         return groupAccount
+    

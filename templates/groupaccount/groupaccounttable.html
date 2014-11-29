@@ -1,44 +1,53 @@
 {% load bootstrap3 %}
  
 {% for group in groups %}
-<table class="table table-striped table-hover sortable">
+  <table class="table table-hover">
+    <tr>
+      <th class="text-left" style="padding-left:2em; width:30em;"><b>{{ group.name }}</b></th>
+      <th class="text-right" style="width:1em;">
+        {% if group.balanceVerified %}
+        <div><font class="text-success" data-toggle="tooltip" data-placement="left" title="Balance verified">{% bootstrap_icon "ok-circle" %}</font></div>
+        {% else %}
+        <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
+        {% endif %}
+      </th>
+      <th class="text-right" style="width:1em;">
+        <a href="/group/settings/{{ group.settings.id }}" data-toggle="tooltip" data-placement="left" title="Settings" >
+        <i class="glyphicon glyphicon-cog"></i></a>
+      </th>     
+    </tr>
+  </table>
   
-<tr>
-
-  <th align="left">{{ group.name }}</th>
-  <th>
-    {% if group.balanceVerified %}
-    <div><font class="text-success" data-toggle="tooltip" data-placement="left" title="Balance verified">{% bootstrap_icon "ok-circle" %}</font></div>
-    {% else %}
-    <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
-    {% endif %}
-  </th>
-              
-</tr>
-
-
-{% for member in group.userProfiles %}  
-<tr>
-  {% ifequal member.user user %}
-    <td class="text-info" style="padding-left:2em; width:10em;"><b>{{ member.displayname }}</td>
-  {% else %}
-    <td style="padding-left:2em; width:10em;">{{ member.displayname }}</b></td>
-  {% endifequal %}
-    <td>
-    {% if member.balanceFloat < -100.0 %}
-      <div>&#8364<font class="text-danger"><b>{{member.balance}}</b></font></div>
-    {% elif member.balanceFloat < 0.0 %}
-      <div>&#8364<font class="text-warning"><b>{{member.balance}}</b></font></div>
-    {% elif member.balanceFloat > 100.0 %}
-      <div>&#8364<font class="text-success"><b>{{member.balance}}</b></font></div>
-    {% elif member.balanceFloat > -0.001 %}
-      <div>&#8364<font class="text-info"><b>{{member.balance}}</b></font></div>
-    {% endif %}
+  <table class="table table-striped table-hover sortable">
+  {% for member in group.userProfiles %}  
+    <tr>
+      {% ifequal member.user user %}
+        <td class="text-info" style="padding-left:2em; width:10em;"><b>{{ member.displayname }}</td>
+      {% else %}
+        <td style="padding-left:2em; width:10em;">{{ member.displayname }}</b></td>
+      {% endifequal %}
+        <td>
+        {% if member.balanceFloat < -100.0 %}
+          <div>&#8364<font class="text-danger"><b>{{member.balance}}</b></font></div>
+        {% elif member.balanceFloat < 0.0 %}
+          <div>&#8364<font class="text-warning"><b>{{member.balance}}</b></font></div>
+        {% elif member.balanceFloat > 100.0 %}
+          <div>&#8364<font class="text-success"><b>{{member.balance}}</b></font></div>
+        {% elif member.balanceFloat > -0.001 %}
+          <div>&#8364<font class="text-info"><b>{{member.balance}}</b></font></div>
+        {% endif %}
+        </td>
+    </tr>
+  {% endfor %}
+  </table>
+  
+  <table class="table table-striped table-hover sortable">
+  <tr style="padding-left:2em; width:10em;">
+    <td align="left">{{ group.settings.id }} {{group.settings.notification_lower_limit_interval }} reminder when balance below &#8364
+    -{{ group.settings.notification_lower_limit }}
     </td>
-</tr>
-{% endfor %}
-
-</table>
+  </tr>
+  </table>
 {% endfor %}
 
 <script>

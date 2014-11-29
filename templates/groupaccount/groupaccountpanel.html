@@ -31,7 +31,7 @@
                 <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
                 {% endif %}
               </td>
-              
+             
             </tr>
           </table>
         </h5>
@@ -47,11 +47,11 @@
             {% for member in group.userProfiles %}  
             <tr>
               {% ifequal member.user user %}
-                <td class="text-info" style="padding-left:1em; width:10em;"><b>{{ member.displayname }}</td>
+                <td ><b>{{ member.displayname }}</td>
               {% else %}
-                <td style="padding-left:1em; width:10em;"> {{ member.displayname }}</b></td>
+                <td > {{ member.displayname }}</b></td>
               {% endifequal %}
-                <td>
+                <td  align="right">
                 {% if member.balanceFloat < -100.0 %}
                   <div>&#8364<font class="text-danger"><b>{{member.balance}}</b></font></div>
                 {% elif member.balanceFloat < 0.0 %}
@@ -64,6 +64,20 @@
                 </td>
             </tr>
             {% endfor %}
+            
+            <tr><td><hr></td></tr>
+            
+            <tr class="col-sm-12">
+              <td align="left">        
+                  <font class="text">{{group.settings.notification_lower_limit_interval}} email when debt larger than </b> </font>
+              </td>
+              <td style="padding-right:1em;" align="right">        
+                  <font class="text">&#8364 -{{group.settings.notification_lower_limit}}</font>
+              </td>
+              <td style="padding-left:1em;" align="right">        
+                  <font class="text"><a href="/group/settings/{{ group.id }}"><i class="glyphicon glyphicon-cog"></i> </a></font>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
