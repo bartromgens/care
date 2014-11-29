@@ -62,7 +62,7 @@
     {% for transaction in transactionsAll %}
     <tr>
     
-      <td align="left">
+      <td align="right">
         {% if transaction.amountPerPersonFloat <= 0.0 %}
           <b>&#8364<font class="text-warning" >{{ transaction.amountPerPerson }}</font></b>
         {% else %}
@@ -72,7 +72,7 @@
     
       <td>{{ transaction.what }}</td> 
 
-      <td>
+      <td align="right">
         &#8364<font class="text-info" >{{ transaction.amount|floatformat:2 }}</font>
       </td>     
     

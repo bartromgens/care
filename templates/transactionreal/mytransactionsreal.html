@@ -56,7 +56,7 @@
     </thead>
     {% for transaction in transactionsRealAll %}
     <tr>
-      <td align="left">&#8364
+      <td align="right">&#8364
         <font class="text-info">
           <b>{{ transaction.amountPerPerson }}</b>
         </font>
@@ -81,7 +81,7 @@
     	<td >{{ transaction.comment }}</td> 
     	<td >{{ transaction.groupAccount }}</td> 
     	<td data-value="{{ transaction.date|date:"Y-m-d H:i:s" }}">{{ transaction.date|date:"Y-m-d"  }}</td>
-    	<td><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
+    	<td align="right"><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
     </tr>
   	{% endfor %}
   	</table>
