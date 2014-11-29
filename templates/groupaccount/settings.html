@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+{% block title %}Care{% endblock %}
+
+{% block content %}
+  <center><h4>Group settings</h4></center>
+
+<!-- {% if error %}
+  {{ error }}
+{% endif %} -->
+
+  
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="well well-md">
+          
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12">
+                {% bootstrap_field form.notification_lower_limit %}
+              </div>
+              <div class="col-md-12">
+                {% bootstrap_field form.notification_lower_limit_interval %}
+              </div>
+              
+              <div class="col-md-12">
+              {% buttons %}
+                <button type="submit" name="submit_button" class="btn btn-info">
+                   Save
+                </button>
+              {% endbuttons %}
+              </div>
+            </div>
+          </form>
+        
+        </div>      
+      </div>
+    </div>
+  
+{% endblock %} 

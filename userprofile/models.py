@@ -62,8 +62,7 @@ class UserProfile(models.Model):
         transactionTableHtml = mailnotification.create_transaction_history_table_html(self, date_start, date_end)
         transactionRealTable = mailnotification.create_transaction_real_history_table_html(self, date_start, date_end)
 
-        emailserver.send_transaction_history(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)
-
+        emailserver.send_transaction_history(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)        
 
     @staticmethod
     def get_balance(groupAccountId, userProfileId):

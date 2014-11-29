@@ -1,4 +1,4 @@
-from groupaccount.models import GroupAccount, GroupSetting
+from groupaccount.models import GroupAccount, GroupSetting 
 from userprofile.models import NotificationInterval
 
 from django import forms

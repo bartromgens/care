@@ -94,7 +94,6 @@ def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
     logging.debug('send_invite_email from: ' + str(email_from) + ' to: ' + str(email_to))
 
     message = ''
-
     with open( os.path.join(module_dir, 'invitemail.html'), 'r' ) as filein:
         data = filein.readlines()
         for row in data:
@@ -106,3 +105,27 @@ def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
 
     send_html_mail(email_to, email_from, subject, message)
 
+
+def send_low_balance_reminder(user, group):
+    email_from = 'Care <info@computerautomatedremoteexchange.com>'
+    email_to = user.email
+    subject = 'Low balance in ' + group.name + ''
+
+    logging.debug('send_low_balance_reminder from: ' + str(email_from) + ' to: ' + str(email_to))
+
+    message = ''
+    with open( os.path.join(module_dir, 'balancereminder.html'), 'r' ) as filein:
+        data = filein.readlines()
+        for row in data:
+            message += row
+
+    from userprofile.models import UserProfile
+    userprofile = UserProfile.objects.get(user=user)
+
+    message = message.replace('{% username %}', userprofile.displayname)
+    message = message.replace('{% group_name %}', group.name)
+    message = message.replace('{% group_user_balance %}', str(UserProfile.get_balance(group.id, userprofile.id) ))
+    message = message.replace('{% lower_limit %}', str(group.settings.notification_lower_limit))
+
+    send_html_mail(email_to, email_from, subject, message)
+    
