@@ -16,33 +16,32 @@ No permissions to change these group settings.
 {% endif %}
 
 {% if form %}  
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="well well-md">
-          
-          <form action="" method="post">
-            {% csrf_token %}
-            <div class="row">
-              <div class="col-sm-6">
-                {% bootstrap_field form.notification_lower_limit %}
-              </div>
-              <div class="col-sm-6">
-                {% bootstrap_field form.notification_lower_limit_interval %}
-              </div>
-              
-              <div class="col-sm-12">
-              {% buttons %}
-                <button type="submit" name="submit_button" class="btn btn-info">
-                   Save
-                </button>
-              {% endbuttons %}
-              </div>
-            </div>
-          </form>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="well well-md">
         
-        </div>      
-      </div>
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-sm-6">
+              {% bootstrap_field form.notification_lower_limit %}
+            </div>
+            <div class="col-sm-6">
+              {% bootstrap_field form.notification_lower_limit_interval %}
+            </div>
+            
+            <div class="col-sm-12">
+            {% buttons %}
+              <button type="submit" name="submit_button" class="btn btn-info">
+                 Save
+              </button>
+            {% endbuttons %}
+            </div>
+          </div>
+        </form>
+      </div>      
     </div>
+  </div>
 {% endif %}
   
 {% endblock %} 
