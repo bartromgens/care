@@ -19,7 +19,7 @@ class Transaction(models.Model):
     buyer = models.ForeignKey(UserProfile, related_name='buyer')
     consumers = models.ManyToManyField(UserProfile, related_name='consumers')
     groupAccount = models.ForeignKey(GroupAccount)
-    comment = models.CharField(max_length=200,  blank=True)
+    comment = models.CharField(max_length=200, blank=True)
     modifications = models.ManyToManyField(Modification, blank=True)
     date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
 
