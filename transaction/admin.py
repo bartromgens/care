@@ -6,6 +6,7 @@ from transaction.models import Modification
 class TransactionAdmin(admin.ModelAdmin):
     fieldsets = [
       (None, {'fields': ['what']}),
+      (None, {'fields': ['date']}),
       (None, {'fields': ['amount']}),
       (None, {'fields': ['groupAccount']}),
       (None, {'fields': ['buyer']}),
