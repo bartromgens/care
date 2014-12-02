@@ -36,6 +36,7 @@ def send_low_balance_reminders(inteval_name):
         for userprofile in userprofiles:
             balance = UserProfile.get_balance(group.id, userprofile.id)
             if (balance < group.settings.notification_lower_limit):
+                assert group in userprofile.groupAccounts.all()
                 emailserver.send_low_balance_reminder(userprofile.user, group)
                     
 

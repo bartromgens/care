@@ -3,8 +3,8 @@ from django.db import models
 #users = User.objects.filter(groups__name='monkeys')
 
 class GroupSetting(models.Model):
-    notification_lower_limit = models.IntegerField(default=100) # the max negative balance a user can have in this group before a notification will be sent.
-    notification_lower_limit_interval = models.ForeignKey('userprofile.NotificationInterval', null=True) # the negative balance notification interval in days
+    notification_lower_limit = models.IntegerField(default=-100) # the lower limit on the balance a user can have in this group before a notification will be sent.
+    notification_lower_limit_interval = models.ForeignKey('userprofile.NotificationInterval', null=True) # the balance notification interval in days
     
     def __str__(self):
         return 'id: ' + str(self.id) + ', limit: ' + str(self.notification_lower_limit) + ', interval: ' + str(self.notification_lower_limit_interval.name) 

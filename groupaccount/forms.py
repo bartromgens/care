@@ -34,15 +34,16 @@ class EditGroupSettingForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(EditGroupSettingForm, self).__init__(*args, **kwargs)
 
-        self.fields['notification_lower_limit'] = forms.IntegerField( min_value=0, 
-                                                                      max_value=100000000000, 
-                                                                      initial=0,
-                                                                      label='Debt warning threshold (€)', 
-                                                                      help_text='' )
+        self.fields['notification_lower_limit'] = forms.IntegerField( min_value=-1000, 
+                                                                      max_value=0, 
+                                                                      initial=-100,
+                                                                      label='Balance reminder threshold (€)', 
+                                                                      help_text="A reminder is sent when someone\'s balance is lower than this value." )
 
         self.fields['notification_lower_limit_interval'] = forms.ModelChoiceField( queryset=NotificationInterval.objects.all(),
                                                                                    label='Email notification interval',
-                                                                                   empty_label=None )
+                                                                                   empty_label=None,
+                                                                                   help_text="The interval of the balance reminder email." )
 
 
     class Meta:

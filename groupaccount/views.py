@@ -100,6 +100,7 @@ class EditGroupSettingView(BaseView, FormView):
         
         # makes sure the user is allowed to edit these group settings
         group = GroupAccount.objects.get(settings=group_settings)
+        assert group in self.get_userprofile().groupAccounts.all()
         userprofiles = UserProfile.objects.all().filter(groupAccounts=group).filter(id=self.get_userprofile().id)
         if not userprofiles:
             return context
