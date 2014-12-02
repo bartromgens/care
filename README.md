@@ -1,7 +1,20 @@
-Care
+Care 
 ====
+#### Computer automated remote exchange
 
-Share costs with friends
+Share expenses with friends in this Django and Bootstrap based web application.
+
+Features
+------------------
+- Web interface for desktop, tablet and mobile
+- Share expenses between multiple friends
+- Register real transactions between friends
+- Keep track of your balance within a group
+- Create groups
+- Invite friends to group
+- Periodic transaction history email
+- Notification when balance is too low
+- Modify shares and transactions
 
 Dependencies
 -----------
@@ -61,7 +74,3 @@ Create a userprofile for the root user you just created,
 - Visit `http://127.0.0.1:8000/admin` and login with the root account
 - Create a new userprofile and link it to the root user
 
-
-Features
-------------------
- * [x] Pull based transactions for trusted friends.
