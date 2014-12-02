@@ -12,7 +12,7 @@ def create_transaction_history_table_html(userprofile, date_start, date_end):
             transactions_in_timerange.append(transaction)
 
     if not transactions_in_timerange:
-        return 'No shares in date range.'
+        return ''
     transaction_table = '<table>'
     transaction_table += '<tr align=\'left\'>'
     transaction_table += '<th><b>&#8364;/pp</b></th>'
@@ -41,7 +41,7 @@ def create_transaction_real_history_table_html(userprofile, date_start, date_end
             transactions_in_timerange.append(transaction)
 
     if not transactions_in_timerange:
-        return 'No transactions in date range.'
+        return ''
     transaction_table = '<table style="font-size: 12px">'
     transaction_table += '<tr align=\'left\'>'
     transaction_table += '<th><b>&#8364;</b></th>'
