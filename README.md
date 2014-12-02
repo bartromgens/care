@@ -74,3 +74,30 @@ Create a userprofile for the root user you just created,
 - Visit `http://127.0.0.1:8000/admin` and login with the root account
 - Create a new userprofile and link it to the root user
 
+
+Webfaction (Django hosting)
+------------
+##### Install dependencies
+see requirements.txt for required modules
+```bash
+$ PYTHONPATH=$HOME/webapps/care/lib/python3.3 easy_install-3.3 --install-dir=$HOME/webapps/care/lib/python3.3 --script-dir=$HOME/webapps/care/bin django-bootstrap3
+```
+
+##### Collect staticfiles
+```bash
+$ python3.3 manage.py collectstatic
+```
+
+#####  Check error log
+```bash
+$ less ~/logs/user/error_care.log
+```
+##### Apache restart
+```bash
+$ ~/webapps/care/apache2/bin/restart
+```
+
+##### Cronjob (python)
+```
+*/05 * * * * cd /home/bartromgens/webapps/care/care/ && PYTHONPATH=$HOME/webapps/care/lib/python3.3 /usr/local/bin/python3.3 manage.py runcrons >> $HOME/logs/user/cron.log 2>&1
+```
