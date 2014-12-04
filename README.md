@@ -22,6 +22,7 @@ Dependencies
 - Django 1.6
 - South 0.8.3
 - django-bootstrap3 4.11.0
+- django-bootstrap3-datetimepicker 2.2.3
 - django-cron 0.3.4
 - django-registration-redux 1.1
 
