@@ -3,6 +3,8 @@ from transaction.models import Modification
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
+from bootstrap3_datetime.widgets import DateTimePicker
+
 from django import forms
 
 from datetime import datetime
@@ -32,7 +34,8 @@ class NewRealTransactionForm(forms.ModelForm):
         self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
                                                                       required=False,
                                                                       widget=forms.MultipleHiddenInput())
-        self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput(), initial=datetime.now)
+        self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), 
+                                                  initial=datetime.now)
 
     class Meta:
         model = TransactionReal
@@ -63,7 +66,7 @@ class EditRealTransactionForm(forms.ModelForm):
                                                                       required=False,
                                                                       widget=forms.MultipleHiddenInput())
 
-        self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput)
+        self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
 
     class Meta:
         model = TransactionReal

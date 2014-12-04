@@ -107,6 +107,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'south', # for database migration
     'bootstrap3', #bootstrap3 see: https://github.com/dyve/django-bootstrap3
+    'bootstrap3_datetime', # https://github.com/nkunihiko/django-bootstrap3-datetimepicker
     'registration', #django-registration-redux, https://github.com/macropin/django-registration
     'django_cron', # for job scheduling (for example, sending mails)
     'base',

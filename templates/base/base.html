@@ -12,6 +12,7 @@
   
   {# Load CSS and JavaScript #}
   {% bootstrap_css %}
+  
   <style type="text/css">
   <!--
   @import url("{{ STATIC_URL }}css/custom.css");
@@ -23,9 +24,15 @@
   @import url("{{ STATIC_URL }}bootstrap-sortable/Contents/bootstrap-sortable.css");
   -->
   </style>
- 
-  
-  {% block headcontent %}{% endblock %}
+
+<script src={% bootstrap_jquery_url %} ></script>
+{% bootstrap_javascript %}
+{{ form.media }}
+<script src="{{ STATIC_URL }}bootstrap-sortable/Scripts/bootstrap-sortable.js" ></script>
+<script src="{{ STATIC_URL }}bootstrap-sortable/Scripts/moment.min.js" ></script>
+
+
+{% block headcontent %}{% endblock %}
 
 </head>
 
@@ -120,13 +127,6 @@
     <footer class="row">
     </footer>
   </div>
-
-<script src={% bootstrap_jquery_url %} ></script>
-
-{% bootstrap_javascript %}
-
-<script src="{{ STATIC_URL }}bootstrap-sortable/Scripts/bootstrap-sortable.js" ></script>
-<script src="{{ STATIC_URL }}bootstrap-sortable/Scripts/moment.min.js" ></script>
 
 </body>
 

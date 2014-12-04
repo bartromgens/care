@@ -5,6 +5,8 @@ from transaction.models import Modification
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 
+from bootstrap3_datetime.widgets import DateTimePicker
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -32,7 +34,7 @@ class NewTransactionForm(forms.ModelForm):
         if GroupAccount.objects.filter(id=groupAccountId).count():
             self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
             
-        self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput(), 
+        self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), 
                                                   initial=datetime.now)
 
         self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(), 
@@ -65,7 +67,7 @@ class EditTransactionForm(forms.ModelForm):
                                                              empty_label=None,
                                                              label='Group')
 
-        self.fields['date'] = forms.DateTimeField(widget=forms.HiddenInput())
+        self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
         
         self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
                                                                       required=False,
