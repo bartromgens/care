@@ -31,7 +31,7 @@ Installation
 #### Create a virtualenv
 Create a virtual enviroment with python 3.x,
 ```bash
-$ virtualenv -p /usr/bin/python3.x [virtualenvdir]
+$ virtualenv -p /usr/bin/python3.x env
 ```
 Activate the enviroment,
 ```bash
@@ -43,7 +43,7 @@ Install the required python modules (with activated virtual env),
 $ pip install -r requirements.txt
 ```
 #### Configure user_settings.py
-Copy `./base/user_settings_example.py` to `./base/user_settings.py` and change the placeholders in user_settings.py with your personal settings. 
+Copy `./base/user_settings_example.py` to `./base/user_settings.py` and change the placeholders in user_settings.py with your local settings. 
 
 #### Create database
 Create initial database migrations for the following apps:
