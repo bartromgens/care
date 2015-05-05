@@ -1,9 +1,9 @@
-from groupaccount.models import GroupAccount, GroupSetting 
-from userprofile.models import NotificationInterval
+from random import randint
 
 from django import forms
 
-from random import randint
+from groupaccount.models import GroupAccount, GroupSetting
+from userprofile.models import NotificationInterval
 
 
 class NewGroupAccountForm(forms.ModelForm):
@@ -45,7 +45,6 @@ class EditGroupSettingForm(forms.ModelForm):
                                                                                    label='Email notification interval',
                                                                                    empty_label=None,
                                                                                    help_text="The interval of the balance reminder email." )
-
 
     class Meta:
         model = GroupSetting

@@ -1,6 +1,5 @@
-from userprofile.forms import EditUserProfileForm, SearchUserProfileForm
-from userprofile.models import UserProfile
-from base.views import BaseView
+import logging
+logger = logging.getLogger(__name__)
 
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
@@ -8,8 +7,9 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.views import password_reset_confirm
 
-import logging
-logger = logging.getLogger(__name__)
+from base.views import BaseView
+from userprofile.forms import EditUserProfileForm, SearchUserProfileForm
+from userprofile.models import UserProfile
 
 
 class EditUserProfileView(BaseView, FormView):

@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 #users = User.objects.filter(groups__name='monkeys')
 
+
 def create_userprofile(sender, user, request, **kwargs):
     logger.debug('signal create_userprofile()')
     profile = UserProfile(user=user, displayname=user.username)
