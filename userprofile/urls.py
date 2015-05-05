@@ -1,9 +1,12 @@
-from userprofile.views import SendMyTransactionHistory
-from userprofile.views import EditUserProfileView, SuccessEditUserProfileView, SearchUserProfileView
 
 from django.conf.urls import patterns, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth.decorators import login_required
+
+from userprofile.views import SendMyTransactionHistory
+from userprofile.views import EditUserProfileView
+from userprofile.views import SuccessEditUserProfileView
+from userprofile.views import SearchUserProfileView
 
 
 urlpatterns = patterns('',

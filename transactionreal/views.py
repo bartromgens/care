@@ -18,11 +18,11 @@ class MyRealTransactionView(BaseView):
         return 'transactions'
 
     def get_context_data(self, **kwargs):
-        userProfile = UserProfile.objects.get(user=self.request.user)
-        userProfile.get_show_table(self.kwargs['tableView'])
+        user_profile = UserProfile.objects.get(user=self.request.user)
+        user_profile.get_show_table(self.kwargs['tableView'])
         context = super(MyRealTransactionView, self).get_context_data(**kwargs)
-        transactionsRealAllSorted = TransactionReal.get_transactions_real_sorted_by_last_modified(userProfile.id)
-        context['transactionsRealAll'] = transactionsRealAllSorted
+        transactions_real_all_sorted = TransactionReal.get_transactions_real_sorted_by_last_modified(user_profile.id)
+        context['transactionsRealAll'] = transactions_real_all_sorted
         return context
 
 
@@ -32,8 +32,8 @@ class SelectGroupRealTransactionView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super(SelectGroupRealTransactionView, self).get_context_data(**kwargs)
-        userProfile = UserProfile.objects.get(user=self.request.user)
-        groupaccounts = userProfile.groupAccounts.all
+        user_profile = UserProfile.objects.get(user=self.request.user)
+        groupaccounts = user_profile.groupAccounts.all
         context['groupaccounts'] = groupaccounts
         context['transactionssection'] = True
         return context
@@ -78,7 +78,7 @@ class NewRealTransactionView(FormView, BaseView):
         logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.get_groupaccount_id()))
         context = super(NewRealTransactionView, self).get_context_data(**kwargs)
 
-        if (self.get_groupaccount_id()):
+        if self.get_groupaccount_id():
             form = NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
             context['form'] = form
             context['nogroup'] = False
@@ -107,14 +107,15 @@ class EditRealTransactionView(FormView, BaseView):
         if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
             form.save()
             transaction.modifications.create(user=UserProfile.objects.get(user=self.request.user))
-        return HttpResponseRedirect( '/transactionsreal/0' )
+        return HttpResponseRedirect('/transactionsreal/0')
 
     def get_context_data(self, **kwargs):
         context = super(EditRealTransactionView, self).get_context_data(**kwargs)
         transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
 
         if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
-            form = EditRealTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
+            form = EditRealTransactionForm(self.kwargs['pk'], self.request.user,
+                                           instance=transaction, **self.get_form_kwargs())
             context['form'] = form
 
         return context

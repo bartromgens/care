@@ -1,11 +1,13 @@
+from datetime import datetime
+from itertools import chain
+
 from django.db import models
 
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
 from transaction.models import Modification
 
-from itertools import chain
-from datetime import datetime
+
 
 class TransactionReal(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)

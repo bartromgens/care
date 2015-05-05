@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from userprofile.models import UserProfile, NotificationInterval
 
+
 class EditUserProfileForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):

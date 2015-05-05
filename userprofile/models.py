@@ -1,15 +1,16 @@
-from groupaccount.models import GroupAccount
-import base.emailserver as emailserver
+from datetime import date, timedelta
+import logging
+logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+
 from registration.signals import user_registered
 
-from datetime import date, timedelta
+from groupaccount.models import GroupAccount
+import base.emailserver as emailserver
 
-import logging
-logger = logging.getLogger(__name__)
 
 #users = User.objects.filter(groups__name='monkeys')
 
