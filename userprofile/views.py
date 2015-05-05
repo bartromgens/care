@@ -51,19 +51,19 @@ class SearchUserProfileView(BaseView, FormView):
 
     def get_form(self, form_class):
         return SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
-#
+
     def form_valid(self, form):
         username = form.cleaned_data['username']
         users = User.objects.filter(username__icontains=username)
-        userProfiles = UserProfile.objects.filter(Q(user=users) | Q(displayname__icontains=username) | Q(firstname__icontains=username) | Q(lastname__icontains=username))
-        for user in userProfiles:
+        userprofiles = UserProfile.objects.filter(Q(user=users) | Q(displayname__icontains=username) | Q(firstname__icontains=username) | Q(lastname__icontains=username))
+        for user in userprofiles:
             logger.debug(str(user.displayname))
 
         context = super(SearchUserProfileView, self).get_context_data()
         form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
         context['form'] = form
         context['hasSearched'] = True
-        context['searchresults'] = userProfiles
+        context['searchresults'] = userprofiles
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
