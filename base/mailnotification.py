@@ -8,7 +8,7 @@ def create_transaction_history_table_html(userprofile, date_start, date_end):
 
     transactions_in_timerange = []
     for transaction in transactions_all:
-        if (transaction.lastModified.date() > date_start) and (transaction.lastModified.date() < date_end + timedelta(1)):
+        if (transaction.last_modified.date() > date_start) and (transaction.last_modified.date() < date_end + timedelta(1)):
             transactions_in_timerange.append(transaction)
 
     if not transactions_in_timerange:
@@ -37,7 +37,7 @@ def create_transaction_real_history_table_html(userprofile, date_start, date_end
     transactionreal_all = TransactionReal.get_transactions_real_sorted_by_last_modified(userprofile.id)
     transactions_in_timerange = []
     for transaction in transactionreal_all:
-        if transaction.lastModified.date() > date_start and transaction.lastModified.date() < date_end + timedelta(1):
+        if transaction.last_modified.date() > date_start and transaction.last_modified.date() < date_end + timedelta(1):
             transactions_in_timerange.append(transaction)
 
     if not transactions_in_timerange:
