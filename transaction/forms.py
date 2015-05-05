@@ -65,9 +65,9 @@ class EditTransactionForm(forms.ModelForm):
                                                              empty_label=None,
                                                              label='Group')
         self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-        self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
-                                                                      required=False,
-                                                                      widget=forms.MultipleHiddenInput())
+        # self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
+        #                                                               required=False,
+        #                                                               widget=forms.MultipleHiddenInput())
         self.fields['group_account'].widget.attrs['readonly'] = True
 
     class Meta:
@@ -91,9 +91,9 @@ class NewRealTransactionForm(forms.ModelForm):
         self.fields['group_account'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).group_accounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
         if GroupAccount.objects.filter(id=group_account_id).count():
             self.fields['group_account'].initial = GroupAccount.objects.get(id=group_account_id)
-        self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
-                                                                      required=False,
-                                                                      widget=forms.MultipleHiddenInput())
+        # self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
+        #                                                               required=False,
+        #                                                               widget=forms.MultipleHiddenInput())
         self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}),
                                                   initial=datetime.now)
 

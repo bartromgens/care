@@ -62,13 +62,13 @@
       {% with "accordiontransactionreal" as parentId %}
         <div class="panel-group" id="{{ parentId }}">
         {% for transaction in transactionsRealAll %}
-          {% include "transactionreal/transactionrealpanel.html" %}
+          {% include "transaction/real/transactionrealpanel.html" %}
         {% endfor %}
         </div>
       {% endwith %}
       
       <div align="center">
-        <h6><a href="/transactionsreal/0">show all</a></h6>
+        <h6><a href="/transactions/real/0">show all</a></h6>
       </div>
     
     {% else %}

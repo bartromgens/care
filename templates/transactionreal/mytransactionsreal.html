@@ -7,11 +7,11 @@
   <div class="container">
     <div class="subnav">
       <ul class="nav navbar-nav">
-        <li><a href="/transactionsreal/new"><b class="text-info">{% bootstrap_icon "plus" %} New transaction</b></a></li>
+        <li><a href="/transactions/real/new"><b class="text-info">{% bootstrap_icon "plus" %} New transaction</b></a></li>
         {% if userprofile.showTableView %}  
-        <li><a href="/transactionsreal/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
+        <li><a href="/transactions/real/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
         {% else %}
-        <li><a href="/transactionsreal/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
+        <li><a href="/transactions/real/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
         {% endif %}
       </ul>
     </div>
@@ -29,7 +29,7 @@
     {% with "accordiontransactionreal" as parentId %}
       <div class="panel-group" id="{{ parentId }}">
         {% for transaction in transactionsRealAll %}
-          {% include "transactionreal/transactionrealpanel.html" %}
+          {% include "transaction/real/transactionrealpanel.html" %}
         {% endfor %}
       </div>
     {% endwith %}
@@ -81,7 +81,7 @@
     	<td >{{ transaction.comment }}</td> 
     	<td >{{ transaction.group_account }}</td>
     	<td data-value="{{ transaction.date|date:"Y-m-d H:i:s" }}">{{ transaction.date|date:"Y-m-d"  }}</td>
-    	<td align="right"><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
+    	<td align="right"><a href="/transactions/real/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
     </tr>
   	{% endfor %}
   	</table>
@@ -94,7 +94,7 @@
   <h5>
     <p>You did not send or received any transactions.</p> 
     <br>
-    Click <a href="/transactionsreal/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.1em;">New transaction</font></b></a> in the menu to make your first transaction. 
+    Click <a href="/transactions/real/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.1em;">New transaction</font></b></a> in the menu to make your first transaction.
   </h5>
 </div>
 {% endif %}
