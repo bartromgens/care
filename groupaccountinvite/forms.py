@@ -32,3 +32,5 @@ class NewInviteForm(forms.ModelForm):
 
     class Meta:
         model = GroupAccountInvite
+        fields = '__all__'
+

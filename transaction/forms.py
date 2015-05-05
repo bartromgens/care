@@ -46,6 +46,7 @@ class NewTransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
+        fields = '__all__'
 
 
 class EditTransactionForm(forms.ModelForm):
@@ -77,3 +78,4 @@ class EditTransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
+        fields = '__all__'

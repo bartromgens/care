@@ -39,6 +39,7 @@ class NewRealTransactionForm(forms.ModelForm):
 
     class Meta:
         model = TransactionReal
+        fields = '__all__'
 
 
 class EditRealTransactionForm(forms.ModelForm):
@@ -70,3 +71,4 @@ class EditRealTransactionForm(forms.ModelForm):
 
     class Meta:
         model = TransactionReal
+        fields = '__all__'

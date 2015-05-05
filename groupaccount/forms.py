@@ -27,6 +27,7 @@ class NewGroupAccountForm(forms.ModelForm):
 
     class Meta:
         model = GroupAccount
+        fields = '__all__'
 
 
 class EditGroupSettingForm(forms.ModelForm):
@@ -48,3 +49,4 @@ class EditGroupSettingForm(forms.ModelForm):
 
     class Meta:
         model = GroupSetting
+        fields = '__all__'
