@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('groupaccount', '__first__'),
+        ('groupaccount', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='NotificationInterval',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
                 ('name', models.CharField(unique=True, max_length=100)),
                 ('days', models.IntegerField()),
             ],
@@ -25,12 +25,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
                 ('displayname', models.CharField(max_length=15, validators=[django.core.validators.RegexValidator('^\\S.*\\S$|^\\S$|^$', 'This field cannot start or end with spaces.')])),
-                ('firstname', models.CharField(max_length=100, blank=True)),
-                ('lastname', models.CharField(max_length=100, blank=True)),
+                ('firstname', models.CharField(blank=True, max_length=100)),
+                ('lastname', models.CharField(blank=True, max_length=100)),
                 ('showTableView', models.BooleanField(default=False)),
-                ('groupAccounts', models.ManyToManyField(to='groupaccount.GroupAccount', blank=True)),
+                ('groupAccounts', models.ManyToManyField(blank=True, to='groupaccount.GroupAccount')),
                 ('historyEmailInterval', models.ForeignKey(to='userprofile.NotificationInterval', null=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
