@@ -12,9 +12,6 @@ from groupaccount.models import GroupAccount
 import base.emailserver as emailserver
 
 
-#users = User.objects.filter(groups__name='monkeys')
-
-
 def create_userprofile(sender, user, request, **kwargs):
     logger.debug('signal create_userprofile()')
     profile = UserProfile(user=user, displayname=user.username)
@@ -47,11 +44,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return str(self.displayname)
 
-    def get_show_table(self, doShowTable):
-        if int(doShowTable) == 1 and self.showTableView:
+    def get_show_table(self, do_show_table):
+        if int(do_show_table) == 1 and self.showTableView:
             self.showTableView = False
             self.save()
-        if int(doShowTable) == 2 and not self.showTableView:
+        if int(do_show_table) == 2 and not self.showTableView:
             self.showTableView = True
             self.save()
 
@@ -61,12 +58,12 @@ class UserProfile(models.Model):
         date_end = date.today()
         date_start = date_end - timedelta(self.historyEmailInterval.days)
         import base.mailnotification as mailnotification
-        transactionTableHtml = mailnotification.create_transaction_history_table_html(self, date_start, date_end)
-        transactionRealTable = mailnotification.create_transaction_real_history_table_html(self, date_start, date_end)
+        transaction_table_html = mailnotification.create_transaction_history_table_html(self, date_start, date_end)
+        transaction_real_table = mailnotification.create_transaction_real_history_table_html(self, date_start, date_end)
 
-        if transactionTableHtml == '' and transactionRealTable == '':
+        if transaction_table_html == '' and transaction_real_table == '':
             return
-        emailserver.send_transaction_history(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)        
+        emailserver.send_transaction_history(self.user.username, self.user.email, transaction_table_html, transaction_real_table, date_start, date_end)
 
     @staticmethod
     def get_balance(group_account_id, user_profile_id):
@@ -74,7 +71,6 @@ class UserProfile(models.Model):
         from transactionreal.models import TransactionReal
         buyer_transactions = Transaction.objects.filter(group_account__id=group_account_id, buyer__id=user_profile_id)
         consumer_transactions = Transaction.objects.filter(group_account__id=group_account_id, consumers__id=user_profile_id)
-
         sender_real_transactions = TransactionReal.objects.filter(group_account__id=group_account_id, sender__id=user_profile_id)
         receiver_real_transactions = TransactionReal.objects.filter(group_account_id=group_account_id, receiver__id=user_profile_id)
 

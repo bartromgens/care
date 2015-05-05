@@ -17,16 +17,17 @@ class MyTransactionView(BaseView):
     def get_active_menu(self):
         return 'shares'
 
-    def get_number_of_buyer_transactions(self, buyerId):
-        transactions = Transaction.objects.filter(buyer__id=buyerId)
+    @staticmethod
+    def get_number_of_buyer_transactions(buyer_id):
+        transactions = Transaction.objects.filter(buyer__id=buyer_id)
         return len(transactions)
 
     def get_context_data(self, **kwargs):
-        userProfile = UserProfile.objects.get(user=self.request.user)
-        userProfile.get_show_table(self.kwargs['tableView'])
+        userprofile = UserProfile.objects.get(user=self.request.user)
+        userprofile.get_show_table(self.kwargs['tableView'])
         context = super(MyTransactionView, self).get_context_data(**kwargs)
-        transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id)
-        context['transactionsAll'] = transactionsAllSorted
+        transactions_all_sorted = Transaction.get_transactions_sorted_by_last_modified(userprofile.id)
+        context['transactionsAll'] = transactions_all_sorted
         return context
 
 
@@ -36,7 +37,6 @@ class SelectGroupTransactionView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super(SelectGroupTransactionView, self).get_context_data(**kwargs)
-
         user_profile = UserProfile.objects.get(user=self.request.user)
         groupaccounts = user_profile.group_accounts.all
         context['groupaccounts'] = groupaccounts

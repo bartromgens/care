@@ -21,16 +21,14 @@ class NewTransactionForm(forms.ModelForm):
 
         self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=group_account_id),
                                                       empty_label=None)
-        
+
         self.fields['buyer'].initial = UserProfile.objects.get(user=user)
         self.fields['what'].label = 'What'
         self.fields['amount'].label = 'Cost (€)'
-
         self.fields['group_account'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).group_accounts,
-                                                             widget=forms.Select(attrs={"onChange":'form.submit()'}), 
-                                                             empty_label=None, 
-                                                             label='Group')
-        
+                                                              widget=forms.Select(attrs={"onChange":'form.submit()'}),
+                                                              empty_label=None,
+                                                              label='Group')
         if GroupAccount.objects.filter(id=group_account_id).count():
             self.fields['group_account'].initial = GroupAccount.objects.get(id=group_account_id)
             
