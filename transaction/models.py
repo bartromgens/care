@@ -47,6 +47,7 @@ class Transaction(models.Model):
         transactions_all = list(chain(buyer_transactions, consumer_transactions))
         for transaction in transactions_all:
             transaction.lastModified = transaction.get_datetime_last_modified()
+            transaction.modifications = Modification.objects.filter(transaction=transaction)
         return sorted(transactions_all, key=lambda instance: instance.lastModified, reverse=True)
 
     # users = User.objects.filter(groups__name='monkeys')
