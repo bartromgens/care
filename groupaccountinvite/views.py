@@ -44,11 +44,11 @@ class AcceptInviteView(MyGroupAccountInvitesView):
         invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
         # make sure accepter is the invitee
         if invite.invitee.user == user:
-            groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
+            group_account = GroupAccount.objects.get(id=invite.group_account.id)
             invite.isAccepted = True
             invite.isDeclined = False
             userProfile = self.get_userprofile()
-            userProfile.group_accounts.add(groupAccount)
+            userProfile.group_accounts.add(group_account)
             userProfile.save()
             invite.save()
 
@@ -68,14 +68,14 @@ class DeclineInviteView(MyGroupAccountInvitesView):
 
         # make sure the decliner is the invitee
         if invite.invitee.user == user:
-            if userProfile.groupAccounts.filter(id=invite.groupAccount.id):
+            if userProfile.group_accounts.filter(id=invite.group_account.id):
                 logger.warning( 'Group is already accepted. Groups cannot be removed.' )
                 invite.isAccepted = False
                 invite.isDeclined = True
             else:
                 logger.debug( 'Group is declined.' )
                 invite.isDeclined = True
-                group_account = GroupAccount.objects.get(id=invite.groupAccount.id)
+                group_account = GroupAccount.objects.get(id=invite.group_account.id)
                 userProfile = UserProfile.objects.get(user=user)
                 userProfile.group_accounts.remove(group_account)
                 userProfile.save()
@@ -103,7 +103,7 @@ class NewInviteView(FormView, BaseView):
         logger.debug('NewInviteView::form_valid()')
         context = super(NewInviteView, self).form_valid(form)
         invite = form.save()
-        emailserver.send_invite_email(self.request.user.username, invite.invitee.user.username, invite.groupAccount.name, invite.invitee.user.email)
+        emailserver.send_invite_email(self.request.user.username, invite.invitee.user.username, invite.group_account.name, invite.invitee.user.email)
         return context
 
     def form_invalid(self, form):

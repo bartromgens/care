@@ -33,7 +33,7 @@ class SelectGroupRealTransactionView(BaseView):
     def get_context_data(self, **kwargs):
         context = super(SelectGroupRealTransactionView, self).get_context_data(**kwargs)
         user_profile = UserProfile.objects.get(user=self.request.user)
-        groupaccounts = user_profile.groupAccounts.all
+        groupaccounts = user_profile.group_accounts.all
         context['groupaccounts'] = groupaccounts
         context['transactionssection'] = True
         return context
@@ -48,13 +48,13 @@ class NewRealTransactionView(FormView, BaseView):
         return 'transactions'
 
     def get_groupaccount_id(self):
-        if 'groupAccountId' in self.kwargs:
-            return self.kwargs['groupAccountId']
+        if 'group_account_id' in self.kwargs:
+            return self.kwargs['group_account_id']
         else:
             logger.debug(self.request.user.id)
             user = UserProfile.objects.get(user=self.request.user)
-            if user.groupAccounts.count():
-                return user.groupAccounts.all()[0].id
+            if user.group_accounts.count():
+                return user.group_accounts.all()[0].id
             else:
                 return 0
 
@@ -70,12 +70,12 @@ class NewRealTransactionView(FormView, BaseView):
 
     def form_invalid(self, form):
         logger.debug('form_invalid()')
-        groupAccount = form.cleaned_data['groupAccount']
+        group_account = form.cleaned_data['group_account']
         super(NewRealTransactionView, self).form_invalid(form)
-        return HttpResponseRedirect( '/transactionsreal/new/' + str(groupAccount.id))
+        return HttpResponseRedirect( '/transactionsreal/new/' + str(group_account.id))
 
     def get_context_data(self, **kwargs):
-        logger.debug('NewRealTransactionView::get_context_data() - groupAccountId: ' + str(self.get_groupaccount_id()))
+        logger.debug('NewRealTransactionView::get_context_data() - group_account_id: ' + str(self.get_groupaccount_id()))
         context = super(NewRealTransactionView, self).get_context_data(**kwargs)
 
         if self.get_groupaccount_id():

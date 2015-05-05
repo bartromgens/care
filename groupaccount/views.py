@@ -21,7 +21,7 @@ class MyGroupAccountsView(BaseView):
         user = self.request.user
         userProfile = UserProfile.objects.get(user=user)
         userProfile.get_show_table(self.kwargs['tableView'])
-        group_accounts = userProfile.groupAccounts.all()
+        group_accounts = userProfile.group_accounts.all()
 
         for group_account in group_accounts:
             group_account = GroupAccount.add_groupaccount_info(group_account, userProfile)
@@ -45,18 +45,18 @@ class NewGroupAccountView(FormView, BaseView):
 
     def form_valid(self, form):
         super(NewGroupAccountView, self).form_valid(form)
-        groupAccount = form.save()
+        group_account = form.save()
         
         settings = GroupSetting()
         from userprofile.models import NotificationInterval
         if NotificationInterval.objects.get(name="Weekly"):
             settings.notification_lower_limit_interval = NotificationInterval.objects.get(name="Weekly")
         settings.save()
-        groupAccount.settings = settings
-        groupAccount.save()
+        group_account.settings = settings
+        group_account.save()
         
         userProfile = UserProfile.objects.get(user=self.request.user)
-        userProfile.groupAccounts.add(groupAccount)
+        userProfile.group_account.add(group_account)
         userProfile.save()
 
         return HttpResponseRedirect('/group/new/success/')
@@ -100,7 +100,7 @@ class EditGroupSettingView(BaseView, FormView):
         
         # makes sure the user is allowed to edit these group settings
         group = GroupAccount.objects.get(settings=group_settings)
-        assert group in self.get_userprofile().groupAccounts.all()
+        assert group in self.get_userprofile().group_account.all()
         userprofiles = UserProfile.objects.all().filter(group_accounts=group).filter(id=self.get_userprofile().id)
         if not userprofiles:
             return context

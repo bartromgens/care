@@ -46,7 +46,7 @@
             {% endif %}
               <td>{{ invite.inviter }}</td>
       
-              <td>{{ invite.groupAccount }}</td>
+              <td>{{ invite.group_account }}</td>
     
     <!--         <td>
               {% ifequal invite.invitee.displayname displayname %}
@@ -119,7 +119,7 @@
         		  {% endifequal %}
         		</td>
       
-        		<td>{{ invite.groupAccount }}</td>
+        		<td>{{ invite.group_account }}</td>
       
         <!-- 		<td>{{ invite.createdDateAndTime|date:"SHORT_DATE_FORMAT"  }}</td> -->
             {% if invite.isAccepted %}

@@ -11,26 +11,21 @@ from userprofile.models import UserProfile
 
 
 class NewRealTransactionForm(forms.ModelForm):
-    def __init__(self, groupAccountId, user, *args, **kwargs):
+    def __init__(self, group_account_id, user, *args, **kwargs):
         super(NewRealTransactionForm, self).__init__(*args, **kwargs)
 
         #  self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user),
         #  widget = forms.HiddenInput, empty_label=None, label='From')
         self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(user=user),
                                                        empty_label=None, label='From', widget=forms.HiddenInput())
-
         self.fields['sender'].initial = UserProfile.objects.get(user=user)
-        self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=groupAccountId),
+        self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=group_account_id),
                                                          empty_label=None, label='To')
-
         self.fields['comment'] = forms.CharField(required=False)
-
         self.fields['amount'].label = '€'
-
-        self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).groupAccounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
-        if GroupAccount.objects.filter(id=groupAccountId).count():
-            self.fields['groupAccount'].initial = GroupAccount.objects.get(id=groupAccountId)
-
+        self.fields['group_account'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).group_accounts, widget=forms.Select(attrs={"onChange":'form.submit()'}), empty_label=None, label='Group')
+        if GroupAccount.objects.filter(id=group_account_id).count():
+            self.fields['group_account'].initial = GroupAccount.objects.get(id=group_account_id)
         self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
                                                                       required=False,
                                                                       widget=forms.MultipleHiddenInput())
@@ -58,12 +53,12 @@ class EditRealTransactionForm(forms.ModelForm):
             queryset=UserProfile.objects.filter(group_accounts=transaction.group_account.id),
             empty_label=None, label='To')
 
-        self.fields['groupAccount'] = forms.ModelChoiceField(
+        self.fields['group_account'] = forms.ModelChoiceField(
             queryset=GroupAccount.objects.filter(id=transaction.group_account.id),
             empty_label=None,
             label='Group')
 
-        self.fields['groupAccount'].widget.attrs['readonly'] = True
+        self.fields['group_account'].widget.attrs['readonly'] = True
         self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
                                                                       required=False,
                                                                       widget=forms.MultipleHiddenInput())

@@ -65,16 +65,16 @@ class HomeView(BaseView):
         transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id)
         transactionsRealAllSorted = TransactionReal.get_transactions_real_sorted_by_last_modified(userProfile.id)
 
-        for groupAccount in group_accounts:
-            groupAccount = GroupAccount.add_groupaccount_info(groupAccount, userProfile)
+        for group_account in group_accounts:
+            group_account = GroupAccount.add_groupaccount_info(group_account, userProfile)
 
-        myTotalBalanceFloat = 0.0
-        for groupAccount in group_accounts:
-            myTotalBalanceFloat += groupAccount.myBalanceFloat
+        my_total_balance_float = 0.0
+        for group_account in group_accounts:
+            my_total_balance_float += group_account.myBalanceFloat
 
-        myTotalBalance = '%.2f' % myTotalBalanceFloat
-        context['myTotalBalance'] = myTotalBalance
-        context['myTotalBalanceFloat'] = myTotalBalanceFloat
+        my_total_balance_str = '%.2f' % my_total_balance_float
+        context['myTotalBalance'] = my_total_balance_str
+        context['myTotalBalanceFloat'] = my_total_balance_float
 #     invitesAllSorted = GroupAccountInvite.get_invites_sorted_by_date(userProfile)
         slowLastN = 5
 #     context['invitesAll'] = invitesAllSorted[0:slowLastN]

@@ -37,8 +37,8 @@ class SelectGroupTransactionView(BaseView):
     def get_context_data(self, **kwargs):
         context = super(SelectGroupTransactionView, self).get_context_data(**kwargs)
 
-        userProfile = UserProfile.objects.get(user=self.request.user)
-        groupaccounts = userProfile.group_accounts.all
+        user_profile = UserProfile.objects.get(user=self.request.user)
+        groupaccounts = user_profile.group_accounts.all
         context['groupaccounts'] = groupaccounts
         return context
 
@@ -52,8 +52,8 @@ class NewTransactionView(FormView, BaseView):
         return 'shares'
 
     def get_groupaccount_id(self):
-        if 'groupAccountId' in self.kwargs:
-            return self.kwargs['groupAccountId']
+        if 'group_account_id' in self.kwargs:
+            return self.kwargs['group_account_id']
         else:
             logger.debug(self.request.user.id)
             user = UserProfile.objects.get(user=self.request.user)
@@ -71,16 +71,16 @@ class NewTransactionView(FormView, BaseView):
         return HttpResponseRedirect( '/')
 
     def form_invalid(self, form):
-        groupAccount = form.cleaned_data['groupAccount']
-        if int(groupAccount.id) != int(self.get_groupaccount_id()):
-            return HttpResponseRedirect( '/transactions/new/' + str(groupAccount.id))
+        group_account = form.cleaned_data['group_account']
+        if int(group_account.id) != int(self.get_groupaccount_id()):
+            return HttpResponseRedirect( '/transactions/new/' + str(group_account.id))
         else:
             return super(NewTransactionView, self).form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super(NewTransactionView, self).get_context_data(**kwargs)
 
-        if (self.get_groupaccount_id()):
+        if self.get_groupaccount_id():
             form = NewTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
             context['form'] = form
             context['nogroup'] = False

@@ -79,7 +79,7 @@
     	  {% endifequal %}
     	</td>
     	<td >{{ transaction.comment }}</td> 
-    	<td >{{ transaction.groupAccount }}</td> 
+    	<td >{{ transaction.group_account }}</td>
     	<td data-value="{{ transaction.date|date:"Y-m-d H:i:s" }}">{{ transaction.date|date:"Y-m-d"  }}</td>
     	<td align="right"><a href="/transactionsreal/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
     </tr>

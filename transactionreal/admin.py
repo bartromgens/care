@@ -9,8 +9,8 @@ class TransactionRealAdmin(admin.ModelAdmin):
         (None, {'fields': ['sender']}),
         (None, {'fields': ['receiver']}),
         (None, {'fields': ['comment']}),
-        (None, {'fields': ['groupAccount']}), ]
-    list_display = ('amount', 'sender', 'receiver', 'groupAccount', 'comment', 'date')
+        (None, {'fields': ['group_account']}), ]
+    list_display = ('amount', 'sender', 'receiver', 'group_account', 'comment', 'date')
     list_filter = ['date']
     search_fields = ['what']
     date_hierarchy = 'date'

@@ -1,6 +1,6 @@
 from groupaccount.models import GroupAccount, GroupSetting
-#from accounts.models import Account
 from django.contrib import admin
+
 
 class GroupAccountAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -9,6 +9,7 @@ class GroupAccountAdmin(admin.ModelAdmin):
         (None, {'fields': ['settings']}),
     ]
     list_display = ('id', 'name', 'number', 'settings')
+
 
 class GroupSettingAdmin(admin.ModelAdmin):
     fieldsets = [

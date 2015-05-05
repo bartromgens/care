@@ -9,10 +9,10 @@ class TransactionAdmin(admin.ModelAdmin):
         (None, {'fields': ['what']}),
         (None, {'fields': ['date']}),
         (None, {'fields': ['amount']}),
-        (None, {'fields': ['groupAccount']}),
+        (None, {'fields': ['group_account']}),
         (None, {'fields': ['buyer']}),
         (None, {'fields': ['consumers']}), ]
-    list_display = ('what', 'amount', 'groupAccount', 'buyer', 'date')
+    list_display = ('what', 'amount', 'group_account', 'buyer', 'date')
     list_filter = ['date']
     search_fields = ['what']
     date_hierarchy = 'date'

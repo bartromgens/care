@@ -13,7 +13,7 @@ class TransactionReal(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sender')
     receiver = models.ForeignKey(UserProfile, related_name='receiver')
     comment = models.CharField(max_length=200)
-    groupAccount = models.ForeignKey(GroupAccount)
+    group_account = models.ForeignKey(GroupAccount)
     modifications = models.ManyToManyField(Modification, blank=True)
     date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
 

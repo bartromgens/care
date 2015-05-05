@@ -69,32 +69,32 @@ class UserProfile(models.Model):
         emailserver.send_transaction_history(self.user.username, self.user.email, transactionTableHtml, transactionRealTable, date_start, date_end)        
 
     @staticmethod
-    def get_balance(groupAccountId, userProfileId):
+    def get_balance(group_account_id, user_profile_id):
         from transaction.models import Transaction
         from transactionreal.models import TransactionReal
-        buyerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, buyer__id=userProfileId)
-        consumerTransactions = Transaction.objects.filter(groupAccount__id=groupAccountId, consumers__id=userProfileId)
+        buyer_transactions = Transaction.objects.filter(group_account__id=group_account_id, buyer__id=user_profile_id)
+        consumer_transactions = Transaction.objects.filter(group_account__id=group_account_id, consumers__id=user_profile_id)
 
-        senderRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, sender__id=userProfileId)
-        receiverRealTransactions = TransactionReal.objects.filter(groupAccount__id=groupAccountId, receiver__id=userProfileId)
+        sender_real_transactions = TransactionReal.objects.filter(group_account__id=group_account_id, sender__id=user_profile_id)
+        receiver_real_transactions = TransactionReal.objects.filter(group_account_id=group_account_id, receiver__id=user_profile_id)
 
-        totalBought = 0.0
-        totalConsumed = 0.0
-        totalSent = 0.0
-        totalReceived = 0.0
+        total_bought = 0.0
+        total_consumed = 0.0
+        total_sent = 0.0
+        total_received = 0.0
 
-        for transaction in buyerTransactions:
-            totalBought += float(transaction.amount)
+        for transaction in buyer_transactions:
+            total_bought += float(transaction.amount)
 
-        for transaction in consumerTransactions:
-            nConsumers = transaction.consumers.count()
-            totalConsumed += float(transaction.amount) / nConsumers
+        for transaction in consumer_transactions:
+            n_consumers = transaction.consumers.count()
+            total_consumed += float(transaction.amount) / n_consumers
 
-        for transaction in senderRealTransactions:
-            totalSent += float(transaction.amount)
+        for transaction in sender_real_transactions:
+            total_sent += float(transaction.amount)
 
-        for transaction in receiverRealTransactions:
-            totalReceived += float(transaction.amount)
+        for transaction in receiver_real_transactions:
+            total_received += float(transaction.amount)
 
-        balance = (totalBought + totalSent - totalConsumed - totalReceived)
+        balance = (total_bought + total_sent - total_consumed - total_received)
         return balance

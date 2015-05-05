@@ -10,7 +10,7 @@ from transactionreal.views import NewRealTransactionView, MyRealTransactionView,
 urlpatterns = patterns('',
                        url(r'^(?P<tableView>\d+)$', login_required(MyRealTransactionView.as_view())),
                        url(r'^new/$', login_required(NewRealTransactionView.as_view())),
-                       url(r'^new/(?P<groupAccountId>\d+)/$', login_required(NewRealTransactionView.as_view())),
+                       url(r'^new/(?P<group_account_id>\d+)/$', login_required(NewRealTransactionView.as_view())),
                        url(r'^edit/(?P<pk>\d+)$', login_required(EditRealTransactionView.as_view())),
                        url(r'^(?P<pk>\d+)/$', login_required(
                            DetailView.as_view(model=Transaction, template_name='transaction/detail.html'))),

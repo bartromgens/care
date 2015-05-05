@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class GroupAccountInvite(models.Model):
-    groupAccount = models.ForeignKey(GroupAccount)
+    group_account = models.ForeignKey(GroupAccount)
     inviter = models.ForeignKey(UserProfile, related_name='inviter')
     invitee = models.ForeignKey(UserProfile, related_name='invitee')
     isAccepted = models.BooleanField(default=False)
@@ -35,4 +35,4 @@ class GroupAccountInvite(models.Model):
         return sorted(invitesAll, key=lambda instance: instance.createdDateAndTime, reverse=True)
 
     def __str__(self):
-        return self.groupAccount.name
+        return self.group_account.name
