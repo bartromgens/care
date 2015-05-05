@@ -48,7 +48,7 @@ class AcceptInviteView(MyGroupAccountInvitesView):
             invite.isAccepted = True
             invite.isDeclined = False
             userProfile = self.get_userprofile()
-            userProfile.groupAccounts.add(groupAccount)
+            userProfile.group_accounts.add(groupAccount)
             userProfile.save()
             invite.save()
 
@@ -75,9 +75,9 @@ class DeclineInviteView(MyGroupAccountInvitesView):
             else:
                 logger.debug( 'Group is declined.' )
                 invite.isDeclined = True
-                groupAccount = GroupAccount.objects.get(id=invite.groupAccount.id)
+                group_account = GroupAccount.objects.get(id=invite.groupAccount.id)
                 userProfile = UserProfile.objects.get(user=user)
-                userProfile.groupAccounts.remove(groupAccount)
+                userProfile.group_accounts.remove(group_account)
                 userProfile.save()
             invite.save()
 

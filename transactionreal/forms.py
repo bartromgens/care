@@ -20,7 +20,7 @@ class NewRealTransactionForm(forms.ModelForm):
                                                        empty_label=None, label='From', widget=forms.HiddenInput())
 
         self.fields['sender'].initial = UserProfile.objects.get(user=user)
-        self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=groupAccountId),
+        self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=groupAccountId),
                                                          empty_label=None, label='To')
 
         self.fields['comment'] = forms.CharField(required=False)
@@ -49,19 +49,21 @@ class EditRealTransactionForm(forms.ModelForm):
         transaction = TransactionReal.objects.get(id=transaction_id)
 
         self.fields['amount'].label = '€'
-        self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id),
-                                                       empty_label=None, label='From',
-                                                       widget=forms.HiddenInput)
+        self.fields['sender'] = forms.ModelChoiceField(
+            queryset=UserProfile.objects.filter(group_accounts=transaction.group_account.id),
+            empty_label=None, label='From',
+            widget=forms.HiddenInput)
 
-        self.fields['receiver'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount.id),
-                                                         empty_label=None, label='To')
+        self.fields['receiver'] = forms.ModelChoiceField(
+            queryset=UserProfile.objects.filter(group_accounts=transaction.group_account.id),
+            empty_label=None, label='To')
 
-        self.fields['groupAccount'] = forms.ModelChoiceField(queryset=GroupAccount.objects.filter(id=transaction.groupAccount.id),
-                                                             empty_label=None,
-                                                             label='Group')
+        self.fields['groupAccount'] = forms.ModelChoiceField(
+            queryset=GroupAccount.objects.filter(id=transaction.group_account.id),
+            empty_label=None,
+            label='Group')
 
         self.fields['groupAccount'].widget.attrs['readonly'] = True
-
         self.fields['modifications'] = forms.ModelMultipleChoiceField(queryset=Modification.objects.all(),
                                                                       required=False,
                                                                       widget=forms.MultipleHiddenInput())

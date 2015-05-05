@@ -19,13 +19,13 @@ class NewInviteForm(forms.ModelForm):
         self.fields['inviter'].initial = user_profile
         self.fields['inviter'].widget.attrs['readonly'] = True
 
-        logger.debug(user_profile.groupAccounts)
+        logger.debug(user_profile.group_accounts)
 
         self.fields['invitee'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(id=userProfileToInvite.id), empty_label=None, label='invite')
         self.fields['invitee'].initial = userProfileToInvite
         self.fields['invitee'].widget.attrs['readonly'] = True
 
-        self.fields['groupAccount'] = forms.ModelChoiceField(queryset=user_profile.groupAccounts, empty_label=None, label='to group')
+        self.fields['groupAccount'] = forms.ModelChoiceField(queryset=user_profile.group_accounts, empty_label=None, label='to group')
 
         self.fields['isAccepted'] = forms.BooleanField(widget=forms.HiddenInput, required=False)
         self.fields['isDeclined'] = forms.BooleanField(widget=forms.HiddenInput, required=False)

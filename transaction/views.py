@@ -38,7 +38,7 @@ class SelectGroupTransactionView(BaseView):
         context = super(SelectGroupTransactionView, self).get_context_data(**kwargs)
 
         userProfile = UserProfile.objects.get(user=self.request.user)
-        groupaccounts = userProfile.groupAccounts.all
+        groupaccounts = userProfile.group_accounts.all
         context['groupaccounts'] = groupaccounts
         return context
 
@@ -57,8 +57,8 @@ class NewTransactionView(FormView, BaseView):
         else:
             logger.debug(self.request.user.id)
             user = UserProfile.objects.get(user=self.request.user)
-            if user.groupAccounts.count():
-                return user.groupAccounts.all()[0].id
+            if user.group_accounts.count():
+                return user.group_accounts.all()[0].id
             else:
                 return 0
 

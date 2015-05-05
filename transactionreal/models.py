@@ -8,7 +8,6 @@ from userprofile.models import UserProfile
 from transaction.models import Modification
 
 
-
 class TransactionReal(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     sender = models.ForeignKey(UserProfile, related_name='sender')

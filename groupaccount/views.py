@@ -21,13 +21,13 @@ class MyGroupAccountsView(BaseView):
         user = self.request.user
         userProfile = UserProfile.objects.get(user=user)
         userProfile.get_show_table(self.kwargs['tableView'])
-        groupAccounts = userProfile.groupAccounts.all()
+        group_accounts = userProfile.groupAccounts.all()
 
-        for groupAccount in groupAccounts:
-            groupAccount = GroupAccount.add_groupaccount_info(groupAccount, userProfile)
+        for group_account in group_accounts:
+            group_account = GroupAccount.add_groupaccount_info(group_account, userProfile)
 
         context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
-        context['groups'] = groupAccounts
+        context['groups'] = group_accounts
         context['groupssection'] = True
         return context
 
@@ -101,7 +101,7 @@ class EditGroupSettingView(BaseView, FormView):
         # makes sure the user is allowed to edit these group settings
         group = GroupAccount.objects.get(settings=group_settings)
         assert group in self.get_userprofile().groupAccounts.all()
-        userprofiles = UserProfile.objects.all().filter(groupAccounts=group).filter(id=self.get_userprofile().id)
+        userprofiles = UserProfile.objects.all().filter(group_accounts=group).filter(id=self.get_userprofile().id)
         if not userprofiles:
             return context
         

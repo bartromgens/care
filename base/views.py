@@ -59,17 +59,17 @@ class HomeView(BaseView):
         context = super(HomeView, self).get_context_data(**kwargs)
         userProfile = self.get_userprofile()
 
-        groupAccounts = userProfile.groupAccounts.all()
-        friends = UserProfile.objects.filter(groupAccounts__in=groupAccounts).distinct()
+        group_accounts = userProfile.group_accounts.all()
+        friends = UserProfile.objects.filter(group_accounts__in=group_accounts).distinct()
 
         transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id)
         transactionsRealAllSorted = TransactionReal.get_transactions_real_sorted_by_last_modified(userProfile.id)
 
-        for groupAccount in groupAccounts:
+        for groupAccount in group_accounts:
             groupAccount = GroupAccount.add_groupaccount_info(groupAccount, userProfile)
 
         myTotalBalanceFloat = 0.0
-        for groupAccount in groupAccounts:
+        for groupAccount in group_accounts:
             myTotalBalanceFloat += groupAccount.myBalanceFloat
 
         myTotalBalance = '%.2f' % myTotalBalanceFloat
@@ -81,7 +81,7 @@ class HomeView(BaseView):
         context['friends'] = friends
         context['transactionsAll'] = transactionsAllSorted[0:slowLastN]
         context['transactionsRealAll'] = transactionsRealAllSorted[0:slowLastN]
-        context['groups'] = groupAccounts
+        context['groups'] = group_accounts
         context['homesection'] = True
         return context
 

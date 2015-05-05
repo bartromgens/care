@@ -40,7 +40,7 @@ class UserProfile(models.Model):
     displayname = models.CharField(max_length=15, validators=[RegexValidator(r"^\S.*\S$|^\S$|^$", "This field cannot start or end with spaces.")])
     firstname = models.CharField(max_length=100, blank=True)
     lastname = models.CharField(max_length=100, blank=True)
-    groupAccounts = models.ManyToManyField(GroupAccount, blank=True)
+    group_accounts = models.ManyToManyField(GroupAccount, blank=True)
     showTableView = models.BooleanField(default=False)
     historyEmailInterval = models.ForeignKey(NotificationInterval, null=True)
 

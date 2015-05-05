@@ -16,17 +16,17 @@ class NewTransactionForm(forms.ModelForm):
         super(NewTransactionForm, self).__init__(*args, **kwargs)
 
         self.fields['consumers'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(), 
-                                                                  queryset=UserProfile.objects.filter(groupAccounts=group_account_id),
+                                                                  queryset=UserProfile.objects.filter(group_accounts=group_account_id),
                                                                   label='Shared by')
 
-        self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=group_account_id),
+        self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=group_account_id),
                                                       empty_label=None)
         
         self.fields['buyer'].initial = UserProfile.objects.get(user=user)
         self.fields['what'].label = 'What'
         self.fields['amount'].label = 'Cost (€)'
 
-        self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).groupAccounts, 
+        self.fields['groupAccount'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user).group_accounts,
                                                              widget=forms.Select(attrs={"onChange":'form.submit()'}), 
                                                              empty_label=None, 
                                                              label='Group')
@@ -56,9 +56,9 @@ class EditTransactionForm(forms.ModelForm):
         transaction = Transaction.objects.get(id=transaction_id)
 
         self.fields['consumers'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-                                                                  queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount),
+                                                                  queryset=UserProfile.objects.filter(group_accounts=transaction.groupAccount),
                                                                   label='Shared by')
-        self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(groupAccounts=transaction.groupAccount),
+        self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=transaction.groupAccount),
                                                       empty_label=None)
         self.fields['what'].label = 'What'
         self.fields['amount'].label = 'Cost (€)'
