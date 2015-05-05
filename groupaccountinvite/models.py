@@ -28,8 +28,8 @@ class GroupAccountInvite(models.Model):
 
     @staticmethod
     def get_invites_sorted_by_date(userprofile):
-        invites_sent = GroupAccountInvite.get_invites_sent(userprofile);
-        invites_received = GroupAccountInvite.get_invites_received(userprofile);
+        invites_sent = GroupAccountInvite.get_invites_sent(userprofile)
+        invites_received = GroupAccountInvite.get_invites_received(userprofile)
         invites_all = list(chain(invites_sent, invites_received))
         invites_all = set(invites_all)
         return sorted(invites_all, key=lambda instance: instance.createdDateAndTime, reverse=True)

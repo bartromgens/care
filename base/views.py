@@ -51,7 +51,8 @@ class HomeView(BaseView):
     def get_active_menu(self):
         return 'account'
 
-    def get_transactions(self, buyerId):
+    @staticmethod
+    def get_transactions(buyerId):
         transactions = Transaction.objects.filter(buyer__id=buyerId)
         return transactions
 
