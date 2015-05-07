@@ -11,7 +11,6 @@ class Migration(migrations.Migration):
         ('groupaccount', '0002_auto_20150505_1143'),
         ('userprofile', '0002_auto_20150505_1314'),
         ('transaction', '0003_auto_20150505_1459'),
-        ('transactionreal', '0004_empty'),
     ]
 
     state_operations = [
