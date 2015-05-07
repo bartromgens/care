@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
 
 from transaction.models import Transaction
-from transactionreal.views import NewRealTransactionView, MyRealTransactionView, EditRealTransactionView
+from transaction.views import NewRealTransactionView, MyRealTransactionView, EditRealTransactionView
 
 
 urlpatterns = patterns('',
