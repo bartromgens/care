@@ -1,6 +1,6 @@
 from base.views import BaseView
 from transactionreal.forms import NewRealTransactionForm, EditRealTransactionForm
-from transactionreal.models import TransactionReal
+from transaction.models import TransactionReal
 from userprofile.models import UserProfile
 
 from django.http import HttpResponseRedirect

@@ -1,7 +1,7 @@
 from groupaccount.models import GroupAccount
 from groupaccountinvite.models import GroupAccountInvite
 from transaction.models import Transaction
-from transactionreal.models import TransactionReal
+from transaction.models import TransactionReal
 from userprofile.models import UserProfile
 
 from django.views.generic import TemplateView

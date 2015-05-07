@@ -68,7 +68,7 @@ class UserProfile(models.Model):
     @staticmethod
     def get_balance(group_account_id, user_profile_id):
         from transaction.models import Transaction
-        from transactionreal.models import TransactionReal
+        from transaction.models import TransactionReal
         buyer_transactions = Transaction.objects.filter(group_account__id=group_account_id, buyer__id=user_profile_id)
         consumer_transactions = Transaction.objects.filter(group_account__id=group_account_id, consumers__id=user_profile_id)
         sender_real_transactions = TransactionReal.objects.filter(group_account__id=group_account_id, sender__id=user_profile_id)

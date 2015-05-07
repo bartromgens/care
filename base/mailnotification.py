@@ -1,5 +1,5 @@
 from transaction.models import Transaction
-from transactionreal.models import TransactionReal
+from transaction.models import TransactionReal
 
 from datetime import timedelta
 

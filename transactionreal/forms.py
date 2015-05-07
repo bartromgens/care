@@ -4,7 +4,7 @@ from django import forms
 
 from bootstrap3_datetime.widgets import DateTimePicker
 
-from transactionreal.models import TransactionReal
+from transaction.models import TransactionReal
 from transaction.models import Modification
 from groupaccount.models import GroupAccount
 from userprofile.models import UserProfile
