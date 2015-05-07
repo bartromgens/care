@@ -113,7 +113,6 @@ INSTALLED_APPS = (
     'userprofile',
     'groupaccount',
     'transaction',
-    'transactionreal',
     'groupaccountinvite',
 )
 
