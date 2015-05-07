@@ -24,7 +24,7 @@ class EditUserProfileView(BaseView, FormView):
         logger.debug('EditUserProfileView')
         super(EditUserProfileView, self).form_valid(form)
         form.save()
-        return HttpResponseRedirect( '/transactions/0' )
+        return HttpResponseRedirect('/')
 
     def get_context_data(self, **kwargs):
         logger.debug('EditUserProfileView')

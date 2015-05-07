@@ -9,11 +9,11 @@
   <div class="container">
     <div class="subnav">
       <ul class="nav navbar-nav">
-        <li><a href="/transactions/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New share</font></b></a></li>
+        <li><a href="/transactions/share/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New share</font></b></a></li>
         {% if userprofile.showTableView %}  
-        <li><a href="/transactions/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
+        <li><a href="/transactions/share/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Panel view</font></b></a></li>
         {% else %}
-        <li><a href="/transactions/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
+        <li><a href="/transactions/share/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table view</font></b></a></li>
         {% endif %}
       </ul>
     </div>
@@ -31,7 +31,7 @@
     {% with "accordiontransactionreal" as parentId %}
       <div class="panel-group" id="{{ parentId }}">
       {% for transaction in transactionsAll %}
-        {% include "transaction/transactionpanel.html" %}
+        {% include "transaction/share/transactionpanel.html" %}
       {% endfor %}
       </div>
     {% endwith %}
@@ -96,7 +96,7 @@
       
       <td data-value="{{ transaction.date|date:"Y-m-d H:i:s" }}">{{ transaction.date|date:"Y-m-d" }}</td>
 
-      <td><a href="/transactions/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
+      <td><a href="/transactions/share/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
     
     </tr>
   	{% endfor %}
@@ -110,7 +110,7 @@
   <h5>
     <p>Nothing has been shared with you yet.</p> 
     <br>
-    Share by clicking <a href="/transactions/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.1em;">New share</font></b></a> in the menu. 
+    Share by clicking <a href="/transactions/share/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.1em;">New share</font></b></a> in the menu.
   </h5>
 </div>
 {% endif %}

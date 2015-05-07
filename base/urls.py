@@ -17,7 +17,6 @@ urlpatterns = patterns('',
   url(r'^about/$', AboutView.as_view()),
 
   url(r'^transactions/', include('transaction.urls')),
-  url(r'^transactionsreal/', include('transactionreal.urls')),
   url(r'^invites/', include('groupaccountinvite.urls')),
   url(r'^userprofile/', include('userprofile.urls')),
   url(r'^admin/', include(admin.site.urls)),

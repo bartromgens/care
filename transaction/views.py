@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class MyTransactionView(BaseView):
-    template_name = "transaction/mytransactions.html"
+    template_name = "transaction/share/mytransactions.html"
     context_object_name = "my transactions"
 
     def get_active_menu(self):
@@ -35,7 +35,7 @@ class MyTransactionView(BaseView):
 
 
 class SelectGroupTransactionView(BaseView):
-    template_name = "transaction/newselectgroup.html"
+    template_name = "transaction/share/newselectgroup.html"
     context_object_name = "select transaction group"
 
     def get_context_data(self, **kwargs):
@@ -47,9 +47,9 @@ class SelectGroupTransactionView(BaseView):
 
 
 class NewTransactionView(FormView, BaseView):
-    template_name = 'transaction/new.html'
+    template_name = 'transaction/share/new.html'
     form_class = NewTransactionForm
-    success_url = '/transaction/new/success/'
+    success_url = '/transactions/share/new/success/'
 
     def get_active_menu(self):
         return 'shares'
@@ -78,7 +78,7 @@ class NewTransactionView(FormView, BaseView):
     def form_invalid(self, form):
         group_account = form.cleaned_data['group_account']
         if int(group_account.id) != int(self.get_groupaccount_id()):
-            return HttpResponseRedirect( '/transactions/new/' + str(group_account.id))
+            return HttpResponseRedirect('/transactions/share/new/' + str(group_account.id))
         else:
             return super(NewTransactionView, self).form_invalid(form)
 
@@ -95,9 +95,9 @@ class NewTransactionView(FormView, BaseView):
 
 
 class EditTransactionView(FormView, BaseView):
-    template_name = 'transaction/edit.html'
+    template_name = 'transaction/share/edit.html'
     form_class = EditTransactionForm
-    success_url = '/transactions/0'
+    success_url = '/transactions/share/0'
 
     def get_active_menu(self):
         return 'shares'
@@ -123,7 +123,7 @@ class EditTransactionView(FormView, BaseView):
 
 
 class MyRealTransactionView(BaseView):
-    template_name = "transactionreal/mytransactionsreal.html"
+    template_name = "transaction/real/mytransactionsreal.html"
     context_object_name = "my real transactions"
 
     def get_active_menu(self):
@@ -139,7 +139,7 @@ class MyRealTransactionView(BaseView):
 
 
 class SelectGroupRealTransactionView(BaseView):
-    template_name = "transactionreal/newselectgroup.html"
+    template_name = "transaction/real/newselectgroup.html"
     context_object_name = "select transaction group"
 
     def get_context_data(self, **kwargs):
@@ -152,9 +152,9 @@ class SelectGroupRealTransactionView(BaseView):
 
 
 class NewRealTransactionView(FormView, BaseView):
-    template_name = 'transactionreal/new.html'
+    template_name = 'transaction/real/new.html'
     form_class = NewRealTransactionForm
-    success_url = '/transactionreal/new/success/'
+    success_url = '/transactions/real/new/success/'
 
     def get_active_menu(self):
         return 'transactions'
@@ -186,7 +186,7 @@ class NewRealTransactionView(FormView, BaseView):
         logger.debug('form_invalid()')
         group_account = form.cleaned_data['group_account']
         super(NewRealTransactionView, self).form_invalid(form)
-        return HttpResponseRedirect( '/transactionsreal/new/' + str(group_account.id))
+        return HttpResponseRedirect( '/transactions/real/new/' + str(group_account.id))
 
     def get_context_data(self, **kwargs):
         logger.debug('NewRealTransactionView::get_context_data() - group_account_id: ' + str(self.get_groupaccount_id()))
@@ -202,9 +202,9 @@ class NewRealTransactionView(FormView, BaseView):
 
 
 class EditRealTransactionView(FormView, BaseView):
-    template_name = 'transactionreal/edit.html'
+    template_name = 'transaction/real/edit.html'
     form_class = EditRealTransactionForm
-    success_url = '/transactionsreal/0'
+    success_url = '/transactions/real/0'
 
     def get_active_menu(self):
         return 'transactions'
