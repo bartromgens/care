@@ -1,6 +1,7 @@
 from base.views import BaseView
 from transaction.models import Transaction
 from transaction.models import TransactionReal
+from transaction.models import Modification
 from transaction.forms import NewTransactionForm, EditTransactionForm
 from transaction.forms import NewRealTransactionForm, EditRealTransactionForm
 from userprofile.models import UserProfile
@@ -70,7 +71,9 @@ class NewTransactionView(FormView, BaseView):
     def form_valid(self, form):
         super(NewTransactionView, self).form_valid(form)
         form.save()
-        return HttpResponseRedirect( '/')
+        transaction = Transaction.objects.get(pk=form.instance.id)
+        Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
+        return HttpResponseRedirect('/transactions/share/0')
 
     def form_invalid(self, form):
         group_account = form.cleaned_data['group_account']
@@ -106,10 +109,10 @@ class EditTransactionView(FormView, BaseView):
 
     def form_valid(self, form):
         super(EditTransactionView, self).form_valid(form)
-        transaction = Transaction.objects.get(pk=self.kwargs['pk'])
         form.save()
-        transaction.modifications.create(user=UserProfile.objects.get(user=self.request.user))
-        return HttpResponseRedirect( '/transactions/0' )
+        transaction = Transaction.objects.get(pk=self.kwargs['pk'])
+        Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
+        return HttpResponseRedirect('/transactions/share/0')
 
     def get_context_data(self, **kwargs):
         context = super(EditTransactionView, self).get_context_data(**kwargs)
@@ -175,7 +178,9 @@ class NewRealTransactionView(FormView, BaseView):
         logger.debug('form_valid()')
         super(NewRealTransactionView, self).form_valid(form)
         form.save()
-        return HttpResponseRedirect( '/')
+        transaction = TransactionReal.objects.get(pk=form.instance.id)
+        Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transaction)
+        return HttpResponseRedirect('/')
 
     def form_invalid(self, form):
         logger.debug('form_invalid()')
@@ -212,11 +217,12 @@ class EditRealTransactionView(FormView, BaseView):
     def form_valid(self, form):
         logger.debug('EditRealTransactionView::form_valid()')
         super(EditRealTransactionView, self).form_valid(form)
-        transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
-        if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
+        transactionreal = TransactionReal.objects.get(pk=self.kwargs['pk'])
+        if self.request.user == transactionreal.sender.user or self.request.user == transactionreal.receiver.user:
             form.save()
-            transaction.modifications.create(user=UserProfile.objects.get(user=self.request.user))
-        return HttpResponseRedirect('/transactionsreal/0')
+            Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transactionreal)
+        return HttpResponseRedirect('/transactions/real/0')
+
 
     def get_context_data(self, **kwargs):
         context = super(EditRealTransactionView, self).get_context_data(**kwargs)

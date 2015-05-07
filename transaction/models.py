@@ -46,9 +46,9 @@ class Transaction(models.Model):
         consumer_transactions = Transaction.get_consumer_transactions(userprofile_id)
         transactions_all = list(chain(buyer_transactions, consumer_transactions))
         for transaction in transactions_all:
-            transaction.lastModified = transaction.get_datetime_last_modified()
+            transaction.last_modified = transaction.get_datetime_last_modified()
             transaction.modifications = Modification.objects.filter(transaction=transaction)
-        return sorted(transactions_all, key=lambda instance: instance.lastModified, reverse=True)
+        return sorted(transactions_all, key=lambda instance: instance.last_modified, reverse=True)
 
     # users = User.objects.filter(groups__name='monkeys')
 
@@ -94,9 +94,10 @@ class TransactionReal(models.Model):
         sent_transactions = TransactionReal.get_transactions_real_sent(userprofile_id)
         received_transactions = TransactionReal.get_transactions_real_received(userprofile_id)
         transactions_real_all = list(chain(sent_transactions, received_transactions))
-        for transaction in transactions_real_all:
-            transaction.lastModified = transaction.get_datetime_last_modified();
-        return sorted(transactions_real_all, key=lambda instance: instance.lastModified, reverse=True)
+        for transaction_real in transactions_real_all:
+            transaction_real.last_modified = transaction_real.get_datetime_last_modified()
+            transaction_real.modifications = Modification.objects.filter(transaction_real=transaction_real)
+        return sorted(transactions_real_all, key=lambda instance: instance.last_modified, reverse=True)
 
     def __str__(self):
         return self.comment
