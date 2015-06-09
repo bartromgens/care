@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('userprofile', '0001_initial'),
         ('groupaccount', '0001_initial'),
+        ('userprofile', '0001_initial'),
     ]
 
     operations = [
@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='groupaccount',
             name='settings',
-            field=models.ForeignKey(blank=True, to='groupaccount.GroupSetting', null=True),
+            field=models.ForeignKey(to='groupaccount.GroupSetting', null=True, blank=True),
         ),
     ]
