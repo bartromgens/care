@@ -56,7 +56,7 @@
               {% if forloop.first %}
             <font size=2 class="text-info">Created: {{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
               {% else %}
-            <font size=2 class="text-info">Mofified: {{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
+            <font size=2 class="text-info">Modified: {{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
               {% endif %}
             <br>
           {% endfor %}
