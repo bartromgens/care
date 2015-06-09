@@ -200,3 +200,9 @@ CRON_CLASSES = [
 #     'base.cronjobs.TestEmails',
     # ...
 ]
+
+
+# django-dual-authentication settings
+AUTHENTICATION_BACKENDS = ['django-dual-authentication.backends.DualAuthentication']
+# You can authenticate your users by 'username', 'email', 'both'. Default: 'both'.
+AUTHENTICATION_METHOD = 'both'
