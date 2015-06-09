@@ -5,30 +5,29 @@
 
 {% block content %}
 
-  <center><h3>Login</h3></center>
+    <center><h3>Sign in</h3></center>
+        {% if error %}
+            {{ error }}
+        {% endif %}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form action="" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Sign in
+                </button>
+                {% endbuttons %}
+                <input name="next" type="hidden" value="{{next}}">
+            </form>
+            <a href="/accounts/password/reset">Forgot your password?</a>
+            <hr>
+            <h4>
+                New? <a href="/accounts/register/">Register here</a>.
+            </h4>
 
-  {% if error %}
-    {{ error }}
-  {% endif %}
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <form action="" method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-          <button type="submit" class="btn btn-primary">
-            Login
-          </button>
-        {% endbuttons %}
-        <input name="next" type="hidden" value="{{next}}">
-      </form>
-      <a href="/accounts/password/reset">Forgot your password?</a>
-      <hr>
-      <h4>
-        New? <a href="/accounts/register/">Register here</a>.
-      </h4>
-      
+        </div>
     </div>
-  </div>
 
 {% endblock %}
