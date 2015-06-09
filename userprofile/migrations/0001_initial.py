@@ -17,20 +17,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='NotificationInterval',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
-                ('name', models.CharField(unique=True, max_length=100)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('name', models.CharField(max_length=100, unique=True)),
                 ('days', models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('displayname', models.CharField(max_length=15, validators=[django.core.validators.RegexValidator('^\\S.*\\S$|^\\S$|^$', 'This field cannot start or end with spaces.')])),
-                ('firstname', models.CharField(blank=True, max_length=100)),
-                ('lastname', models.CharField(blank=True, max_length=100)),
+                ('firstname', models.CharField(max_length=100, blank=True)),
+                ('lastname', models.CharField(max_length=100, blank=True)),
                 ('showTableView', models.BooleanField(default=False)),
-                ('groupAccounts', models.ManyToManyField(blank=True, to='groupaccount.GroupAccount')),
+                ('group_accounts', models.ManyToManyField(to='groupaccount.GroupAccount', blank=True)),
                 ('historyEmailInterval', models.ForeignKey(to='userprofile.NotificationInterval', null=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
