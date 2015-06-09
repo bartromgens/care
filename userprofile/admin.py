@@ -7,7 +7,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['user']}),
         (None, {'fields': ['displayname']}),
-        (None, {'fields': ['group_account']}),
+        (None, {'fields': ['group_accounts']}),
         (None, {'fields': ['showTableView']}),
         (None, {'fields': ['historyEmailInterval']}),
     ]

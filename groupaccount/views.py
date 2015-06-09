@@ -56,7 +56,7 @@ class NewGroupAccountView(FormView, BaseView):
         group_account.save()
         
         userProfile = UserProfile.objects.get(user=self.request.user)
-        userProfile.group_account.add(group_account)
+        userProfile.group_accounts.add(group_account)
         userProfile.save()
 
         return HttpResponseRedirect('/group/new/success/')
@@ -100,7 +100,7 @@ class EditGroupSettingView(BaseView, FormView):
         
         # makes sure the user is allowed to edit these group settings
         group = GroupAccount.objects.get(settings=group_settings)
-        assert group in self.get_userprofile().group_account.all()
+        assert group in self.get_userprofile().group_accounts.all()
         userprofiles = UserProfile.objects.all().filter(group_accounts=group).filter(id=self.get_userprofile().id)
         if not userprofiles:
             return context
