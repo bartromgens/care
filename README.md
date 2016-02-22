@@ -1,6 +1,7 @@
 Care 
 ====
-#### Computer automated remote exchange
+#### Computer Automated Remote Exchange
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bartromgens/care/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bartromgens/care/?branch=master)
 
 Share expenses with friends in this Django and Bootstrap based web application.
 
