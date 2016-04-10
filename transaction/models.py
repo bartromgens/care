@@ -50,8 +50,6 @@ class Transaction(models.Model):
             transaction.modifications = Modification.objects.filter(transaction=transaction)
         return sorted(transactions_all, key=lambda instance: instance.last_modified, reverse=True)
 
-    # users = User.objects.filter(groups__name='monkeys')
-
     def __str__(self):
         return self.what
 
