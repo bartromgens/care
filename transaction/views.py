@@ -222,8 +222,6 @@ class EditRealTransactionView(FormView, BaseView):
         logger.debug('EditRealTransactionView::form_valid()')
         super(EditRealTransactionView, self).form_valid(form)
         transactionreal = TransactionReal.objects.get(pk=self.kwargs['pk'])
-        if form.cleaned_data['is_shared_by_all']:
-            form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         if self.request.user == transactionreal.sender.user or self.request.user == transactionreal.receiver.user:
             form.save()
             Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transactionreal)
