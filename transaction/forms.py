@@ -13,12 +13,14 @@ logger = logging.getLogger(__name__)
 
 
 class NewTransactionForm(forms.ModelForm):
+    ## TODO BR: remove duplicate code with EditTransactionForm
     def __init__(self, group_account_id, user, *args, **kwargs):
         super(NewTransactionForm, self).__init__(*args, **kwargs)
 
+        self.fields['is_shared_by_all'] = forms.BooleanField(label='Shared by all', required=False)
         self.fields['consumers'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(), 
                                                                   queryset=UserProfile.objects.filter(group_accounts=group_account_id),
-                                                                  label='Shared by')
+                                                                  label='Shared by some', required=False)
 
         self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=group_account_id),
                                                       empty_label=None)
@@ -43,6 +45,12 @@ class NewTransactionForm(forms.ModelForm):
     def set_group_account(self, group_account):
         self.fields['group_account'].initial = group_account
 
+    def clean(self):
+        cleaned_data = super(NewTransactionForm, self).clean()
+        if not cleaned_data.get("consumers") and not cleaned_data.get("is_shared_by_all"):
+            raise forms.ValidationError("Please select someone to share with.")
+        return cleaned_data
+
     class Meta:
         model = Transaction
         fields = '__all__'
@@ -54,9 +62,10 @@ class EditTransactionForm(forms.ModelForm):
 
         transaction = Transaction.objects.get(id=transaction_id)
 
+        self.fields['is_shared_by_all'] = forms.BooleanField(label='Shared by all', required=False)
         self.fields['consumers'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                                   queryset=UserProfile.objects.filter(group_accounts=transaction.group_account),
-                                                                  label='Shared by')
+                                                                  label='Shared by some', required=False)
         self.fields['buyer'] = forms.ModelChoiceField(queryset=UserProfile.objects.filter(group_accounts=transaction.group_account),
                                                       empty_label=None)
         self.fields['what'].label = 'What'
@@ -69,6 +78,12 @@ class EditTransactionForm(forms.ModelForm):
         #                                                               required=False,
         #                                                               widget=forms.MultipleHiddenInput())
         self.fields['group_account'].widget.attrs['readonly'] = True
+
+    def clean(self):
+        cleaned_data = super(EditTransactionForm, self).clean()
+        if not cleaned_data.get("consumers") and not cleaned_data.get("is_shared_by_all"):
+            raise forms.ValidationError("Please select someone to share with.")
+        return cleaned_data
 
     class Meta:
         model = Transaction

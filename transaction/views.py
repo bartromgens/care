@@ -4,7 +4,7 @@ from transaction.models import TransactionReal
 from transaction.models import Modification
 from transaction.forms import NewTransactionForm, EditTransactionForm
 from transaction.forms import NewRealTransactionForm, EditRealTransactionForm
-from userprofile.models import UserProfile
+from userprofile.models import UserProfile, GroupAccount
 
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
@@ -70,6 +70,8 @@ class NewTransactionView(FormView, BaseView):
 
     def form_valid(self, form):
         super(NewTransactionView, self).form_valid(form)
+        if form.cleaned_data['is_shared_by_all']:
+            form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         form.save()
         transaction = Transaction.objects.get(pk=form.instance.id)
         Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
@@ -109,6 +111,8 @@ class EditTransactionView(FormView, BaseView):
 
     def form_valid(self, form):
         super(EditTransactionView, self).form_valid(form)
+        if form.cleaned_data['is_shared_by_all']:
+            form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         form.save()
         transaction = Transaction.objects.get(pk=self.kwargs['pk'])
         Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
@@ -218,11 +222,12 @@ class EditRealTransactionView(FormView, BaseView):
         logger.debug('EditRealTransactionView::form_valid()')
         super(EditRealTransactionView, self).form_valid(form)
         transactionreal = TransactionReal.objects.get(pk=self.kwargs['pk'])
+        if form.cleaned_data['is_shared_by_all']:
+            form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         if self.request.user == transactionreal.sender.user or self.request.user == transactionreal.receiver.user:
             form.save()
             Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transactionreal)
         return HttpResponseRedirect('/transactions/real/0')
-
 
     def get_context_data(self, **kwargs):
         context = super(EditRealTransactionView, self).get_context_data(**kwargs)
