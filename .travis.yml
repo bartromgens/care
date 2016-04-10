@@ -7,6 +7,7 @@ install:
 - pip install -r requirements.txt
 - pip install coveralls
 script:
+- python create_local_settings.py
 - python manage.py migrate
 notifications:
   email: false
