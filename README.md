@@ -1,7 +1,7 @@
 Care 
 ====
 #### Computer Automated Remote Exchange
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bartromgens/care/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bartromgens/care/?branch=master) [![Dependency Status](https://gemnasium.com/badges/github.com/bartromgens/care.svg)](https://gemnasium.com/github.com/bartromgens/care)
+[![Build Status](https://travis-ci.org/bartromgens/care.svg?branch=master)](https://travis-ci.org/bartromgens/care) [![Dependency Status](https://gemnasium.com/badges/github.com/bartromgens/care.svg)](https://gemnasium.com/github.com/bartromgens/care) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bartromgens/care/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bartromgens/care/?branch=master)
 
 Share expenses with friends in this Django and Bootstrap based web application.
 
