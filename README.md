@@ -43,29 +43,21 @@ $ pip install -r requirements.txt
 Copy `./base/user_settings_example.py` to `./base/user_settings.py` and change the placeholders in user_settings.py with your local settings. 
 
 #### Create database
-Create initial database migrations for the following apps:
-- userprofile
-- groupaccount
-- transaction
-- transactionreal
-- groupaccountinvite
+Create initial database,
+
 ```bash
-$ python manage.py schemamigration <appname> --initial
-```
-migrate all apps,
-```bash
-$ manage.py migrate <appname>
+$ manage.py migrate
 ```
 
-Run syncdb and create a Django root user,
+Run create a superuser,
 ```bash
-$ python manage.py syncdb
+$ python manage.py createsuperuser
 ```
 
 #### Test run
 Run test server,
 ```bash
-$ python manage.py runserver 127.0.0.1:8000
+$ python manage.py runserver
 ```
 #### Create userprofile
 Create a userprofile for the root user you just created,
@@ -78,12 +70,12 @@ Webfaction (Django hosting)
 ##### Install dependencies
 see requirements.txt for required modules
 ```bash
-$ PYTHONPATH=$HOME/webapps/care/lib/python3.3 easy_install-3.3 --install-dir=$HOME/webapps/care/lib/python3.3 --script-dir=$HOME/webapps/care/bin django-bootstrap3
+$ PYTHONPATH=$HOME/webapps/care/lib/python3.4 easy_install-3.4 --install-dir=$HOME/webapps/care/lib/python3.4 --script-dir=$HOME/webapps/care/bin django-bootstrap3
 ```
 
 ##### Collect staticfiles
 ```bash
-$ python3.3 manage.py collectstatic
+$ python3.4 manage.py collectstatic
 ```
 
 #####  Check error log
@@ -97,5 +89,5 @@ $ ~/webapps/care/apache2/bin/restart
 
 ##### Cronjob (python)
 ```
-*/05 * * * * cd /home/bartromgens/webapps/care/care/ && PYTHONPATH=$HOME/webapps/care/lib/python3.3 /usr/local/bin/python3.3 manage.py runcrons >> $HOME/logs/user/cron.log 2>&1
+*/05 * * * * cd /home/bartromgens/webapps/care/care/ && PYTHONPATH=$HOME/webapps/care/lib/python3.4 /usr/local/bin/python3.4 manage.py runcrons >> $HOME/logs/user/cron.log 2>&1
 ```
