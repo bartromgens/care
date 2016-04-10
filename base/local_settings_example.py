@@ -9,8 +9,6 @@ ADMINS = (
     ('Your Name', 'email address'),
 )
 
-APP_DIR = '/home/bart/dev/care/'
-
 ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
@@ -22,7 +20,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 #STATIC_URL = 'http://www.computerautomatedremoteexchange.com/carestatic/'
-STATIC_URL = APP_DIR + 'static/'
+STATIC_URL = '/static/'
 
 REGISTRATION_OPEN = True
 
