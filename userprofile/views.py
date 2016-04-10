@@ -17,7 +17,7 @@ class EditUserProfileView(BaseView, FormView):
     form_class = EditUserProfileForm
     success_url = '/'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=EditUserProfileForm):
         return EditUserProfileForm(self.request.user, instance=UserProfile.objects.get(user=self.request.user), **self.get_form_kwargs())
 
     def form_valid(self, form):
@@ -49,7 +49,7 @@ class SearchUserProfileView(BaseView, FormView):
     form_class = SearchUserProfileForm
     success_url = '/userprofile/search'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=SearchUserProfileForm):
         return SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):

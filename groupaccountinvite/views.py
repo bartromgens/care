@@ -94,7 +94,7 @@ class NewInviteView(FormView, BaseView):
     def get_active_menu(self):
         return 'invites'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=NewInviteForm):
         userProfileToInvite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
         form = NewInviteForm(self.request.user, userProfileToInvite, **self.get_form_kwargs())
         return form

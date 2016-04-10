@@ -11,7 +11,7 @@ from django.contrib import admin
 # from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
   url(r'^$', login_required(HomeView.as_view())),
   url(r'^help/$', HelpView.as_view()),
   url(r'^about/$', AboutView.as_view()),
@@ -28,5 +28,5 @@ urlpatterns = patterns('',
   url(r'^accounts/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
       'userprofile.views.password_reset_confirm_custom', name='password_reset_confirm'),
 
-  url(r'^accounts/', include('registration.backends.simple.urls')), # the django-registration module
-)
+  url(r'^accounts/', include('registration.backends.simple.urls')),  # the django-registration module
+]

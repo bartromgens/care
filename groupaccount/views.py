@@ -37,7 +37,7 @@ class NewGroupAccountView(FormView, BaseView):
     form_class = NewGroupAccountForm
     success_url = '/account/new/success/'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=NewGroupAccountForm):
         return NewGroupAccountForm(**self.get_form_kwargs())
 
     def get_active_menu(self):
@@ -81,7 +81,7 @@ class EditGroupSettingView(BaseView, FormView):
     form_class = EditGroupSettingForm
     success_url = '/'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=EditGroupSettingForm):
         group_settings = GroupSetting.objects.get(id=self.kwargs['groupsettings_id'])
         return EditGroupSettingForm(self.request.user, instance=group_settings, **self.get_form_kwargs())
 

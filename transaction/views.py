@@ -65,7 +65,7 @@ class NewTransactionView(FormView, BaseView):
             else:
                 return 0
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=NewTransactionForm):
         return NewTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
@@ -102,7 +102,7 @@ class EditTransactionView(FormView, BaseView):
     def get_active_menu(self):
         return 'shares'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=EditTransactionForm):
         pk = self.kwargs['pk']
         transaction = Transaction.objects.get(pk=pk)
         return EditTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())
@@ -170,7 +170,7 @@ class NewRealTransactionView(FormView, BaseView):
             else:
                 return 0
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=NewRealTransactionForm):
         logger.debug('get_form()')
         return NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
 
@@ -209,7 +209,7 @@ class EditRealTransactionView(FormView, BaseView):
     def get_active_menu(self):
         return 'transactions'
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=EditRealTransactionForm):
         pk = self.kwargs['pk']
         transaction = TransactionReal.objects.get(pk=pk)
         return EditRealTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())
