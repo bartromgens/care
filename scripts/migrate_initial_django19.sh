@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 git checkout v0.2.2 
 python3.4 manage.py migrate --fake-initial
@@ -9,6 +10,8 @@ python3.4 manage.py migrate
 git checkout v0.2.5 
 python3.4 manage.py migrate
 git checkout v0.2.6
-python3.4 manage.py migrate --fake-initial
+python3.4 manage.py migrate
 git checkout v0.2.7
-python3.4 manage.py migrate --fake-initial
+python3.4 manage.py migrate
+git checkout v0.2.8
+python3.4 manage.py migrate
