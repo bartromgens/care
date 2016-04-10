@@ -39,17 +39,19 @@ Install the required python modules (with activated virtual env),
 ```bash
 $ pip install -r requirements.txt
 ```
-#### Configure user_settings.py
-Copy `./base/user_settings_example.py` to `./base/user_settings.py` and change the placeholders in user_settings.py with your local settings. 
+#### Create local_settings.py
+Run `create_local_settings.py`,
+```bash
+$ python create_local_settings.py
+```
 
 #### Create database
 Create initial database,
-
 ```bash
 $ manage.py migrate
 ```
 
-Run create a superuser,
+Create a superuser,
 ```bash
 $ python manage.py createsuperuser
 ```
