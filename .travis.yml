@@ -1,0 +1,14 @@
+sudo: false
+language: python
+python:
+- '3.4'
+- '3.5'
+install:
+- pip install -r requirements_travis.txt
+- pip install coveralls
+script:
+- python manage.py migrate
+notifications:
+  email: false
+after_success:
+  coveralls
