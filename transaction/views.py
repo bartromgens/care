@@ -6,6 +6,7 @@ from transaction.forms import NewTransactionForm, EditTransactionForm
 from transaction.forms import NewRealTransactionForm, EditRealTransactionForm
 from userprofile.models import UserProfile
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 
@@ -30,6 +31,15 @@ class MyTransactionView(BaseView):
         userprofile.get_show_table(self.kwargs['tableView'])
         context = super(MyTransactionView, self).get_context_data(**kwargs)
         transactions_all_sorted = Transaction.get_transactions_sorted_by_last_modified(userprofile.id)
+        paginator = Paginator(transactions_all_sorted, 50)
+
+        page = self.request.GET.get('page')
+        try:
+            transactions_all_sorted = paginator.page(page)
+        except PageNotAnInteger:
+            transactions_all_sorted = paginator.page(1)
+        except EmptyPage:
+            transactions_all_sorted = paginator.page(paginator.num_pages)
         context['transactionsAll'] = transactions_all_sorted
         return context
 
