@@ -70,9 +70,9 @@ Create a userprofile for the root user you just created,
 Webfaction (Django hosting)
 ------------
 ##### Install dependencies
-see requirements.txt for required modules
+Install dependencies,
 ```bash
-$ PYTHONPATH=$HOME/webapps/care/lib/python3.4 easy_install-3.4 --install-dir=$HOME/webapps/care/lib/python3.4 --script-dir=$HOME/webapps/care/bin django-bootstrap3
+$ pip3.4 install --target=$HOME/webapps/<projectname>/lib/python3.4 -r requirements.txt
 ```
 
 ##### Collect staticfiles
