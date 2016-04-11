@@ -18,10 +18,6 @@ class MyGroupAccountInvitesView(BaseView):
     def get_active_menu(self):
         return 'invites'
 
-    def get_number_of_invites(self, buyerId):
-        invite = GroupAccountInvite.objects.all()
-        return len(invite)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         userProfile = self.get_userprofile()
@@ -47,9 +43,9 @@ class AcceptInviteView(MyGroupAccountInvitesView):
             group_account = GroupAccount.objects.get(id=invite.group_account.id)
             invite.isAccepted = True
             invite.isDeclined = False
-            userProfile = self.get_userprofile()
-            userProfile.group_accounts.add(group_account)
-            userProfile.save()
+            user_profile = self.get_userprofile()
+            user_profile.group_accounts.add(group_account)
+            user_profile.save()
             invite.save()
 
         context = super().get_context_data(**kwargs)

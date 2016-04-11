@@ -141,35 +141,35 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'care.log'),
-            'formatter': 'verbose'
+            'level':'DEBUG',
+            'class':'logging.FileHandler',
+            'filename':os.path.join(BASE_DIR, 'care.log'),
+            'formatter':'verbose'
         },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+            'handlers':['mail_admins'],
+            'level':'ERROR',
+            'propagate':True,
         },
         'django': {
             'handlers':['file'],
-            'propagate': True,
+            'propagate':True,
             'level':'ERROR',
         },
         '': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
+            'handlers':['file'],
+            'level':'DEBUG',
         },
     },
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s - %(funcName)20s()]: %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format':"[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s - %(funcName)20s()]: %(message)s",
+            'datefmt':"%d/%b/%Y %H:%M:%S"
         },
         'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format':'%(levelname)s %(message)s'
         },
     },
 }
@@ -188,8 +188,8 @@ LOGIN_REDIRECT_URL = '/'
 # }
 
 BOOTSTRAP3 = {
-    'jquery_url': 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js', #'//code.jquery.com/jquery.min.js',
-    'base_url': STATIC_URL + 'bootstrap/', #'//netdna.bootstrapcdn.com/bootstrap/3.0.3/'
+    'jquery_url': 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js',  #'//code.jquery.com/jquery.min.js',
+    'base_url': STATIC_URL + 'bootstrap/',  #'//netdna.bootstrapcdn.com/bootstrap/3.0.3/'
     'css_url': STATIC_URL + 'bootstrap/css/bootstrap_flatly.min.css',
     'theme_url': None,
     'javascript_url': STATIC_URL + 'bootstrap/js/bootstrap.min.js',
