@@ -199,11 +199,11 @@ BOOTSTRAP3 = {
 }
 
 CRON_CLASSES = [
-    'base.cronjobs.DailyBackup',
-    'base.cronjobs.DailyEmails',
-    'base.cronjobs.WeeklyEmails',
-    'base.cronjobs.MonthlyEmails',
-#     'base.cronjobs.TestEmails',
+    'care.base.cronjobs.DailyBackup',
+    'care.base.cronjobs.DailyEmails',
+    'care.base.cronjobs.WeeklyEmails',
+    'care.base.cronjobs.MonthlyEmails',
+#     'care.base.cronjobs.TestEmails',
     # ...
 ]
 
