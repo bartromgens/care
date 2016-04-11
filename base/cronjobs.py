@@ -4,7 +4,7 @@ Created on Aug 25, 2014
 @author: Bart Romgens
 '''
 
-from base.settings import APP_DIR
+from base.settings import BASE_DIR
 from userprofile.models import UserProfile, NotificationInterval
 from groupaccount.models import GroupAccount, GroupSetting
 
@@ -54,7 +54,7 @@ class DailyBackup(CronJobBase):
         directory = './backup/'
         if not os.path.exists(directory):
             os.makedirs(directory)
-        shutil.copy(APP_DIR + 'care.sqlite', directory + nowStr + 'care.sqlite')
+        shutil.copy(os.join.path(BASE_DIR, 'care.sqlite'), directory + nowStr + 'care.sqlite')
 
 
 class DailyEmails(CronJobBase):
