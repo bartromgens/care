@@ -3,6 +3,7 @@
 *.pyc
 
 /.idea/*
+/backup/
 
 local_settings.py
 *.sqlite
