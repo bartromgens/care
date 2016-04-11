@@ -73,40 +73,44 @@ class UserProfile(models.Model):
         buyer_transactions = Transaction.objects.filter(
             group_account__id=group_account_id,
             buyer__id=user_profile_id
-        ).prefetch_related('modification', 'consumers')
+        )
 
         consumer_transactions = Transaction.objects.filter(
             group_account__id=group_account_id,
             consumers__id=user_profile_id
-        ).prefetch_related('modification', 'consumers')
+        ).prefetch_related('consumers')
 
         sender_real_transactions = TransactionReal.objects.filter(
             group_account__id=group_account_id,
             sender__id=user_profile_id
-        ).prefetch_related('modification')
+        )
 
         receiver_real_transactions = TransactionReal.objects.filter(
             group_account_id=group_account_id,
             receiver__id=user_profile_id
-        ).prefetch_related('modification')
+        )
 
         total_bought = 0.0
         total_consumed = 0.0
         total_sent = 0.0
         total_received = 0.0
 
-        for transaction in buyer_transactions:
-            total_bought += float(transaction.amount)
+        from django.db.models import Sum
+        amount__sum = buyer_transactions.aggregate(Sum('amount'))['amount__sum']
+        if amount__sum:
+            total_bought = float(amount__sum)
+
+        amount__sum = sender_real_transactions.aggregate(Sum('amount'))['amount__sum']
+        if amount__sum:
+            total_sent = float(amount__sum)
+
+        amount__sum = receiver_real_transactions.aggregate(Sum('amount'))['amount__sum']
+        if amount__sum:
+            total_received = float(amount__sum)
 
         for transaction in consumer_transactions:
             n_consumers = transaction.consumers.count()
             total_consumed += float(transaction.amount) / n_consumers
-
-        for transaction in sender_real_transactions:
-            total_sent += float(transaction.amount)
-
-        for transaction in receiver_real_transactions:
-            total_received += float(transaction.amount)
 
         balance = (total_bought + total_sent - total_consumed - total_received)
         return balance
