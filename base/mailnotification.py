@@ -1,7 +1,8 @@
+from datetime import timedelta
+
 from transaction.models import Transaction
 from transaction.models import TransactionReal
 
-from datetime import timedelta
 
 def create_transaction_history_table_html(userprofile, date_start, date_end):
     transactions_all = Transaction.get_transactions_sorted_by_last_modified(userprofile.id)
@@ -22,7 +23,7 @@ def create_transaction_history_table_html(userprofile, date_start, date_end):
     transaction_table += '<th><b>Date</b></th>'
     for transaction in transactions_in_timerange:
         transaction_table += '<tr style="font-size: 12px">'
-        transaction_table += '<td>&#8364;' + transaction.amountPerPerson + '</td>'
+        transaction_table += '<td>&#8364;' + transaction.amount_per_person + '</td>'
         transaction_table += '<td>&#8364;' + '%.2f' % float(transaction.amount) + '</td>'
         transaction_table += '<td>' + transaction.what + '</td>'
         transaction_table += '<td>' + transaction.buyer.displayname + '</td>'

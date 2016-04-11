@@ -18,12 +18,12 @@
   <div class="col-sm-4 col-sm-offset-4" align="center" >
     <h4>Balance</h4>
     <h3><b>&#8364 
-    {% if myTotalBalanceFloat < 0.0 %} 
+    {% if my_total_balance_float < 0.0 %}
     <font class="text-warning">
     {% else %}
     <font class="text-info">
     {% endif %}
-    {{ myTotalBalance }}
+    {{ my_total_balance }}
     </font></b> </h3>
   </div>
 </div>
@@ -35,10 +35,10 @@
   <div class="col-lg-4">
     <div align="center"><h4>Shares</h4></div>
     
-    {% if transactionsAll %}
+    {% if transactions_all %}
       {% with "accordiontransaction" as parentId %}
         <div class="panel-group" id="{{ parentId }}">
-        {% for transaction in transactionsAll %}
+        {% for transaction in transactions_all %}
           {% include "transaction/share/transactionpanel.html" %}
         {% endfor %}
         </div>
@@ -58,10 +58,10 @@
       <h4>Transactions</h4>
     </div>
     
-    {% if transactionsRealAll %}
+    {% if transactionsreal_all %}
       {% with "accordiontransactionreal" as parentId %}
         <div class="panel-group" id="{{ parentId }}">
-        {% for transaction in transactionsRealAll %}
+        {% for transaction in transactionsreal_all %}
           {% include "transaction/real/transactionrealpanel.html" %}
         {% endfor %}
         </div>

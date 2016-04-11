@@ -20,7 +20,7 @@
 
 <div align="center"><h4>Transactions</h4></div>
 
-{% if transactionsRealAll %}
+{% if transactionsreal_all %}
 
 {% if not userprofile.showTableView %}  
   
@@ -28,7 +28,7 @@
   <div class="col-sm-6 col-sm-offset-3" align="center">
     {% with "accordiontransactionreal" as parentId %}
       <div class="panel-group" id="{{ parentId }}">
-        {% for transaction in transactionsRealAll %}
+        {% for transaction in transactionsreal_all %}
           {% include "transaction/real/transactionrealpanel.html" %}
         {% endfor %}
       </div>
@@ -54,11 +54,11 @@
         <th><b>Edit</b></th>
       </tr>
     </thead>
-    {% for transaction in transactionsRealAll %}
+    {% for transaction in transactionsreal_all %}
     <tr>
       <td align="right">&#8364
         <font class="text-info">
-          <b>{{ transaction.amountPerPerson }}</b>
+          <b>{{ transaction.amount_per_person }}</b>
         </font>
       </td>
     	<td>

@@ -25,12 +25,12 @@ class MyGroupAccountInvitesView(BaseView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         userProfile = self.get_userprofile()
-        invitesSent = GroupAccountInvite.get_invites_sent(userProfile).order_by('-createdDateAndTime')
-        invitesReceived = GroupAccountInvite.get_invites_received(userProfile).order_by('-createdDateAndTime')
-#    invites = list(chain(invitesSent, invitesReceived))
+        invites_sent = GroupAccountInvite.get_invites_sent(userProfile).order_by('-createdDateAndTime')
+        invites_received = GroupAccountInvite.get_invites_received(userProfile).order_by('-createdDateAndTime')
+#    invites = list(chain(invites_sent, invites_received))
 
-        context['invitesSent'] = invitesSent
-        context['invitesReceived'] = invitesReceived
+        context['invites_sent'] = invites_sent
+        context['invites_received'] = invites_received
         return context
 
 

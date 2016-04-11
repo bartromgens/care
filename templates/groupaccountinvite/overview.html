@@ -19,7 +19,7 @@
         <div class="panel-heading"><b>Invites received</b></div>
         <div class="panel-body">
           <table class="table table-striped table-hover" style="width: 100%;">
-            {% if not invitesReceived %}
+            {% if not invites_received %}
               <tr class="container">
                 <h5>
                   <p>You have not been invited to a group yet.</p> 
@@ -36,7 +36,7 @@
               <th><b>Accept</b></th>
             </tr>
             
-            {% for invite in invitesReceived %}
+            {% for invite in invites_received %}
             {% if invite.isAccepted %}
             <tr >
             {% elif invite.isDeclined %}
@@ -86,7 +86,7 @@
       <div class="panel-body">
     
         <table class="table table-striped table-hover" style="width: 95%;">
-        {% if not invitesSent %}
+        {% if not invites_sent %}
         <tr>
           <h5>
             <p>You have not invited someone to a group yet.</p> 
@@ -100,7 +100,7 @@
             <th><b>Status</b></th>
           </tr>
           
-        {% for invite in invitesSent %}
+        {% for invite in invites_sent %}
           <tr >
       
       <!--   		<td>

@@ -24,7 +24,7 @@ urlpatterns = [
   url(r'^group/', include('groupaccount.urls')),
   url(r'^accounts/register/', NewRegistrationView.as_view(form_class=RegistrationFormUniqueEmail), name='registration_register'), # include before the simple.urls to override register url
 
-#   url(r'^accounts/reset/$', 'userprofile.views.password_reset_custom', name='password_reset'),
+#  url(r'^accounts/reset/$', 'userprofile.views.password_reset_custom', name='password_reset'),
   url(r'^accounts/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
       'userprofile.views.password_reset_confirm_custom', name='password_reset_confirm'),
 

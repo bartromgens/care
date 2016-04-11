@@ -26,13 +26,13 @@ class BaseView(TemplateView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated():
-            userProfile = UserProfile.objects.get(user=self.request.user)
-            invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            invites = GroupAccountInvite.objects.filter(invitee=user_profile, isAccepted=False, isDeclined=False)
             context['user'] = self.request.user
-            context['userprofile'] = userProfile
+            context['userprofile'] = user_profile
             context['hasInvites'] = invites.exists()
             context['nInvites'] = invites.count()
-            context['displayname'] = userProfile.displayname
+            context['displayname'] = user_profile.displayname
             context['activeMenu'] = self.get_active_menu()
             context['isLoggedin'] = True
         return context
@@ -58,30 +58,30 @@ class HomeView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        userProfile = self.get_userprofile()
+        user_profile = self.get_userprofile()
 
-        group_accounts = userProfile.group_accounts.all()
+        group_accounts = user_profile.group_accounts.all()
         friends = UserProfile.objects.filter(group_accounts__in=group_accounts).distinct()
 
-        transactionsAllSorted = Transaction.get_transactions_sorted_by_last_modified(userProfile.id)
-        transactionsRealAllSorted = TransactionReal.get_transactions_real_sorted_by_last_modified(userProfile.id)
+        transactions_all_sorted = Transaction.get_transactions_sorted_by_last_modified(user_profile.id)
+        transactionsreal_all_sorted = TransactionReal.get_transactions_real_sorted_by_last_modified(user_profile.id)
 
         for group_account in group_accounts:
-            group_account = GroupAccount.add_groupaccount_info(group_account, userProfile)
+            GroupAccount.add_groupaccount_info(group_account, user_profile)
 
         my_total_balance_float = 0.0
         for group_account in group_accounts:
-            my_total_balance_float += group_account.myBalanceFloat
+            my_total_balance_float += group_account.my_balance_float
 
         my_total_balance_str = '%.2f' % my_total_balance_float
-        context['myTotalBalance'] = my_total_balance_str
-        context['myTotalBalanceFloat'] = my_total_balance_float
+        context['my_total_balance'] = my_total_balance_str
+        context['my_total_balance_float'] = my_total_balance_float
 #     invitesAllSorted = GroupAccountInvite.get_invites_sorted_by_date(userProfile)
-        slowLastN = 5
+        slowlastn = 5
 #     context['invitesAll'] = invitesAllSorted[0:slowLastN]
         context['friends'] = friends
-        context['transactionsAll'] = transactionsAllSorted[0:slowLastN]
-        context['transactionsRealAll'] = transactionsRealAllSorted[0:slowLastN]
+        context['transactions_all'] = transactions_all_sorted[0:slowlastn]
+        context['transactionsreal_all'] = transactionsreal_all_sorted[0:slowlastn]
         context['groups'] = group_accounts
         context['homesection'] = True
         return context

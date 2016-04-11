@@ -8,7 +8,7 @@ class GroupSetting(models.Model):
     notification_lower_limit_interval = models.ForeignKey('userprofile.NotificationInterval', null=True) # the balance notification interval in days
     
     def __str__(self):
-        return 'id: ' + str(self.id) + ', limit: ' + str(self.notification_lower_limit) + ', interval: ' + str(self.notification_lower_limit_interval.name) 
+        return 'id: ' + str(self.id) + ', limit: ' + str(self.notification_lower_limit)
 
 
 class GroupAccount(models.Model):
@@ -24,15 +24,15 @@ class GroupAccount(models.Model):
         from userprofile.models import UserProfile
 
         group_balance = 0.0
-        group_account.userProfiles = UserProfile.objects.filter(group_accounts=group_account)
-        for userProfile in group_account.userProfiles:
-            userProfile.balanceFloat = UserProfile.get_balance(group_account.id, userProfile.id)
-            userProfile.balance = '%.2f' % userProfile.balanceFloat
-            group_balance += userProfile.balanceFloat
-        group_account.groupBalance = '%.2f' % group_balance
-        group_account.groupBalanceFloat = '%.3g' % group_balance
-        group_account.balanceVerified = bool(abs(group_balance) < 1e-9)
-        group_account.myBalanceFloat = UserProfile.get_balance(group_account.id, my_user_profile.id)
-        group_account.myBalance = '%.2f' % group_account.myBalanceFloat
+        group_account.user_profiles = UserProfile.objects.filter(group_accounts=group_account)
+        for user_profile in group_account.user_profiles:
+            user_profile.balance_float = UserProfile.get_balance(group_account.id, user_profile.id)
+            user_profile.balance = '%.2f' % user_profile.balance_float
+            group_balance += user_profile.balance_float
+        group_account.group_balance = '%.2f' % group_balance
+        group_account.group_balance_float = '%.3g' % group_balance
+        group_account.balance_verified = bool(abs(group_balance) < 1e-9)
+        group_account.my_balance_float = UserProfile.get_balance(group_account.id, my_user_profile.id)
+        group_account.my_balance = '%.2f' % group_account.my_balance_float
         return group_account
     

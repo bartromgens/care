@@ -26,7 +26,8 @@ def send_transaction_histories(inteval_name):
     for userprofile in userprofiles:
         logger.info(userprofile.displayname)
         userprofile.send_transaction_history()
-        
+
+
 def send_low_balance_reminders(inteval_name):
     interval = NotificationInterval.objects.get(name=inteval_name)
     settings = GroupSetting.objects.all().filter(notification_lower_limit_interval=interval)

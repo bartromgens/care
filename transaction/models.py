@@ -28,16 +28,16 @@ class Transaction(models.Model):
     def get_buyer_transactions(buyer_id):
         transactions = Transaction.objects.filter(buyer__id=buyer_id).order_by("-date")
         for transaction in transactions:
-            transaction.amountPerPerson = '%.2f' % float(transaction.amount)
-            transaction.amountPerPersonFloat = float(transaction.amount)
+            transaction.amount_per_person = '%.2f' % float(transaction.amount)
+            transaction.amount_per_person_float = float(transaction.amount)
         return transactions
 
     @staticmethod
     def get_consumer_transactions(consumer_id):
         transactions = Transaction.objects.filter(consumers__id=consumer_id).order_by("-date")
         for transaction in transactions:
-            transaction.amountPerPerson = '%.2f' % (-1*float(transaction.amount)/transaction.consumers.count())
-            transaction.amountPerPersonFloat = (-1*float(transaction.amount)/transaction.consumers.count())
+            transaction.amount_per_person = '%.2f' % (-1*float(transaction.amount)/transaction.consumers.count())
+            transaction.amount_per_person_float = (-1*float(transaction.amount)/transaction.consumers.count())
         return transactions
 
     @staticmethod
@@ -75,16 +75,16 @@ class TransactionReal(models.Model):
     def get_transactions_real_sent(sender_id):
         transactions = TransactionReal.objects.filter(sender__id=sender_id).order_by("-date")
         for transaction in transactions:
-            transaction.amountPerPerson = '%.2f' % transaction.amount
-            transaction.amountPerPersonFloat = float(transaction.amount)
+            transaction.amount_per_person = '%.2f' % transaction.amount
+            transaction.amount_per_person_float = float(transaction.amount)
         return transactions
 
     @staticmethod
     def get_transactions_real_received(receiver_id):
         transactions = TransactionReal.objects.filter(receiver__id=receiver_id).order_by("-date")
         for transaction in transactions:
-            transaction.amountPerPerson = '%.2f' % transaction.amount
-            transaction.amountPerPersonFloat = float(transaction.amount)
+            transaction.amount_per_person = '%.2f' % transaction.amount
+            transaction.amount_per_person_float = float(transaction.amount)
         return transactions
 
     @staticmethod

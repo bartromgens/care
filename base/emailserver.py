@@ -1,16 +1,14 @@
-from base import settings
-
+import os
+import threading
+import logging
 from smtplib import SMTP
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-import threading
+from base import settings
 
-import os
 module_dir = os.path.dirname(__file__)  # get current directory
-
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -41,6 +39,7 @@ class EmailThread(threading.Thread):
         server.sendmail(self.email_from, self.email_to, msg.as_string())
         server.quit()
         logger.info("finished sending mail")
+
 
 def send_html_mail(email_to, email_from, subject, message):
     EmailThread(email_to, email_from, subject, message).start()
@@ -128,4 +127,3 @@ def send_low_balance_reminder(user, group):
     message = message.replace('{% lower_limit %}', str(group.settings.notification_lower_limit))
 
     send_html_mail(email_to, email_from, subject, message)
-    

@@ -15,10 +15,10 @@
               <td style="padding-left:1em; width:8em;" align="right">  {{ transaction.receiver }}</td>   
 
               <td style="padding-left:0em; width:25%;" align="right"> 
-              {% if transaction.amountPerPersonFloat <= 0.0 %}
-                <b>&#8364<font class="text-warning">{{ transaction.amountPerPerson }}</font></b>
+              {% if transaction.amount_per_person_float <= 0.0 %}
+                <b>&#8364<font class="text-warning">{{ transaction.amount_per_person }}</font></b>
               {% else %}
-                <b>&#8364<font class="text-info">{{ transaction.amountPerPerson }}</font></b>
+                <b>&#8364<font class="text-info">{{ transaction.amount_per_person }}</font></b>
               {% endif %}
               </td>
               

@@ -12,23 +12,23 @@
                 <b>{{ group.name }}</b>
               </td>
               <td style="padding-left:1em; width:8em;" align="right">
-                {% if group.myBalance < -100.0 %}
-                  &#8364<font class="text-danger"><b>{{ group.myBalance }}
-                {% elif group.myBalanceFloat < 0.0 %}
-                  &#8364<font class="text-warning"><b>{{ group.myBalance }}
-                {% elif group.myBalanceFloat > 100.0 %}
-                  &#8364<font class="text-success"><b>{{ group.myBalance }}
-                {% elif group.myBalanceFloat > -0.001 %}
-                  &#8364<font class="text-info"><b>{{ group.myBalance }}
+                {% if group.my_balance < -100.0 %}
+                  &#8364<font class="text-danger"><b>{{ group.my_balance }}
+                {% elif group.my_balance_float < 0.0 %}
+                  &#8364<font class="text-warning"><b>{{ group.my_balance }}
+                {% elif group.my_balance_float > 100.0 %}
+                  &#8364<font class="text-success"><b>{{ group.my_balance }}
+                {% elif group.my_balance_float > -0.001 %}
+                  &#8364<font class="text-info"><b>{{ group.my_balance }}
                 {% endif %}
                 </b></font>
               </td>
              
               <td style="padding-left:1em; width:1em;" align="right">        
-                {% if group.balanceVerified %}
+                {% if group.balance_verified %}
                 <div><font class="text-success">{% bootstrap_icon "ok-circle" %}</font></div>
                 {% else %}
-                <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.groupBalanceFloat }}</b></div>
+                <div style="color:red"> {% bootstrap_icon "warning-sign" %} <b> error: {{ group.group_balance_float }}</b></div>
                 {% endif %}
               </td>
              
@@ -44,7 +44,7 @@
       
         <div class="col-sm-12">
           <table style="width:100%;"> 
-            {% for member in group.userProfiles %}  
+            {% for member in group.user_profiles %}
             <tr> 
               {% ifequal member.user user %}
                 <td ><b>{{ member.displayname }}</td>
@@ -52,13 +52,13 @@
                 <td > {{ member.displayname }}</b></td>
               {% endifequal %}
                 <td align="right">
-                {% if member.balanceFloat < -100.0 %}
+                {% if member.balance_float < -100.0 %}
                   <div>&#8364<font class="text-danger"><b>{{member.balance}}</b></font></div>
-                {% elif member.balanceFloat < 0.0 %}
+                {% elif member.balance_float < 0.0 %}
                   <div>&#8364<font class="text-warning"><b>{{member.balance}}</b></font></div>
-                {% elif member.balanceFloat > 100.0 %}
+                {% elif member.balance_float > 100.0 %}
                   <div>&#8364<font class="text-success"><b>{{member.balance}}</b></font></div>
-                {% elif member.balanceFloat > -0.001 %}
+                {% elif member.balance_float > -0.001 %}
                   <div>&#8364<font class="text-info"><b>{{member.balance}}</b></font></div>
                 {% endif %}
                 </td>

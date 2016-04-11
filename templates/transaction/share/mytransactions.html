@@ -24,7 +24,7 @@
 
 <div align="center"><h4>Shares</h4></div>
 
-{% if transactionsAll %}
+{% if transactions_all %}
 
 
 {% if not userprofile.showTableView %}
@@ -33,13 +33,13 @@
     <div class="col-sm-6 col-sm-offset-3" align="center">
         {% with "accordiontransactionreal" as parentId %}
         <div class="panel-group" id="{{ parentId }}">
-            {% for transaction in transactionsAll %}
+            {% for transaction in transactions_all %}
             {% include "transaction/share/transactionpanel.html" %}
             {% endfor %}
         </div>
         {% endwith %}
 
-        {% bootstrap_paginate transactionsAll %}
+        {% bootstrap_paginate transactions_all %}
 
     </div>
 </div>
@@ -65,14 +65,14 @@
       </tr>
     </thead>
 
-    {% for transaction in transactionsAll %}
+    {% for transaction in transactions_all %}
     <tr>
 
       <td align="right">
-        {% if transaction.amountPerPersonFloat <= 0.0 %}
-          <b>&#8364<font class="text-warning" >{{ transaction.amountPerPerson }}</font></b>
+        {% if transaction.amount_per_person_float <= 0.0 %}
+          <b>&#8364<font class="text-warning" >{{ transaction.amount_per_person }}</font></b>
         {% else %}
-          <b>&#8364<font class="text-info" >{{ transaction.amountPerPerson }}</font></b>
+          <b>&#8364<font class="text-info" >{{ transaction.amount_per_person }}</font></b>
         {% endif %}
       </td>
 
@@ -108,7 +108,7 @@
   	{% endfor %}
   	</table>
 
-        {% bootstrap_paginate transactionsAll %}
+        {% bootstrap_paginate transactions_all %}
 
   </div>
 </div>

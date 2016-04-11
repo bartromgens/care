@@ -8,7 +8,7 @@ class GroupAccountAdmin(admin.ModelAdmin):
         (None, {'fields': ['name']}),
         (None, {'fields': ['settings']}),
     ]
-    list_display = ('id', 'name', 'number', 'settings')
+    list_display = ('id', 'name', 'number')
 
 
 class GroupSettingAdmin(admin.ModelAdmin):

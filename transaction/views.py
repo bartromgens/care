@@ -40,7 +40,7 @@ class MyTransactionView(BaseView):
             transactions_all_sorted = paginator.page(1)
         except EmptyPage:
             transactions_all_sorted = paginator.page(paginator.num_pages)
-        context['transactionsAll'] = transactions_all_sorted
+        context['transactions_all'] = transactions_all_sorted
         return context
 
 
@@ -148,7 +148,7 @@ class MyRealTransactionView(BaseView):
         user_profile.get_show_table(self.kwargs['tableView'])
         context = super().get_context_data(**kwargs)
         transactions_real_all_sorted = TransactionReal.get_transactions_real_sorted_by_last_modified(user_profile.id)
-        context['transactionsRealAll'] = transactions_real_all_sorted
+        context['transactionsreal_all'] = transactions_real_all_sorted
         return context
 
 
@@ -200,7 +200,7 @@ class NewRealTransactionView(FormView, BaseView):
         logger.debug('form_invalid()')
         group_account = form.cleaned_data['group_account']
         super().form_invalid(form)
-        return HttpResponseRedirect( '/transactions/real/new/' + str(group_account.id))
+        return HttpResponseRedirect('/transactions/real/new/' + str(group_account.id))
 
     def get_context_data(self, **kwargs):
         logger.debug('NewRealTransactionView::get_context_data() - group_account_id: ' + str(self.get_groupaccount_id()))
