@@ -20,11 +20,9 @@ class MyGroupAccountInvitesView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        userProfile = self.get_userprofile()
-        invites_sent = GroupAccountInvite.get_invites_sent(userProfile).order_by('-createdDateAndTime')
-        invites_received = GroupAccountInvite.get_invites_received(userProfile).order_by('-createdDateAndTime')
-#    invites = list(chain(invites_sent, invites_received))
-
+        user_profile = self.get_userprofile()
+        invites_sent = GroupAccountInvite.get_invites_sent(user_profile).order_by('-createdDateAndTime')
+        invites_received = GroupAccountInvite.get_invites_received(user_profile).order_by('-createdDateAndTime')
         context['invites_sent'] = invites_sent
         context['invites_received'] = invites_received
         return context
@@ -35,15 +33,13 @@ class AcceptInviteView(MyGroupAccountInvitesView):
     context_object_name = "my invites"
 
     def get_context_data(self, **kwargs):
-        user = self.request.user
-        logger.warning("accepted " + self.kwargs['inviteId'])
         invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
         # make sure accepter is the invitee
-        if invite.invitee.user == user:
-            group_account = GroupAccount.objects.get(id=invite.group_account.id)
+        if invite.invitee.user == self.request.user:
             invite.isAccepted = True
             invite.isDeclined = False
             user_profile = self.get_userprofile()
+            group_account = GroupAccount.objects.get(id=invite.group_account.id)
             user_profile.group_accounts.add(group_account)
             user_profile.save()
             invite.save()
@@ -60,11 +56,11 @@ class DeclineInviteView(MyGroupAccountInvitesView):
     def get_context_data(self, **kwargs):
         invite = GroupAccountInvite.objects.get(id=self.kwargs['inviteId'])
         user = self.request.user
-        userProfile = UserProfile.objects.get(user=user)
+        user_profile = UserProfile.objects.get(user=user)
 
         # make sure the decliner is the invitee
         if invite.invitee.user == user:
-            if userProfile.group_accounts.filter(id=invite.group_account.id):
+            if user_profile.group_accounts.filter(id=invite.group_account.id):
                 logger.warning( 'Group is already accepted. Groups cannot be removed.' )
                 invite.isAccepted = False
                 invite.isDeclined = True
@@ -72,9 +68,9 @@ class DeclineInviteView(MyGroupAccountInvitesView):
                 logger.debug( 'Group is declined.' )
                 invite.isDeclined = True
                 group_account = GroupAccount.objects.get(id=invite.group_account.id)
-                userProfile = UserProfile.objects.get(user=user)
-                userProfile.group_accounts.remove(group_account)
-                userProfile.save()
+                user_profile = UserProfile.objects.get(user=user)
+                user_profile.group_accounts.remove(group_account)
+                user_profile.save()
             invite.save()
 
         context = super().get_context_data(**kwargs)
@@ -91,25 +87,13 @@ class NewInviteView(FormView, BaseView):
         return 'invites'
 
     def get_form(self, form_class=NewInviteForm):
-        userProfileToInvite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
-        form = NewInviteForm(self.request.user, userProfileToInvite, **self.get_form_kwargs())
+        user_profile_to_invite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
+        form = NewInviteForm(self.request.user, user_profile_to_invite, **self.get_form_kwargs())
         return form
 
     def form_valid(self, form):
-        logger.debug('NewInviteView::form_valid()')
         context = super().form_valid(form)
         invite = form.save()
         emailserver.send_invite_email(self.request.user.username, invite.invitee.user.username, invite.group_account.name, invite.invitee.user.email)
         return context
 
-    def form_invalid(self, form):
-        logger.debug('NewInviteView::form_invalid()')
-        context = super().form_invalid(form)
-        return context
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        userProfileToInvite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
-        form = NewInviteForm(self.request.user, userProfileToInvite, **self.get_form_kwargs())
-        context['form'] = form
-        return context
