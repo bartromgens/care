@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'care.groupaccount',
     'care.transaction',
     'care.groupaccountinvite',
+    # 'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
