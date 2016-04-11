@@ -42,7 +42,7 @@ class SearchUserProfileView(BaseView, FormView):
         users = User.objects.filter(username__icontains=username)
         userprofiles = UserProfile.objects.filter(Q(user=users) | Q(displayname__icontains=username) | Q(firstname__icontains=username) | Q(lastname__icontains=username))
         context = super().get_context_data()
-        context['hasSearched'] = True
+        context['has_searched'] = True
         context['searchresults'] = userprofiles
         return self.render_to_response(context)
 
