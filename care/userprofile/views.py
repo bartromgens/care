@@ -2,7 +2,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 from django.views.generic.edit import FormView
-from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.views import password_reset_confirm
@@ -20,19 +19,6 @@ class EditUserProfileView(BaseView, FormView):
     def get_form(self, form_class=EditUserProfileForm):
         return EditUserProfileForm(self.request.user, instance=UserProfile.objects.get(user=self.request.user), **self.get_form_kwargs())
 
-    def form_valid(self, form):
-        logger.debug('EditUserProfileView')
-        super().form_valid(form)
-        form.save()
-        return HttpResponseRedirect('/')
-
-    def get_context_data(self, **kwargs):
-        logger.debug('EditUserProfileView')
-        context = super().get_context_data(**kwargs)
-        form = EditUserProfileForm(self.request.user, instance=UserProfile.objects.get(user=self.request.user), **self.get_form_kwargs())
-        context['form'] = form
-        return context
-
 
 class SuccessEditUserProfileView(BaseView):
     template_name = "userprofile/editsuccess.html"
@@ -49,27 +35,16 @@ class SearchUserProfileView(BaseView, FormView):
     success_url = '/userprofile/search'
 
     def get_form(self, form_class=SearchUserProfileForm):
-        return SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
+        return SearchUserProfileForm(**self.get_form_kwargs())
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
         users = User.objects.filter(username__icontains=username)
         userprofiles = UserProfile.objects.filter(Q(user=users) | Q(displayname__icontains=username) | Q(firstname__icontains=username) | Q(lastname__icontains=username))
-        for user in userprofiles:
-            logger.debug(str(user.displayname))
-
         context = super().get_context_data()
-        form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
-        context['form'] = form
         context['hasSearched'] = True
         context['searchresults'] = userprofiles
         return self.render_to_response(context)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
-        context['form'] = form
-        return context
 
 
 class SendMyTransactionHistory(BaseView):
@@ -79,7 +54,7 @@ class SendMyTransactionHistory(BaseView):
         context = super().get_context_data(**kwargs)
         userprofile = UserProfile.objects.get(user=self.request.user)
         force_send = True
-        userprofile.send_transaction_history(force_send);
+        userprofile.send_transaction_history(force_send)
         return context
 
 

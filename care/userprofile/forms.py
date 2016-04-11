@@ -32,6 +32,6 @@ class EditUserProfileForm(forms.ModelForm):
 
 class SearchUserProfileForm(forms.Form):
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'] = forms.CharField(min_length=3, max_length=100, label='Name or part of name', required=True)
