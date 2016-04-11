@@ -73,9 +73,9 @@ class NewTransactionForm(TransactionForm):
 
 
 class EditTransactionForm(TransactionForm):
-    def __init__(self, transaction_id, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        transaction = Transaction.objects.get(id=transaction_id)
+        transaction = self.instance
 
         self.fields['consumers'] = forms.ModelMultipleChoiceField(
             widget=forms.CheckboxSelectMultiple(),
@@ -147,7 +147,7 @@ class NewRealTransactionForm(forms.ModelForm):
 
 
 class EditRealTransactionForm(forms.ModelForm):
-    def __init__(self, transaction_id, user, *args, **kwargs):
+    def __init__(self, transaction_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         transaction = TransactionReal.objects.get(id=transaction_id)

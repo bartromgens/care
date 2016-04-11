@@ -89,6 +89,7 @@ class NewTransactionView(FormView, BaseView):
         return HttpResponseRedirect('/transactions/share/0')
 
     def form_invalid(self, form):
+        # Updates the Buyer dropdown in case the Group has changed
         group_account = form.cleaned_data['group_account']
         if int(group_account.id) != int(self.get_groupaccount_id()):
             return HttpResponseRedirect('/transactions/share/new/' + str(group_account.id))
@@ -97,10 +98,7 @@ class NewTransactionView(FormView, BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         if self.get_groupaccount_id():
-            form = NewTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
-            context['form'] = form
             context['nogroup'] = False
         else:
             context['nogroup'] = True
@@ -116,9 +114,8 @@ class EditTransactionView(FormView, BaseView):
         return 'shares'
 
     def get_form(self, form_class=EditTransactionForm):
-        pk = self.kwargs['pk']
-        transaction = Transaction.objects.get(pk=pk)
-        return EditTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())
+        transaction = Transaction.objects.get(pk=self.kwargs['pk'])
+        return EditTransactionForm(instance=transaction, **self.get_form_kwargs())
 
     def form_valid(self, form):
         super().form_valid(form)
@@ -128,13 +125,6 @@ class EditTransactionView(FormView, BaseView):
         transaction = Transaction.objects.get(pk=self.kwargs['pk'])
         Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
         return HttpResponseRedirect('/transactions/share/0')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        transaction = Transaction.objects.get(pk=self.kwargs['pk'])
-        form = EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
-        context['form'] = form
-        return context
 
 
 class MyRealTransactionView(BaseView):
@@ -186,11 +176,9 @@ class NewRealTransactionView(FormView, BaseView):
                 return 0
 
     def get_form(self, form_class=NewRealTransactionForm):
-        logger.debug('get_form()')
         return NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        logger.debug('form_valid()')
         super().form_valid(form)
         form.save()
         transaction = TransactionReal.objects.get(pk=form.instance.id)
@@ -198,18 +186,13 @@ class NewRealTransactionView(FormView, BaseView):
         return HttpResponseRedirect('/')
 
     def form_invalid(self, form):
-        logger.debug('form_invalid()')
         group_account = form.cleaned_data['group_account']
         super().form_invalid(form)
         return HttpResponseRedirect('/transactions/real/new/' + str(group_account.id))
 
     def get_context_data(self, **kwargs):
-        logger.debug('NewRealTransactionView::get_context_data() - group_account_id: ' + str(self.get_groupaccount_id()))
         context = super().get_context_data(**kwargs)
-
         if self.get_groupaccount_id():
-            form = NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
-            context['form'] = form
             context['nogroup'] = False
         else:
             context['nogroup'] = True
@@ -227,24 +210,17 @@ class EditRealTransactionView(FormView, BaseView):
     def get_form(self, form_class=EditRealTransactionForm):
         pk = self.kwargs['pk']
         transaction = TransactionReal.objects.get(pk=pk)
-        return EditRealTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())
+        form = {}
+        # prevent users that are not part of the transaction to view the form
+        if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
+            form = EditRealTransactionForm(pk, instance=transaction, **self.get_form_kwargs())
+        return form
 
     def form_valid(self, form):
-        logger.debug('EditRealTransactionView::form_valid()')
         super().form_valid(form)
         transactionreal = TransactionReal.objects.get(pk=self.kwargs['pk'])
+        # prevent users that are not part of the transaction to edit the transaction
         if self.request.user == transactionreal.sender.user or self.request.user == transactionreal.receiver.user:
             form.save()
             Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transactionreal)
         return HttpResponseRedirect('/transactions/real/0')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
-
-        if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:
-            form = EditRealTransactionForm(self.kwargs['pk'], self.request.user,
-                                           instance=transaction, **self.get_form_kwargs())
-            context['form'] = form
-
-        return context
