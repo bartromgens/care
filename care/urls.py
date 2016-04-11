@@ -26,7 +26,7 @@ urlpatterns = [
 
 #  url(r'^accounts/reset/$', 'userprofile.views.password_reset_custom', name='password_reset'),
   url(r'^accounts/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-      'userprofile.views.password_reset_confirm_custom', name='password_reset_confirm'),
+      'care.userprofile.views.password_reset_confirm_custom', name='password_reset_confirm'),
 
   url(r'^accounts/', include('registration.backends.simple.urls')),  # the django-registration module
 ]
