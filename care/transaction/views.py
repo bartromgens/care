@@ -32,7 +32,7 @@ class MyTransactionView(BaseView):
         userprofile.get_show_table(self.kwargs['tableView'])
         context = super().get_context_data(**kwargs)
         transactions_all_sorted = Transaction.get_transactions_sorted_by_last_modified(userprofile.id)
-        paginator = Paginator(transactions_all_sorted, 50)
+        paginator = Paginator(transactions_all_sorted, 25)
 
         page = self.request.GET.get('page')
         try:
