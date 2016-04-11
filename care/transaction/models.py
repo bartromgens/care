@@ -63,7 +63,6 @@ class TransactionReal(models.Model):
     date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
 
     def get_datetime_last_modified(self):
-        from care.transaction.models import Modification
         modifications = Modification.objects.filter(transaction_real=self)
         if modifications.exists():
             modification = modifications.latest('date')
