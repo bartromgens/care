@@ -23,7 +23,7 @@ class MyGroupAccountInvitesView(BaseView):
         return len(invite)
 
     def get_context_data(self, **kwargs):
-        context = super(MyGroupAccountInvitesView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         userProfile = self.get_userprofile()
         invitesSent = GroupAccountInvite.get_invites_sent(userProfile).order_by('-createdDateAndTime')
         invitesReceived = GroupAccountInvite.get_invites_received(userProfile).order_by('-createdDateAndTime')
@@ -52,7 +52,7 @@ class AcceptInviteView(MyGroupAccountInvitesView):
             userProfile.save()
             invite.save()
 
-        context = super(AcceptInviteView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['groupssection'] = True
         return context
 
@@ -81,7 +81,7 @@ class DeclineInviteView(MyGroupAccountInvitesView):
                 userProfile.save()
             invite.save()
 
-        context = super(DeclineInviteView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['groupssection'] = True
         return context
 
@@ -101,18 +101,18 @@ class NewInviteView(FormView, BaseView):
 
     def form_valid(self, form):
         logger.debug('NewInviteView::form_valid()')
-        context = super(NewInviteView, self).form_valid(form)
+        context = super().form_valid(form)
         invite = form.save()
         emailserver.send_invite_email(self.request.user.username, invite.invitee.user.username, invite.group_account.name, invite.invitee.user.email)
         return context
 
     def form_invalid(self, form):
         logger.debug('NewInviteView::form_invalid()')
-        context = super(NewInviteView, self).form_invalid(form)
+        context = super().form_invalid(form)
         return context
 
     def get_context_data(self, **kwargs):
-        context = super(NewInviteView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         userProfileToInvite = UserProfile.objects.get(id=self.kwargs['userProfileId'])
         form = NewInviteForm(self.request.user, userProfileToInvite, **self.get_form_kwargs())
         context['form'] = form

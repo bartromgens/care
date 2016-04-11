@@ -29,7 +29,7 @@ class MyTransactionView(BaseView):
     def get_context_data(self, **kwargs):
         userprofile = UserProfile.objects.get(user=self.request.user)
         userprofile.get_show_table(self.kwargs['tableView'])
-        context = super(MyTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         transactions_all_sorted = Transaction.get_transactions_sorted_by_last_modified(userprofile.id)
         paginator = Paginator(transactions_all_sorted, 50)
 
@@ -79,7 +79,7 @@ class NewTransactionView(FormView, BaseView):
         return NewTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        super(NewTransactionView, self).form_valid(form)
+        super().form_valid(form)
         if form.cleaned_data['is_shared_by_all']:
             form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         form.save()
@@ -92,10 +92,10 @@ class NewTransactionView(FormView, BaseView):
         if int(group_account.id) != int(self.get_groupaccount_id()):
             return HttpResponseRedirect('/transactions/share/new/' + str(group_account.id))
         else:
-            return super(NewTransactionView, self).form_invalid(form)
+            return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(NewTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         if self.get_groupaccount_id():
             form = NewTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
@@ -120,7 +120,7 @@ class EditTransactionView(FormView, BaseView):
         return EditTransactionForm(pk, self.request.user, instance=transaction, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        super(EditTransactionView, self).form_valid(form)
+        super().form_valid(form)
         if form.cleaned_data['is_shared_by_all']:
             form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         form.save()
@@ -129,7 +129,7 @@ class EditTransactionView(FormView, BaseView):
         return HttpResponseRedirect('/transactions/share/0')
 
     def get_context_data(self, **kwargs):
-        context = super(EditTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         transaction = Transaction.objects.get(pk=self.kwargs['pk'])
         form = EditTransactionForm(self.kwargs['pk'], self.request.user, instance=transaction, **self.get_form_kwargs())
         context['form'] = form
@@ -146,7 +146,7 @@ class MyRealTransactionView(BaseView):
     def get_context_data(self, **kwargs):
         user_profile = UserProfile.objects.get(user=self.request.user)
         user_profile.get_show_table(self.kwargs['tableView'])
-        context = super(MyRealTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         transactions_real_all_sorted = TransactionReal.get_transactions_real_sorted_by_last_modified(user_profile.id)
         context['transactionsRealAll'] = transactions_real_all_sorted
         return context
@@ -157,7 +157,7 @@ class SelectGroupRealTransactionView(BaseView):
     context_object_name = "select transaction group"
 
     def get_context_data(self, **kwargs):
-        context = super(SelectGroupRealTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         user_profile = UserProfile.objects.get(user=self.request.user)
         groupaccounts = user_profile.group_accounts.all
         context['groupaccounts'] = groupaccounts
@@ -190,7 +190,7 @@ class NewRealTransactionView(FormView, BaseView):
 
     def form_valid(self, form):
         logger.debug('form_valid()')
-        super(NewRealTransactionView, self).form_valid(form)
+        super().form_valid(form)
         form.save()
         transaction = TransactionReal.objects.get(pk=form.instance.id)
         Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transaction)
@@ -199,12 +199,12 @@ class NewRealTransactionView(FormView, BaseView):
     def form_invalid(self, form):
         logger.debug('form_invalid()')
         group_account = form.cleaned_data['group_account']
-        super(NewRealTransactionView, self).form_invalid(form)
+        super().form_invalid(form)
         return HttpResponseRedirect( '/transactions/real/new/' + str(group_account.id))
 
     def get_context_data(self, **kwargs):
         logger.debug('NewRealTransactionView::get_context_data() - group_account_id: ' + str(self.get_groupaccount_id()))
-        context = super(NewRealTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         if self.get_groupaccount_id():
             form = NewRealTransactionForm(self.get_groupaccount_id(), self.request.user, **self.get_form_kwargs())
@@ -230,7 +230,7 @@ class EditRealTransactionView(FormView, BaseView):
 
     def form_valid(self, form):
         logger.debug('EditRealTransactionView::form_valid()')
-        super(EditRealTransactionView, self).form_valid(form)
+        super().form_valid(form)
         transactionreal = TransactionReal.objects.get(pk=self.kwargs['pk'])
         if self.request.user == transactionreal.sender.user or self.request.user == transactionreal.receiver.user:
             form.save()
@@ -238,7 +238,7 @@ class EditRealTransactionView(FormView, BaseView):
         return HttpResponseRedirect('/transactions/real/0')
 
     def get_context_data(self, **kwargs):
-        context = super(EditRealTransactionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         transaction = TransactionReal.objects.get(pk=self.kwargs['pk'])
 
         if self.request.user == transaction.sender.user or self.request.user == transaction.receiver.user:

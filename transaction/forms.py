@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class NewTransactionForm(forms.ModelForm):
     ## TODO BR: remove duplicate code with EditTransactionForm
     def __init__(self, group_account_id, user, *args, **kwargs):
-        super(NewTransactionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields['is_shared_by_all'] = forms.BooleanField(label='Shared by all', required=False)
         self.fields['consumers'] = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(), 
@@ -58,7 +58,7 @@ class NewTransactionForm(forms.ModelForm):
 
 class EditTransactionForm(forms.ModelForm):
     def __init__(self, transaction_id, user, *args, **kwargs):
-        super(EditTransactionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         transaction = Transaction.objects.get(id=transaction_id)
 
@@ -92,7 +92,7 @@ class EditTransactionForm(forms.ModelForm):
 
 class NewRealTransactionForm(forms.ModelForm):
     def __init__(self, group_account_id, user, *args, **kwargs):
-        super(NewRealTransactionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         #  self.fields['sender'] = forms.ModelChoiceField(queryset=UserProfile.objects.get(user=user),
         #  widget = forms.HiddenInput, empty_label=None, label='From')
@@ -119,7 +119,7 @@ class NewRealTransactionForm(forms.ModelForm):
 
 class EditRealTransactionForm(forms.ModelForm):
     def __init__(self, transaction_id, user, *args, **kwargs):
-        super(EditRealTransactionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         transaction = TransactionReal.objects.get(id=transaction_id)
 

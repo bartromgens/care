@@ -24,7 +24,7 @@ class BaseView(TemplateView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(BaseView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated():
             userProfile = UserProfile.objects.get(user=self.request.user)
             invites = GroupAccountInvite.objects.filter(invitee=userProfile, isAccepted=False, isDeclined=False)
@@ -57,7 +57,7 @@ class HomeView(BaseView):
         return transactions
 
     def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         userProfile = self.get_userprofile()
 
         group_accounts = userProfile.group_accounts.all()
@@ -96,7 +96,7 @@ class AboutView(BaseView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(AboutView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['aboutsection'] = True
         return context
 
@@ -107,6 +107,6 @@ class HelpView(BaseView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(HelpView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['helpsection'] = True
         return context

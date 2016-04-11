@@ -26,7 +26,7 @@ class MyGroupAccountsView(BaseView):
         for group_account in group_accounts:
             group_account = GroupAccount.add_groupaccount_info(group_account, userProfile)
 
-        context = super(MyGroupAccountsView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['groups'] = group_accounts
         context['groupssection'] = True
         return context
@@ -44,7 +44,7 @@ class NewGroupAccountView(FormView, BaseView):
         return 'group'
 
     def form_valid(self, form):
-        super(NewGroupAccountView, self).form_valid(form)
+        super().form_valid(form)
         group_account = form.save()
         
         settings = GroupSetting()
@@ -62,8 +62,7 @@ class NewGroupAccountView(FormView, BaseView):
         return HttpResponseRedirect('/group/new/success/')
 
     def get_context_data(self, **kwargs):
-        context = super(NewGroupAccountView, self).get_context_data(**kwargs)
-
+        context = super().get_context_data(**kwargs)
         form = NewGroupAccountForm(**self.get_form_kwargs())
         context['form'] = form
         return context
@@ -87,7 +86,7 @@ class EditGroupSettingView(BaseView, FormView):
 
     def form_valid(self, form):
         userprofile = UserProfile.objects.get(user=self.request.user)
-        super(EditGroupSettingView, self).form_valid(form)
+        super().form_valid(form)
         form.save()
         show_tablestr = "1"
         if userprofile.showTableView:
@@ -95,7 +94,7 @@ class EditGroupSettingView(BaseView, FormView):
         return HttpResponseRedirect( '/group/my/' + show_tablestr)
 
     def get_context_data(self, **kwargs):
-        context = super(EditGroupSettingView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         group_settings = GroupSetting.objects.get(id=self.kwargs['groupsettings_id'])
         
         # makes sure the user is allowed to edit these group settings

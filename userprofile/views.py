@@ -22,13 +22,13 @@ class EditUserProfileView(BaseView, FormView):
 
     def form_valid(self, form):
         logger.debug('EditUserProfileView')
-        super(EditUserProfileView, self).form_valid(form)
+        super().form_valid(form)
         form.save()
         return HttpResponseRedirect('/')
 
     def get_context_data(self, **kwargs):
         logger.debug('EditUserProfileView')
-        context = super(EditUserProfileView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         form = EditUserProfileForm(self.request.user, instance=UserProfile.objects.get(user=self.request.user), **self.get_form_kwargs())
         context['form'] = form
         return context
@@ -38,9 +38,8 @@ class SuccessEditUserProfileView(BaseView):
     template_name = "userprofile/editsuccess.html"
 
     def get_context_data(self, **kwargs):
-        context = super(SuccessEditUserProfileView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['transactionssection'] = True
-
         return context
 
 
@@ -59,7 +58,7 @@ class SearchUserProfileView(BaseView, FormView):
         for user in userprofiles:
             logger.debug(str(user.displayname))
 
-        context = super(SearchUserProfileView, self).get_context_data()
+        context = super().get_context_data()
         form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
         context['form'] = form
         context['hasSearched'] = True
@@ -67,10 +66,9 @@ class SearchUserProfileView(BaseView, FormView):
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
-        context = super(SearchUserProfileView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         form = SearchUserProfileForm(self.request.user, **self.get_form_kwargs())
         context['form'] = form
-
         return context
 
 
@@ -78,7 +76,7 @@ class SendMyTransactionHistory(BaseView):
     template_name = "userprofile/historysentsuccess.html"
 
     def get_context_data(self, **kwargs):
-        context = super(SendMyTransactionHistory, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         userprofile = UserProfile.objects.get(user=self.request.user)
         force_send = True
         userprofile.send_transaction_history(force_send);

@@ -11,7 +11,7 @@ from userprofile.models import UserProfile
 class NewInviteForm(forms.ModelForm):
     def __init__(self, user, user_profile_to_invite, *args, **kwargs):
         user_profile = UserProfile.objects.get(user=user);
-        super(NewInviteForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields['inviter'] = forms.ModelChoiceField(UserProfile.objects.filter(id=user_profile.id), empty_label=None, label='You')
         self.fields['inviter'].initial = user_profile
