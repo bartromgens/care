@@ -23,10 +23,8 @@ class MyGroupAccountsView(BaseView):
         user_profile = UserProfile.objects.get(user=user)
         user_profile.get_show_table(self.kwargs['tableView'])
         group_accounts = user_profile.group_accounts.all()
-
         for group_account in group_accounts:
-            group_account = GroupAccount.add_groupaccount_info(group_account, user_profile)
-
+            GroupAccount.add_groupaccount_info(group_account, user_profile)
         context = super().get_context_data(**kwargs)
         context['groups'] = group_accounts
         context['groupssection'] = True
@@ -56,17 +54,11 @@ class NewGroupAccountView(FormView, BaseView):
         group_account.settings = settings
         group_account.save()
         
-        userProfile = UserProfile.objects.get(user=self.request.user)
-        userProfile.group_accounts.add(group_account)
-        userProfile.save()
+        user_profile = UserProfile.objects.get(user=self.request.user)
+        user_profile.group_accounts.add(group_account)
+        user_profile.save()
 
         return HttpResponseRedirect('/group/new/success/')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = NewGroupAccountForm(**self.get_form_kwargs())
-        context['form'] = form
-        return context
 
 
 class SucessNewGroupAccountView(BaseView):
