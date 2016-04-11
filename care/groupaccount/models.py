@@ -24,7 +24,7 @@ class GroupAccount(models.Model):
         from care.userprofile.models import UserProfile
 
         group_balance = 0.0
-        group_account.user_profiles = UserProfile.objects.filter(group_accounts=group_account)
+        group_account.user_profiles = UserProfile.objects.filter(group_accounts=group_account).prefetch_related('user')
         for user_profile in group_account.user_profiles:
             user_profile.balance_float = UserProfile.get_balance(group_account.id, user_profile.id)
             user_profile.balance = '%.2f' % user_profile.balance_float

@@ -69,10 +69,26 @@ class UserProfile(models.Model):
     def get_balance(group_account_id, user_profile_id):
         from care.transaction.models import Transaction
         from care.transaction.models import TransactionReal
-        buyer_transactions = Transaction.objects.filter(group_account__id=group_account_id, buyer__id=user_profile_id)
-        consumer_transactions = Transaction.objects.filter(group_account__id=group_account_id, consumers__id=user_profile_id)
-        sender_real_transactions = TransactionReal.objects.filter(group_account__id=group_account_id, sender__id=user_profile_id)
-        receiver_real_transactions = TransactionReal.objects.filter(group_account_id=group_account_id, receiver__id=user_profile_id)
+
+        buyer_transactions = Transaction.objects.filter(
+            group_account__id=group_account_id,
+            buyer__id=user_profile_id
+        ).prefetch_related('modification', 'consumers')
+
+        consumer_transactions = Transaction.objects.filter(
+            group_account__id=group_account_id,
+            consumers__id=user_profile_id
+        ).prefetch_related('modification', 'consumers')
+
+        sender_real_transactions = TransactionReal.objects.filter(
+            group_account__id=group_account_id,
+            sender__id=user_profile_id
+        ).prefetch_related('modification')
+
+        receiver_real_transactions = TransactionReal.objects.filter(
+            group_account_id=group_account_id,
+            receiver__id=user_profile_id
+        ).prefetch_related('modification')
 
         total_bought = 0.0
         total_consumed = 0.0

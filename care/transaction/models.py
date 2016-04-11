@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from itertools import chain
 
@@ -5,6 +6,8 @@ from django.db import models
 
 from care.groupaccount.models import GroupAccount
 from care.userprofile.models import UserProfile
+
+logger = logging.getLogger(__name__)
 
 
 class Transaction(models.Model):
@@ -26,7 +29,7 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_buyer_transactions(buyer_id):
-        transactions = Transaction.objects.filter(buyer__id=buyer_id).order_by("-date")
+        transactions = Transaction.objects.filter(buyer__id=buyer_id).order_by("-date").prefetch_related('modification', 'consumers', 'group_account')
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % float(transaction.amount)
             transaction.amount_per_person_float = float(transaction.amount)
@@ -34,7 +37,7 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_consumer_transactions(consumer_id):
-        transactions = Transaction.objects.filter(consumers__id=consumer_id).order_by("-date")
+        transactions = Transaction.objects.filter(consumers__id=consumer_id).order_by("-date").prefetch_related('modification', 'consumers', 'group_account')
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % (-1*float(transaction.amount)/transaction.consumers.count())
             transaction.amount_per_person_float = (-1*float(transaction.amount)/transaction.consumers.count())
@@ -72,7 +75,7 @@ class TransactionReal(models.Model):
 
     @staticmethod
     def get_transactions_real_sent(sender_id):
-        transactions = TransactionReal.objects.filter(sender__id=sender_id).order_by("-date")
+        transactions = TransactionReal.objects.filter(sender__id=sender_id).prefetch_related('modification', 'sender', 'receiver').order_by("-date")
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % transaction.amount
             transaction.amount_per_person_float = float(transaction.amount)
@@ -80,7 +83,7 @@ class TransactionReal(models.Model):
 
     @staticmethod
     def get_transactions_real_received(receiver_id):
-        transactions = TransactionReal.objects.filter(receiver__id=receiver_id).order_by("-date")
+        transactions = TransactionReal.objects.filter(receiver__id=receiver_id).prefetch_related('modification', 'sender', 'receiver').order_by("-date")
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % transaction.amount
             transaction.amount_per_person_float = float(transaction.amount)
@@ -103,5 +106,5 @@ class TransactionReal(models.Model):
 class Modification(models.Model):
     user = models.ForeignKey(UserProfile, blank=True)
     date = models.DateTimeField(default=datetime.now, editable=True, blank=True)
-    transaction = models.ForeignKey(Transaction, blank=True, null=True)
-    transaction_real = models.ForeignKey(TransactionReal, blank=True, null=True)
+    transaction = models.ForeignKey(Transaction, blank=True, null=True, related_name='modification')
+    transaction_real = models.ForeignKey(TransactionReal, blank=True, null=True, related_name='modification')
