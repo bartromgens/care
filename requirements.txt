@@ -4,3 +4,4 @@ git+https://github.com/jorgenpt/django-bootstrap3-datetimepicker.git
 django-cron==0.4.6
 django-registration-redux==1.4
 django-dual-authentication==1.0.0
+django-bootstrap-pagination==1.5.1
