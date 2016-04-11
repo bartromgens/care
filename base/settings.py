@@ -95,6 +95,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
+    "django.core.context_processors.request",
 )
 
 INSTALLED_APPS = (
@@ -108,10 +109,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'bootstrap3', #bootstrap3 see: https://github.com/dyve/django-bootstrap3
-    'bootstrap3_datetime', # https://github.com/nkunihiko/django-bootstrap3-datetimepicker
-    'registration', #django-registration-redux, https://github.com/macropin/django-registration
-    'django_cron', # for job scheduling (for example, sending mails)
+    'bootstrap3',  #bootstrap3 see: https://github.com/dyve/django-bootstrap3
+    'bootstrap3_datetime',  # https://github.com/nkunihiko/django-bootstrap3-datetimepicker
+    'bootstrap_pagination',
+    'registration',  #django-registration-redux, https://github.com/macropin/django-registration
+    'django_cron',  # for job scheduling (for example, sending mails)
     'base',
     'userprofile',
     'groupaccount',
