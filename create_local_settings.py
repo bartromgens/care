@@ -7,8 +7,8 @@ import shutil
 import string
 import tempfile
 
-LOCAL_SETTINGS_PATH = './base/local_settings.py'
-LOCAL_SETTINGS_EXAMPLE_PATH = './base/local_settings_example.py'
+LOCAL_SETTINGS_PATH = './care/local_settings.py'
+LOCAL_SETTINGS_EXAMPLE_PATH = './care/local_settings_example.py'
 
 
 def main():
