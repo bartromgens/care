@@ -116,6 +116,9 @@ class StatisticsGroupAccount(BaseView):
         group_account_id = kwargs['groupaccount_id']
         group = GroupAccount.objects.get(id=group_account_id)
         group_users = UserProfile.objects.filter(group_accounts=group.id)
+        if UserProfile.objects.get(user=self.request.user) not in group_users:
+            return context
+
         for user in group_users:
             user.balance = UserProfile.get_balance(group.id, user.id)
             user.n_trans_buyer = Transaction.objects.filter(buyer=user).count()
