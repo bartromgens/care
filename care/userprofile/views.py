@@ -1,10 +1,11 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
-from django.db.models import Q
 from django.contrib.auth.views import password_reset_confirm
+from django.db.models import Q
+from django.shortcuts import HttpResponseRedirect
+from django.views.generic.edit import FormView
 
 from care.base.views import BaseView
 from care.userprofile.forms import EditUserProfileForm, SearchUserProfileForm
@@ -18,6 +19,11 @@ class EditUserProfileView(BaseView, FormView):
 
     def get_form(self, form_class=EditUserProfileForm):
         return EditUserProfileForm(self.request.user, instance=UserProfile.objects.get(user=self.request.user), **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        super().form_valid(form)
+        form.save()
+        return HttpResponseRedirect('/userprofile/edit/success/')
 
 
 class SuccessEditUserProfileView(BaseView):
