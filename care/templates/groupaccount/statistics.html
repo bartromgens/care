@@ -1,0 +1,49 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+<div class="container">
+
+    <h3 align="center">{{ group_name }} Statistics</h3>
+    <br/>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" align="center">
+            <table class="table table-hover table-bordered sortable">
+                <thead>
+                     <tr class="active">
+                         <th><b>Who</b></th>
+                         <th><b>Balance</b></th>
+                         <th><b># Shares</b></th>
+                         <th><b>Shared</b></th>
+                         <th><b># Shared with</b></th>
+                         <th><b>Shared with</b></th>
+                      </tr>
+                </thead>
+
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.displayname }}</td>
+                    <td>&#8364 {{ user.balance | floatformat:0 }}</td>
+                    <td>{{ user.n_trans_buyer }} </td>
+                    <td>&#8364 {{ user.total_bought | floatformat:0 }}</td>
+                    <td>{{ user.n_trans_consumer }}</td>
+                    <td>&#8364 {{ user.total_consumed | floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td><b>Totaal</b></td>
+                    <td>&#8364 {{ total_balance | floatformat:0 }}</td>
+                    <td>{{ total_shares }}</td>
+                    <td>&#8364 {{ total_bought | floatformat:0 }}</td>
+                    <td>{{ total_shared_with }}</td>
+                    <td>&#8364 {{ total_consumed | floatformat:0 }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

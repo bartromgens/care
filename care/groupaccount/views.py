@@ -1,11 +1,13 @@
 import logging
 
+from django.db.models import Sum
 from django.shortcuts import HttpResponseRedirect
 from django.views.generic.edit import FormView
 
 from care.base.views import BaseView
 from care.groupaccount.forms import NewGroupAccountForm, EditGroupSettingForm
 from care.groupaccount.models import GroupAccount, GroupSetting
+from care.transaction.models import Transaction
 from care.userprofile.models import UserProfile
 
 logger = logging.getLogger(__name__)
@@ -101,4 +103,51 @@ class EditGroupSettingView(BaseView, FormView):
         context['form'] = form
         context['group_name'] = group.name
         return context
-    
+
+
+class StatisticsGroupAccount(BaseView):
+    template_name = "groupaccount/statistics.html"
+
+    def get_active_menu(self):
+        return 'accounts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        group_account_id = kwargs['groupaccount_id']
+        group = GroupAccount.objects.get(id=group_account_id)
+        group_users = UserProfile.objects.filter(group_accounts=group.id)
+        if UserProfile.objects.get(user=self.request.user) not in group_users:
+            return context
+
+        for user in group_users:
+            user.balance = UserProfile.get_balance(group.id, user.id)
+            user.n_trans_buyer = Transaction.objects.filter(buyer=user, group_account=group).count()
+            user.n_trans_consumer = Transaction.objects.filter(consumers=user, group_account=group).count()
+            amount__sum = Transaction.get_buyer_transactions(user.id).filter(group_account=group).aggregate(Sum('amount'))['amount__sum']
+            if amount__sum:
+                user.total_bought = float(amount__sum)
+            consumer_transactions = Transaction.get_consumer_transactions(user.id).filter(group_account=group)
+            total_consumed = 0.0
+            for transaction in consumer_transactions:
+                total_consumed += transaction.amount_per_person
+            user.total_consumed = total_consumed
+
+        total_consumed = 0.0
+        total_bought = 0.0
+        total_balance = 0.0
+        total_shares = 0
+        total_shared_with = 0
+        for user in group_users:
+            total_consumed += user.total_consumed
+            total_bought += user.total_bought
+            total_balance += user.balance
+            total_shares += user.n_trans_buyer
+            total_shared_with += user.n_trans_consumer
+        context['users'] = group_users
+        context['group_name'] = group.name
+        context['total_consumed'] = total_consumed
+        context['total_bought'] = total_bought
+        context['total_balance'] = total_balance
+        context['total_shares'] = total_shares
+        context['total_shared_with'] = total_shared_with
+        return context
