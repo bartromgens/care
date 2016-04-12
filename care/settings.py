@@ -88,6 +88,8 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'care/templates'),
 )
 
+
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
@@ -189,7 +191,7 @@ LOGIN_REDIRECT_URL = '/'
 # }
 
 BOOTSTRAP3 = {
-    'jquery_url': 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js',  #'//code.jquery.com/jquery.min.js',
+    'jquery_url': 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js',  # check bootstrap-datetime after upgrading
     'base_url': STATIC_URL + 'bootstrap/',  #'//netdna.bootstrapcdn.com/bootstrap/3.0.3/'
     'css_url': STATIC_URL + 'bootstrap/css/bootstrap_flatly.min.css',
     'theme_url': None,
