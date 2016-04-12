@@ -126,6 +126,8 @@ class StatisticsGroupAccount(BaseView):
             amount__sum = Transaction.get_buyer_transactions(user.id).filter(group_account=group).aggregate(Sum('amount'))['amount__sum']
             if amount__sum:
                 user.total_bought = float(amount__sum)
+            else:
+                user.total_bought = 0.0
             consumer_transactions = Transaction.get_consumer_transactions(user.id).filter(group_account=group)
             total_consumed = 0.0
             for transaction in consumer_transactions:
