@@ -1,11 +1,13 @@
 import logging
 
+from django.db.models import Sum
 from django.shortcuts import HttpResponseRedirect
 from django.views.generic.edit import FormView
 
 from care.base.views import BaseView
 from care.groupaccount.forms import NewGroupAccountForm, EditGroupSettingForm
 from care.groupaccount.models import GroupAccount, GroupSetting
+from care.transaction.models import Transaction
 from care.userprofile.models import UserProfile
 
 logger = logging.getLogger(__name__)
@@ -101,4 +103,35 @@ class EditGroupSettingView(BaseView, FormView):
         context['form'] = form
         context['group_name'] = group.name
         return context
-    
+
+
+class StatisticsGroupAccount(BaseView):
+    template_name = "groupaccount/statistics.html"
+
+    def get_active_menu(self):
+        return 'accounts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        group_account_id = kwargs['groupaccount_id']
+        group = GroupAccount.objects.get(id=group_account_id)
+        group_users = UserProfile.objects.filter(group_accounts=group.id)
+        for user in group_users:
+            user.balance = UserProfile.get_balance(group.id, user.id)
+            user.n_trans_buyer = Transaction.objects.filter(buyer=user).count()
+            user.n_trans_consumer = Transaction.objects.filter(consumers=user).count()
+            amount__sum = Transaction.get_buyer_transactions(user.id).aggregate(Sum('amount'))['amount__sum']
+            if amount__sum:
+                user.total_bought = float(amount__sum)
+            consumer_transactions = Transaction.get_consumer_transactions(user.id)
+            total_consumed = 0.0
+            for transaction in consumer_transactions:
+                total_consumed += float(transaction.amount/transaction.consumers.count())
+            user.total_consumed = total_consumed
+        turnover = 0
+        for user in group_users:
+            turnover += user.total_bought
+        context['users'] = group_users
+        context['group_name'] = group.name
+        context['turnover'] = turnover
+        return context
