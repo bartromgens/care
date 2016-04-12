@@ -3,6 +3,7 @@ from datetime import datetime
 from itertools import chain
 
 from django.db import models
+from django.db.models import Count, F, ExpressionWrapper
 
 from care.groupaccount.models import GroupAccount
 from care.userprofile.models import UserProfile
@@ -29,7 +30,7 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_buyer_transactions(buyer_id):
-        transactions = Transaction.objects.filter(buyer__id=buyer_id).order_by("-date").prefetch_related('modification', 'consumers', 'group_account')
+        transactions = Transaction.objects.filter(buyer__id=buyer_id).order_by("-date").prefetch_related('consumers', 'group_account')
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % float(transaction.amount)
             transaction.amount_per_person_float = float(transaction.amount)
@@ -37,10 +38,13 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_consumer_transactions(consumer_id):
-        transactions = Transaction.objects.filter(consumers__id=consumer_id).order_by("-date").prefetch_related('modification', 'consumers', 'group_account')
+        transactions = Transaction.objects.annotate(
+            amount_per_person=ExpressionWrapper(F('amount') / (1.0*Count('consumers')), output_field=models.FloatField())
+        ).filter(consumers__id=consumer_id).order_by("-date")
+
         for transaction in transactions:
-            transaction.amount_per_person = '%.2f' % (-1*float(transaction.amount)/transaction.consumers.count())
-            transaction.amount_per_person_float = (-1*float(transaction.amount)/transaction.consumers.count())
+            transaction.amount_per_person_float = float((-1*transaction.amount_per_person))
+            transaction.amount_per_person = '%.2f' % float(-1 * transaction.amount_per_person)
         return transactions
 
     @staticmethod

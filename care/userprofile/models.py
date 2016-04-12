@@ -2,9 +2,10 @@ from datetime import date, timedelta
 import logging
 logger = logging.getLogger(__name__)
 
-from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.db import models
+from django.db.models import Sum, Count, F, ExpressionWrapper
 
 from registration.signals import user_registered
 
@@ -75,7 +76,9 @@ class UserProfile(models.Model):
             buyer__id=user_profile_id
         )
 
-        consumer_transactions = Transaction.objects.filter(
+        consumer_transactions = Transaction.objects.annotate(
+            amount_per_person=ExpressionWrapper(F('amount') / (1.0 * Count('consumers')), output_field=models.FloatField())
+        ).filter(
             group_account__id=group_account_id,
             consumers__id=user_profile_id
         ).prefetch_related('consumers')
@@ -95,7 +98,6 @@ class UserProfile(models.Model):
         total_sent = 0.0
         total_received = 0.0
 
-        from django.db.models import Sum
         amount__sum = buyer_transactions.aggregate(Sum('amount'))['amount__sum']
         if amount__sum:
             total_bought = float(amount__sum)
@@ -108,9 +110,9 @@ class UserProfile(models.Model):
         if amount__sum:
             total_received = float(amount__sum)
 
-        for transaction in consumer_transactions:
-            n_consumers = transaction.consumers.count()
-            total_consumed += float(transaction.amount) / n_consumers
+        amount_per_person__sum = consumer_transactions.aggregate(Sum('amount_per_person'))['amount_per_person__sum']
+        if amount_per_person__sum:
+            total_consumed = float(amount_per_person__sum)
 
         balance = (total_bought + total_sent - total_consumed - total_received)
         return balance
