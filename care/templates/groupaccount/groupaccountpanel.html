@@ -1,5 +1,5 @@
  {% load bootstrap3 %}
-  
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="panel-title">
@@ -68,10 +68,6 @@
             <tr><td><br></td></tr>
 
             <tr>
-              <td><a href="/group/statistics/{{ group.id }}"><i class="glyphicon glyphicon-stats"></i> </a></td>
-            </tr>
-
-            <tr>
               <td align="left">
                   <div><font class="text">{{group.settings.notification_lower_limit_interval}} email if balance below </b> </font></div>
               </td>
@@ -83,6 +79,7 @@
               </td>
             </tr>
           </table>
+          <a href="/group/statistics/{{ group.id }}"><i class="glyphicon glyphicon-stats"></i> <b>statistics</b></a>
         </div>
       </div>
     </div>
