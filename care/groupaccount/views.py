@@ -121,20 +121,33 @@ class StatisticsGroupAccount(BaseView):
 
         for user in group_users:
             user.balance = UserProfile.get_balance(group.id, user.id)
-            user.n_trans_buyer = Transaction.objects.filter(buyer=user).count()
-            user.n_trans_consumer = Transaction.objects.filter(consumers=user).count()
-            amount__sum = Transaction.get_buyer_transactions(user.id).aggregate(Sum('amount'))['amount__sum']
+            user.n_trans_buyer = Transaction.objects.filter(buyer=user, group_account=group).count()
+            user.n_trans_consumer = Transaction.objects.filter(consumers=user, group_account=group).count()
+            amount__sum = Transaction.get_buyer_transactions(user.id).filter(group_account=group).aggregate(Sum('amount'))['amount__sum']
             if amount__sum:
                 user.total_bought = float(amount__sum)
-            consumer_transactions = Transaction.get_consumer_transactions(user.id)
+            consumer_transactions = Transaction.get_consumer_transactions(user.id).filter(group_account=group)
             total_consumed = 0.0
             for transaction in consumer_transactions:
-                total_consumed += float(transaction.amount/transaction.consumers.count())
+                total_consumed += transaction.amount_per_person
             user.total_consumed = total_consumed
-        turnover = 0
+
+        total_consumed = 0.0
+        total_bought = 0.0
+        total_balance = 0.0
+        total_shares = 0
+        total_shared_with = 0
         for user in group_users:
-            turnover += user.total_bought
+            total_consumed += user.total_consumed
+            total_bought += user.total_bought
+            total_balance += user.balance
+            total_shares += user.n_trans_buyer
+            total_shared_with += user.n_trans_consumer
         context['users'] = group_users
         context['group_name'] = group.name
-        context['turnover'] = turnover
+        context['total_consumed'] = total_consumed
+        context['total_bought'] = total_bought
+        context['total_balance'] = total_balance
+        context['total_shares'] = total_shares
+        context['total_shared_with'] = total_shared_with
         return context
