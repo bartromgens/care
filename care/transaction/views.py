@@ -147,7 +147,6 @@ class SelectGroupRealTransactionView(BaseView):
         user_profile = UserProfile.objects.get(user=self.request.user)
         groupaccounts = user_profile.group_accounts.all
         context['groupaccounts'] = groupaccounts
-        context['transactionssection'] = True
         return context
 
 
