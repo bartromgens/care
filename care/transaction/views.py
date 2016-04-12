@@ -22,11 +22,6 @@ class MyTransactionView(BaseView):
     def get_active_menu(self):
         return 'shares'
 
-    @staticmethod
-    def get_number_of_buyer_transactions(buyer_id):
-        transactions = Transaction.objects.filter(buyer__id=buyer_id)
-        return len(transactions)
-
     def get_context_data(self, **kwargs):
         userprofile = UserProfile.objects.get(user=self.request.user)
         userprofile.get_show_table(self.kwargs['tableView'])
