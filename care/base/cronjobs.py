@@ -95,8 +95,8 @@ class TestEmails(CronJobBase):
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'care.test2_emails'
-    logger.debug('testing email cronjob')
 
     def do(self):
+        logger.debug('testing email cronjob')
         send_low_balance_reminders("Weekly")
         send_transaction_histories("Monthly")
