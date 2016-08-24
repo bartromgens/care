@@ -69,6 +69,11 @@ Create a userprofile for the root user you just created,
 
 Webfaction (Django hosting)
 ------------
+##### Set project PYTHONPATH
+```bash
+$ PYTHONPATH=$HOME/webapps/<projectname>/lib/python3.4
+```
+
 ##### Install dependencies
 Install dependencies,
 ```bash
@@ -86,10 +91,10 @@ $ less ~/logs/user/error_care.log
 ```
 ##### Apache restart
 ```bash
-$ ~/webapps/care/apache2/bin/restart
+$ ~/webapps/<projectname>/apache2/bin/restart
 ```
 
 ##### Cronjob (python)
 ```
-*/05 * * * * cd /home/bartromgens/webapps/care/care/ && PYTHONPATH=$HOME/webapps/care/lib/python3.4 /usr/local/bin/python3.4 manage.py runcrons >> $HOME/logs/user/cron.log 2>&1
+*/05 * * * * cd /home/bartromgens/webapps/<projectname>/care/ && PYTHONPATH=$HOME/webapps/<projectname>/lib/python3.4 /usr/local/bin/python3.4 manage.py runcrons >> $HOME/logs/user/cron.log 2>&1
 ```
