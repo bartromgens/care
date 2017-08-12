@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
+from django.views.i18n import javascript_catalog
 
 from registration.forms import RegistrationFormUniqueEmail
 
@@ -11,6 +12,10 @@ import care.userprofile.views
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 admin.autodiscover()
+
+js_info_dict = {
+    'packages': ('recurrence', ),
+}
 
 urlpatterns = [
   url(r'^$', login_required(HomeView.as_view())),
@@ -30,4 +35,7 @@ urlpatterns = [
       care.userprofile.views.password_reset_confirm_custom, name='password_reset_confirm'),
 
   url(r'^accounts/', include('registration.backends.simple.urls')),  # the django-registration module
+
+  # Javascript i18n, as required by `django-recurrence`
+  url(r'^jsi18n/$', javascript_catalog, js_info_dict),
 ]

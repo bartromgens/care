@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'bootstrap_pagination',
     'registration',  #django-registration-redux, https://github.com/macropin/django-registration
     'django_cron',  # for job scheduling (for example, sending mails)
+    'recurrence',  # recurrent event field
     'care',
     'care.base',
     'care.userprofile',

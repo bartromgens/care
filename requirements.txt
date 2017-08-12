@@ -6,3 +6,4 @@ django-common-helpers==0.9.1
 django-cron==0.5.0
 django-dual-authentication==1.0.0
 django-registration-redux==1.7
+django-recurrence==1.4.1
