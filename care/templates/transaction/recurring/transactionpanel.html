@@ -1,0 +1,99 @@
+ {% load bootstrap3 %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <a data-toggle="collapse" data-parent="#{{ parentId }}" href="#collapsetransaction{{ forloop.counter }}">
+        <h5> 
+          <table style="width:100%;"> 
+            <tr> 
+              <td style="padding-left:0em; width:30%;"><b>{{ transaction.what }}</b></td>   
+              <td style="padding-left:2em; width:15em;" align="left">{{ transaction.buyer }}</td>   
+
+              <td style="padding-left:0.5em; width:5em;" align="right"> 
+              {% if transaction.amount_per_person_float <= 0.0 %}
+                <b>&#8364<font class="text-warning">{{ transaction.amount_per_person }}</font></b>
+              {% else %}
+                <b>&#8364<font class="text-info">{{ transaction.amount_per_person }}</font></b>
+              {% endif %}
+              </td>
+             
+            </tr>
+          </table>
+        </h5>
+      </a>
+    </div>
+  </div>
+  <div id="collapsetransaction{{ forloop.counter }}" class="panel-collapse collapse">
+    <div class="panel-body">
+      <div class="row">
+        
+        <div class="col-lg-12" align="center">
+          <h5>
+            {% if transaction.amount_per_person_float <= 0.0 %}
+              <b>&#8364<font class="text-warning" >{{ transaction.amount_per_person }}</font> / </b>
+            {% else %}
+              <b>&#8364<font class="text-info" >{{ transaction.amount_per_person }}</font> / </b>
+            {% endif %}
+
+            {% if transaction.amount <= 0.0 %}
+              <b>&#8364<font class="text-warning">{{ transaction.amount|floatformat:2 }}</font></b>
+            {% else %}
+              <b>&#8364<font class="text-info">{{ transaction.amount|floatformat:2 }}</font></b>
+            {% endif %}
+          </h5>
+        </div>
+        
+        <div class="col-lg-12" align="center">
+          <h5>
+          {% for consumer in transaction.consumers.all %}
+            {% ifequal consumer.displayname displayname %}<font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          </h5>
+        </div>
+       
+        <div class="col-lg-12" align="center">
+          <h>
+            {{ transaction.group_account }}
+          </h5>
+        </div>
+        
+        <div class="col-lg-12" align="center">
+          <h>
+            {{ transaction.comment }}
+          </h5>
+        </div>
+
+        <div class="col-lg-12" align="center">
+          <h5>
+            Next due on {{ transaction.next_due|date:"j M Y" }}
+          </h5>
+        </div>
+        
+        <div class="col-lg-12" align="center">
+          <h5>
+            Due {{ transaction.period_str }}
+          </h5>
+        </div>
+        
+        <div class="col-lg-12" align="center">
+          <h4><a href="/transactions/recurring/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></h4>
+        </div>
+        
+        <div class="col-lg-12" align="center">
+          <h5>
+          {% for modification in transaction.modifications.all %}
+              {% if forloop.first %}
+            <font size=2 class="text-info">Created: {{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
+              {% else %}
+            <font size=2 class="text-info">Modified: {{ modification.user.displayname }} ({{ modification.date|date:"j M Y" }})</font>
+              {% endif %}
+            <br>
+          {% endfor %}
+          </h5>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

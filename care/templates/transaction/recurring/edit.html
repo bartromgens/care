@@ -1,0 +1,74 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+{% block title %}Care{% endblock %}
+
+{% block content %}
+<center><h3>Edit recurrent share</h3></center>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="well well-md">
+       
+      <form action="" method="post">
+           
+      {% csrf_token %}
+      <div class="row">
+        
+        <div class="col-sm-6">
+          {% bootstrap_field form.group_account %}
+        </div>
+        
+        <div class="col-sm-6">
+          {% bootstrap_field form.buyer %}
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-4">
+          {% bootstrap_field form.amount %}
+        </div>
+        <div class="col-sm-8">
+          {% bootstrap_field form.what %}
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-7">
+          {% bootstrap_field form.comment %}
+        </div>
+        <div class="col-sm-5">
+          {% bootstrap_field form.date %}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          {% bootstrap_field form.every %}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          {% bootstrap_field form.is_shared_by_all %}
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-12">
+          {% bootstrap_field form.consumers %}
+        </div>
+      </div>
+      
+      {% buttons %}
+        <button type="submit" name="submit_button" class="btn btn-info">
+           Save
+        </button>
+      {% endbuttons %}
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %} 

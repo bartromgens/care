@@ -67,6 +67,14 @@
             <a href="/transactions/share/0">Shares</a>
           </li>
 
+          {% if activeMenu == "recurring" %}
+          <li class="active">
+          {% else %}
+          <li>
+          {% endif %}
+            <a href="/transactions/recurring/0">Recurrent</a>
+          </li>
+
           {% if activeMenu == "transactions" %}
           <li class="active">
           {% else %}
