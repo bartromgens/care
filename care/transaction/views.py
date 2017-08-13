@@ -6,9 +6,12 @@ from django.views.generic.edit import FormView
 
 from care.base.views import BaseView
 from care.transaction.models import Transaction
+from care.transaction.models import TransactionRecurring
 from care.transaction.models import TransactionReal
 from care.transaction.models import Modification
 from care.transaction.forms import NewTransactionForm, EditTransactionForm
+from care.transaction.forms \
+    import NewRecurringTransactionForm, EditRecurringTransactionForm
 from care.transaction.forms import NewRealTransactionForm, EditRealTransactionForm
 from care.userprofile.models import UserProfile
 
@@ -120,6 +123,125 @@ class EditTransactionView(FormView, BaseView):
         transaction = Transaction.objects.get(pk=self.kwargs['pk'])
         Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
         return HttpResponseRedirect('/transactions/share/0')
+
+
+class MyRecurringTransactionView(BaseView):
+    template_name = "transaction/recurring/mytransactions.html"
+    context_object_name = "my recurring transactions"
+
+    def get_active_menu(self):
+        return 'recurring'
+
+    def get_context_data(self, **kwargs):
+        userprofile = UserProfile.objects.get(user=self.request.user)
+        userprofile.get_show_table(self.kwargs['tableView'])
+        context = super().get_context_data(**kwargs)
+        transactions_all_sorted = \
+            TransactionRecurring.get_transactions_sorted_by_last_modified(userprofile.id)
+        paginator = Paginator(transactions_all_sorted, 25)
+
+        page = self.request.GET.get('page')
+        try:
+            transactions_all_sorted = paginator.page(page)
+        except PageNotAnInteger:
+            transactions_all_sorted = paginator.page(1)
+        except EmptyPage:
+            transactions_all_sorted = paginator.page(paginator.num_pages)
+        context['transactions_all'] = transactions_all_sorted
+        return context
+
+
+class SelectGroupRecurringTransactionView(BaseView):
+    template_name = "transaction/recurring/newselectgroup.html"
+    context_object_name = "select recurring transaction group"
+
+    def get_context_data(self, **kwargs):
+        context = super(SelectGroupRecurringTransactionView, self) \
+            .get_context_data(**kwargs)
+        user_profile = UserProfile.objects.get(user=self.request.user)
+        groupaccounts = user_profile.group_accounts.all
+        context['groupaccounts'] = groupaccounts
+        return context
+
+
+class NewRecurringTransactionView(FormView, BaseView):
+    template_name = 'transaction/recurring/new.html'
+    form_class = NewRecurringTransactionForm
+    success_url = '/transactions/recurring/new/success/'
+
+    def get_active_menu(self):
+        return 'recurring'
+
+    def get_groupaccount_id(self):
+        if 'group_account_id' in self.kwargs:
+            return self.kwargs['group_account_id']
+        else:
+            logger.debug(self.request.user.id)
+            user = UserProfile.objects.get(user=self.request.user)
+            if user.group_accounts.count():
+                return user.group_accounts.all()[0].id
+            else:
+                return 0
+
+    def get_form(self, form_class=NewRecurringTransactionForm):
+        return NewRecurringTransactionForm(self.get_groupaccount_id(),
+                                           self.request.user,
+                                           **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        super().form_valid(form)
+        if form.cleaned_data['is_shared_by_all']:
+            form.cleaned_data['consumers'] = UserProfile.objects.filter(
+                group_accounts=form.cleaned_data['group_account'])
+        form.save()
+        transaction = TransactionRecurring.objects.get(pk=form.instance.id)
+        Modification.objects.create(
+            user=UserProfile.objects.get(user=self.request.user),
+            transaction_recurring=transaction)
+        return HttpResponseRedirect('/transactions/recurring/0')
+
+    def form_invalid(self, form):
+        # Updates the Buyer dropdown in case the Group has changed
+        group_account = form.cleaned_data['group_account']
+        if int(group_account.id) != int(self.get_groupaccount_id()):
+            return HttpResponseRedirect(
+                '/transactions/recurring/new/' + str(group_account.id))
+        else:
+            return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.get_groupaccount_id():
+            context['nogroup'] = False
+        else:
+            context['nogroup'] = True
+        return context
+
+
+class EditRecurringTransactionView(FormView, BaseView):
+    template_name = 'transaction/recurring/edit.html'
+    form_class = EditRecurringTransactionForm
+    success_url = '/transactions/recurring/0'
+
+    def get_active_menu(self):
+        return 'recurring'
+
+    def get_form(self, form_class=EditRecurringTransactionForm):
+        transaction = TransactionRecurring.objects.get(pk=self.kwargs['pk'])
+        return EditRecurringTransactionForm(instance=transaction,
+                                            **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        super().form_valid(form)
+        if form.cleaned_data['is_shared_by_all']:
+            form.cleaned_data['consumers'] = UserProfile.objects.filter(
+                group_accounts=form.cleaned_data['group_account'])
+        form.save()
+        transaction = TransactionRecurring.objects.get(pk=self.kwargs['pk'])
+        Modification.objects.create(
+            user=UserProfile.objects.get(user=self.request.user),
+            transaction_recurring=transaction)
+        return HttpResponseRedirect('/transactions/recurring/0')
 
 
 class MyRealTransactionView(BaseView):

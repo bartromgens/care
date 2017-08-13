@@ -5,6 +5,7 @@ from django import forms
 from bootstrap3_datetime.widgets import DateTimePicker
 
 from care.transaction.models import Transaction
+from care.transaction.models import TransactionRecurring
 from care.transaction.models import TransactionReal
 from care.transaction.models import Modification
 from care.groupaccount.models import GroupAccount
@@ -102,6 +103,26 @@ class EditTransactionForm(TransactionForm):
         self.fields['group_account'].widget.attrs['readonly'] = True
 
 
+class NewRecurringTransactionForm(NewTransactionForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['date'].label = 'Starting on'
+
+    class Meta:
+        model = TransactionRecurring
+        exclude = ('last_occurrence', )
+
+
+class EditRecurringTransactionForm(EditTransactionForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['date'].label = 'Starting on'
+
+    class Meta:
+        model = TransactionRecurring
+        exclude = ('last_occurrence', )
+
+
 class NewRealTransactionForm(forms.ModelForm):
     def __init__(self, group_account_id, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -126,7 +147,7 @@ class NewRealTransactionForm(forms.ModelForm):
 
         self.fields['group_account'] = forms.ModelChoiceField(
             queryset=UserProfile.objects.get(user=user).group_accounts,
-            widget=forms.Select(attrs={"onChange":'form.submit()'}),
+            widget=forms.Select(attrs={"onChange": 'form.submit()'}),
             empty_label=None,
             label='Group'
         )
