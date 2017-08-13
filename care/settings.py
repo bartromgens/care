@@ -202,6 +202,7 @@ CRON_CLASSES = [
     'care.base.cronjobs.DailyEmails',
     'care.base.cronjobs.WeeklyEmails',
     'care.base.cronjobs.MonthlyEmails',
+    'care.base.cronjobs.CreateRecurrentShareOccurrence',
 #     'care.base.cronjobs.TestEmails',
     # ...
 ]
