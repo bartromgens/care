@@ -7,6 +7,7 @@ Created on Aug 25, 2014
 from care.settings import BASE_DIR
 from care.userprofile.models import UserProfile, NotificationInterval
 from care.groupaccount.models import GroupAccount, GroupSetting
+from care.transaction.models import Transaction, TransactionRecurring
 
 from care.base import emailserver
 
@@ -100,3 +101,18 @@ class TestEmails(CronJobBase):
         logger.debug('testing email cronjob')
         send_low_balance_reminders("Weekly")
         send_transaction_histories("Monthly")
+
+
+class CreateRecurrentShareOccurrence(CronJobBase):
+    RUN_EVERY_MINS = 2 * 60  # 2 hours
+
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    code = 'care.create_recurrent_share_occurrence'
+
+    def do(self):
+        allRecurringShares = TransactionRecurring.objects.filter(
+            date__lte=datetime.now(),
+            last_occurrence__lt=datetime.now())
+        for rShare in allRecurringShares:
+            if rShare.next_due <= datetime.now():
+                rShare.create_occurrence()

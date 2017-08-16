@@ -1,0 +1,86 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+{% block title %}Care{% endblock %}
+
+
+{% block content %}
+
+{% if nogroup %}
+<div class="container">
+  <h5>
+    <br>
+    <p>You cannot share anything yet because you are not part of a group.</p> 
+    <br>
+      Ask a friend to invite you or <a href="/group/new">create</a>  a new group. </h5>
+</div>
+{% else %}
+
+<center><h3>Recurrent share</h3></center>
+
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="well well-md">
+    
+      <form action="." method="post">
+      {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-6">
+            {% bootstrap_field form.group_account %}
+          </div>
+          <div class="col-sm-6">
+            {% bootstrap_field form.buyer %}
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-sm-4">
+            {% bootstrap_field form.amount %}
+          </div>
+          <div class="col-sm-8">
+            {% bootstrap_field form.what %}
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-sm-7">
+            {% bootstrap_field form.comment %}
+          </div>
+          <div class="col-sm-5">
+            {% bootstrap_field form.date %}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            {% bootstrap_field form.every %}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            {% bootstrap_field form.is_shared_by_all %}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            {% bootstrap_field form.consumers %}
+          </div>
+        </div>
+        
+        {% buttons %}
+          <button type="submit" name="submit_button" value="Share" class="btn btn-primary">
+             <font style="padding-right:0.5em;"> Share </font>{% bootstrap_icon "send" %}
+          </button>
+        {% endbuttons %}
+      </form>
+      
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %} 
+ 

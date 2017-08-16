@@ -1,0 +1,133 @@
+{% extends "base/base.html" %}
+
+{% load bootstrap3 %}
+{% load bootstrap_pagination %}
+
+{% block content %}
+
+<!-- navbar -->
+
+<div class="subnav subnav subnav-fixed-top">
+  <div class="container">
+    <div class="subnav">
+      <ul class="nav navbar-nav">
+        <li><a href="/transactions/recurring/new"><b class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.5em;">New recurrent share</font></b></a></li>
+        {% if userprofile.showTableView %}  
+        <li><a href="/transactions/recurring/1"><b class="text-info">{% bootstrap_icon "th-large" %}<font style="padding-left:0.5em;">Tiles</font></b></a></li>
+        {% else %}
+        <li><a href="/transactions/recurring/2"><b class="text-info">{% bootstrap_icon "list" %}<font style="padding-left:0.5em;">Table</font></b></a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div align="center"><h4>Recurrent shares</h4></div>
+
+{% if transactions_all %}
+
+
+{% if not userprofile.showTableView %}
+
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3" align="center">
+        {% with "accordiontransactionreal" as parentId %}
+        <div class="panel-group" id="{{ parentId }}">
+            {% for transaction in transactions_all %}
+            {% include "transaction/recurring/transactionpanel.html" %}
+            {% endfor %}
+        </div>
+        {% endwith %}
+
+        {% bootstrap_paginate transactions_all %}
+
+    </div>
+</div>
+
+{% endif %}
+
+
+{% if userprofile.showTableView %}
+<div class="row">
+  <div class="col-md-10 col-md-offset-1" align="center">
+    <table class="table table-hover table-bordered sortable">
+    <thead>
+      <tr class="active">
+        <th><b>&#8364</b></th>
+        <th><b>What</b></th>
+        <th><b>Cost</b></th>
+        <th><b>Who</b></th>
+        <th><b>Shared with</b></th>
+        <th><b>Group</b></th>
+        <th><b>Comment</b></th>
+        <th><b>Next due</b></th>
+        <th><b>Period</b></th>
+        <th><b>Edit</b></th>
+      </tr>
+    </thead>
+
+    {% for transaction in transactions_all %}
+    <tr>
+
+      <td align="right">
+        {% if transaction.amount_per_person_float <= 0.0 %}
+          <b>&#8364<font class="text-warning" >{{ transaction.amount_per_person }}</font></b>
+        {% else %}
+          <b>&#8364<font class="text-info" >{{ transaction.amount_per_person }}</font></b>
+        {% endif %}
+      </td>
+
+      <td>{{ transaction.what }}</td>
+
+      <td align="right">
+        &#8364<font class="text-info" >{{ transaction.amount|floatformat:2 }}</font>
+      </td>
+
+      <td>
+        {% ifequal transaction.buyer.displayname displayname %}
+        	{{ transaction.buyer }}
+        {% else %}
+        	{{ transaction.buyer }}
+        {% endifequal %}
+      </td>
+
+      <td>
+      {% for consumer in transaction.consumers.all %}
+            {% ifequal consumer.displayname displayname %}<font class="text-info">{{ consumer }}</font>{% else %}{{ consumer }}{% endifequal %}{% if not forloop.last %},{% endif %}
+      {% endfor %}
+      </td>
+
+      <td>{{ transaction.group_account }}</td>
+
+      <td>{{ transaction.comment }}</td>
+
+      <td data-value="{{ transaction.next_due|date:"Y-m-d H:i:s" }}">
+        {{ transaction.next_due|date:"Y-m-d" }}
+      </td>
+
+      <td>{{ transaction.period_str }}</td>
+
+      <td><a href="/transactions/recurring/edit/{{ transaction.id }}">{% bootstrap_icon "pencil" %}</a></td>
+
+    </tr>
+  	{% endfor %}
+  	</table>
+
+        {% bootstrap_paginate transactions_all %}
+
+  </div>
+</div>
+{% endif %}
+
+{% else %}
+<div class="container">
+  <h5>
+    <p>No recurrent share set up with you yet.</p>
+    <br>
+    Share by clicking <a href="/transactions/recurring/new"><b
+        class="text-info">{% bootstrap_icon "plus" %}<font style="padding-left:0.1em;">New recurrent share</font></b></a> in the menu.
+  </h5>
+</div>
+{% endif %}
+
+{% endblock %}
