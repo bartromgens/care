@@ -1,28 +1,34 @@
 from datetime import date, timedelta
 import logging
-logger = logging.getLogger(__name__)
+
 
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Sum, Count, F, ExpressionWrapper
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from registration.signals import user_registered
 
 from care.groupaccount.models import GroupAccount
 import care.base.emailserver as emailserver
 
+logger = logging.getLogger(__name__)
 
-def create_userprofile(sender, user, request, **kwargs):
+
+def create_userprofile(sender, instance, created, **kwargs):
+    if not created:
+        return
     logger.debug('signal create_userprofile()')
-    profile = UserProfile(user=user, displayname=user.username)
+    profile = UserProfile(user=instance, displayname=instance.username)
     if NotificationInterval.objects.get(name="Monthly"):
         profile.historyEmailInterval = NotificationInterval.objects.get(name="Monthly")
     profile.save()
-    emailserver.send_welcome_email(user.username, user.email)
+    emailserver.send_welcome_email(instance.username, instance.email)
 
-# create a new userprofile when a user registers
-user_registered.connect(create_userprofile)
+# create a new userprofile when a new user is created
+post_save.connect(create_userprofile, sender=User)
 
 
 class NotificationInterval(models.Model):
