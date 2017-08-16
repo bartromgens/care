@@ -7,7 +7,7 @@ Share expenses with friends in this Django and Bootstrap based web application.
 
 Features
 ------------------
-- Web interface for desktop, tablet and mobile
+- Responsive web interface
 - Share expenses between multiple friends
 - Register real transactions between friends
 - Keep track of your balance within a group
