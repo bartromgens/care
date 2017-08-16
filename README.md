@@ -62,8 +62,3 @@ Run test server,
 ```bash
 $ python manage.py runserver
 ```
-
-#### Create userprofile
-Create a userprofile for the root user you just created,
-- Visit `http://127.0.0.1:8000/admin` and login with the root account
-- Create a new userprofile and link it to the root user
