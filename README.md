@@ -20,8 +20,8 @@ Features
 - Group statistics
 
 ## Dependencies
-- Python 3.3+
-- Django 1.10
+- Python 3.4+
+- Django 1.11
 - see `requirements.txt`
 
 ## Installation
