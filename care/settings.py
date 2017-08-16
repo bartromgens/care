@@ -4,63 +4,45 @@
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-from care.local_settings import *
-
-MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(BASE_DIR, 'care.sqlite'),                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
-
-SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
-USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = False
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'care/static/'),
+INSTALLED_APPS = (
+    'bootstrap3',
+    'bootstrap3_datetime',
+    'bootstrap_pagination',
+    'registration',  #django-registration-redux
+    'django_cron',  # for job scheduling (for example, sending mails)
+    'recurrence',  # recurrent event field
+    'care',
+    'care.base',
+    'care.userprofile',
+    'care.groupaccount',
+    'care.transaction',
+    'care.groupaccountinvite',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # 'debug_toolbar',
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+MIDDLEWARE = [
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
-# List of callables that know how to import templates from various sources.
+ROOT_URLCONF = 'care.urls'
+
+# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = 'care.wsgi.application'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -82,50 +64,68 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-)
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'en-us'
 
-ROOT_URLCONF = 'care.urls'
+SITE_ID = 1
 
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'care.wsgi.application'
+# If you set this to False, Django will make some optimizations so as not
+# to load the internationalization machinery.
+USE_I18N = True
 
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-#     'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-    'bootstrap3',  #bootstrap3 see: https://github.com/dyve/django-bootstrap3
-    'bootstrap3_datetime',  # https://github.com/nkunihiko/django-bootstrap3-datetimepicker
-    'bootstrap_pagination',
-    'registration',  #django-registration-redux, https://github.com/macropin/django-registration
-    'django_cron',  # for job scheduling (for example, sending mails)
-    'recurrence',  # recurrent event field
-    'care',
-    'care.base',
-    'care.userprofile',
-    'care.groupaccount',
-    'care.transaction',
-    'care.groupaccountinvite',
-    # 'debug_toolbar',
-)
+# If you set this to False, Django will not format dates, numbers and
+# calendars according to the current locale.
+USE_L10N = True
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+# If you set this to False, Django will not use timezone-aware datetimes.
+USE_TZ = False
+
+
+#########
+# LOGIN #
+#########
+
+# redirect here when used is not logged in and logged in is required
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+
+##############################
+# django-dual-authentication #
+##############################
+
+# django-dual-authentication settings
+AUTHENTICATION_BACKENDS = ['django-dual-authentication.backends.DualAuthentication']
+# You can authenticate your users by 'username', 'email', 'both'. Default: 'both'.
+AUTHENTICATION_METHOD = 'both'
+
+##############################
+# django-cron #
+##############################
+
+CRON_CLASSES = [
+    'care.base.cronjobs.DailyBackup',
+    'care.base.cronjobs.DailyEmails',
+    'care.base.cronjobs.WeeklyEmails',
+    'care.base.cronjobs.MonthlyEmails',
+    'care.base.cronjobs.CreateRecurrentShareOccurrence',
+    # 'care.base.cronjobs.TestEmails',
+]
+
+##################
+# LOCAL SETTINGS #
+##################
+
+# Allow any settings to be defined in local_settings.py which should be
+# ignored in your version control system allowing for settings to be
+# defined per machine.
+from care.local_settings import *
+
+
+###########
+# LOGGING #
+###########
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -174,18 +174,10 @@ LOGGING = {
     },
 }
 
-# redirect here when used is not logged in and logged in is required
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
 
-#FORCE_SCRIPT_NAME = '/care'
-
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': 'unix:</home/bartromgens/memcached.sock>',
-#     }
-# }
+##############
+# Bootstrap3 #
+##############
 
 BOOTSTRAP3 = {
     'base_url': STATIC_URL + 'bootstrap/',  #'//netdna.bootstrapcdn.com/bootstrap/3.0.3/'
@@ -194,19 +186,3 @@ BOOTSTRAP3 = {
     'horizontal_label_class': 'col-md-2',
     'horizontal_field_class': 'col-md-4',
 }
-
-CRON_CLASSES = [
-    'care.base.cronjobs.DailyBackup',
-    'care.base.cronjobs.DailyEmails',
-    'care.base.cronjobs.WeeklyEmails',
-    'care.base.cronjobs.MonthlyEmails',
-    'care.base.cronjobs.CreateRecurrentShareOccurrence',
-#     'care.base.cronjobs.TestEmails',
-    # ...
-]
-
-
-# django-dual-authentication settings
-AUTHENTICATION_BACKENDS = ['django-dual-authentication.backends.DualAuthentication']
-# You can authenticate your users by 'username', 'email', 'both'. Default: 'both'.
-AUTHENTICATION_METHOD = 'both'
