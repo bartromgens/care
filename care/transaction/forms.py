@@ -59,7 +59,7 @@ class NewTransactionForm(TransactionForm):
             self.fields['group_account'].initial = GroupAccount.objects.get(id=group_account_id)
             
         self.fields['date'] = forms.DateTimeField(
-            widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}),
+            widget=DateTimePicker(options={"format": "YYYY-MM-DD"}),
             initial=datetime.now
         )
 
@@ -158,7 +158,7 @@ class NewRealTransactionForm(forms.ModelForm):
         #                                                               required=False,
         #                                                               widget=forms.MultipleHiddenInput())
         self.fields['date'] = forms.DateTimeField(
-            widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}),
+            widget=DateTimePicker(options={"format": "YYYY-MM-DD"}),
             initial=datetime.now
         )
 
@@ -193,7 +193,7 @@ class EditRealTransactionForm(forms.ModelForm):
                                                                       required=False,
                                                                       widget=forms.MultipleHiddenInput())
 
-        self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
+        self.fields['date'] = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD"}))
 
     class Meta:
         model = TransactionReal
