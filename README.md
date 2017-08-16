@@ -1,7 +1,7 @@
-Care 
-====
-#### Computer Automated Remote Exchange
+# care
 [![Build Status](https://travis-ci.org/bartromgens/care.svg?branch=master)](https://travis-ci.org/bartromgens/care) [![Dependency Status](https://gemnasium.com/badges/github.com/bartromgens/care.svg)](https://gemnasium.com/github.com/bartromgens/care) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bartromgens/care/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bartromgens/care/?branch=master)
+#### Computer Automated Remote Exchange
+
 
 Share expenses with friends in this Django and Bootstrap based web application.
 
@@ -16,15 +16,16 @@ Features
 - Periodic transaction history email
 - Notification when balance is too low
 - Modify shares and transactions
+- Recurring shares
+- Group statistics
 
-Dependencies
------------
+## Dependencies
 - Python 3.3+
 - Django 1.10
 - see `requirements.txt`
 
-Installation
-------------
+## Installation
+
 #### Create a virtualenv
 Create a virtual enviroment with Python 3,
 ```bash
@@ -61,14 +62,14 @@ Run test server,
 ```bash
 $ python manage.py runserver
 ```
+
 #### Create userprofile
 Create a userprofile for the root user you just created,
 - Visit `http://127.0.0.1:8000/admin` and login with the root account
 - Create a new userprofile and link it to the root user
 
+## Webfaction (Django hosting)
 
-Webfaction (Django hosting)
-------------
 ##### Set project PYTHONPATH
 ```bash
 $ PYTHONPATH=$HOME/webapps/<projectname>/lib/python3.4
@@ -89,6 +90,7 @@ $ python3.4 manage.py collectstatic
 ```bash
 $ less ~/logs/user/error_care.log
 ```
+
 ##### Apache restart
 ```bash
 $ ~/webapps/<projectname>/apache2/bin/restart
