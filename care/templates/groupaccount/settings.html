@@ -11,16 +11,13 @@
 No permissions to change these group settings.
 {% endif %}
 
-{% if error %}
-  {{ error }}
-{% endif %}
-
 {% if form %}  
   
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <div class="well well-md">
-        
+        {% bootstrap_form_errors form %}
+
         <form action="" method="post">
           {% csrf_token %}
           <div class="row">
