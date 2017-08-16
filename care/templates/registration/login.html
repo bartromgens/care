@@ -13,7 +13,9 @@
         <div class="col-md-4 col-md-offset-4">
             <form action="" method="post">
                 {% csrf_token %}
-                {% bootstrap_form form %}
+                {% bootstrap_label "Email or Username" label_for="id_username" %}
+                {% bootstrap_field form.username show_label=False %}
+                {% bootstrap_field form.password %}
                 {% buttons %}
                 <button type="submit" class="btn btn-primary">
                     Sign in
