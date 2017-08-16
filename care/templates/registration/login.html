@@ -5,7 +5,7 @@
 
 {% block content %}
 
-    <center><h3>Sign in</h3></center>
+    <center><h3>Log in</h3></center>
         {% if error %}
             {{ error }}
         {% endif %}
@@ -18,7 +18,7 @@
                 {% bootstrap_field form.password %}
                 {% buttons %}
                 <button type="submit" class="btn btn-primary">
-                    Sign in
+                    Log in
                 </button>
                 {% endbuttons %}
                 <input name="next" type="hidden" value="{{next}}">
@@ -26,7 +26,7 @@
             <a href="/accounts/password/reset">Forgot your password?</a>
             <hr>
             <h4>
-                New? <a href="/accounts/register/">Register here</a>.
+                New? <a href="/accounts/register/">Sign up</a>!
             </h4>
 
         </div>
