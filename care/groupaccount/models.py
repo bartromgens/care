@@ -1,7 +1,5 @@
 from django.db import models
 
-#users = User.objects.filter(groups__name='monkeys')
-
 
 class GroupSetting(models.Model):
     notification_lower_limit = models.IntegerField(default=-100) # the lower limit on the balance a user can have in this group before a notification will be sent.
@@ -13,7 +11,6 @@ class GroupSetting(models.Model):
 
 class GroupAccount(models.Model):
     name = models.CharField(max_length=200)
-    number = models.IntegerField(unique=True)
     settings = models.ForeignKey(GroupSetting, blank=True, null=True)
 
     def __str__(self):
@@ -35,4 +32,3 @@ class GroupAccount(models.Model):
         group_account.my_balance_float = UserProfile.get_balance(group_account.id, my_user_profile.id)
         group_account.my_balance = '%.2f' % group_account.my_balance_float
         return group_account
-    

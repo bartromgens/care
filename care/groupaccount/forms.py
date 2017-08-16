@@ -10,21 +10,6 @@ class NewGroupAccountForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'] = forms.CharField(max_length=200, label='Group name')
-        self.fields['number'] = forms.IntegerField(
-            widget=forms.HiddenInput,
-            min_value=0,
-            max_value=100000000000,
-            label='Account number',
-            help_text='Create your own group account number. Max 10 digits.'
-        )
-
-        random_num = randint(9999999999,100000000000)
-        group_account = GroupAccount.objects.filter(number=random_num)
-        while group_account:
-            random_num = randint(9999999999,100000000000)
-            group_account = GroupAccount.objects.filter(number=random_num)
-
-        self.fields['number'].initial = random_num
         self.fields['settings'] = forms.ModelChoiceField(
             widget=forms.HiddenInput,
             queryset=GroupSetting.objects.all(),
