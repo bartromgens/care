@@ -123,7 +123,7 @@ def send_low_balance_reminder(user, group):
 
     message = message.replace('{% username %}', userprofile.displayname)
     message = message.replace('{% group_name %}', group.name)
-    message = message.replace('{% group_user_balance %}', str(UserProfile.get_balance(group.id, userprofile.id) ))
+    message = message.replace('{% group_user_balance %}', str('%.2f' % UserProfile.get_balance(group.id, userprofile.id)))
     message = message.replace('{% lower_limit %}', str(group.settings.notification_lower_limit))
 
     send_html_mail(email_to, email_from, subject, message)
