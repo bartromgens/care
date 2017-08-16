@@ -20,15 +20,15 @@ Features
 Dependencies
 -----------
 - Python 3.3+
-- Django 1.9
+- Django 1.10
 - see `requirements.txt`
 
 Installation
 ------------
 #### Create a virtualenv
-Create a virtual enviroment with python 3.x,
+Create a virtual enviroment with Python 3,
 ```bash
-$ virtualenv -p /usr/bin/python3.x env
+$ virtualenv -p /usr/bin/python3 env
 ```
 Activate the enviroment,
 ```bash

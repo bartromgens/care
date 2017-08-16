@@ -1,4 +1,4 @@
-Django==1.10
+Django==1.10.7
 django-bootstrap-pagination==1.6.2
 django-bootstrap3==9.0.0
 git+https://github.com/jorgenpt/django-bootstrap3-datetimepicker.git
