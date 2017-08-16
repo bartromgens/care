@@ -41,9 +41,7 @@ class BaseView(TemplateView):
 
 
 class NewRegistrationView(RegistrationView):
-
-    def get_success_url(self, request, new_user):
-        return '/'
+    success_url = '/'
 
 
 class HomeView(BaseView):
