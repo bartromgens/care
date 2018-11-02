@@ -1,9 +1,9 @@
-Django==1.11.4
-django-bootstrap-pagination==1.6.2
-django-bootstrap3==9.0.0
-django-bootstrap3-datetimepicker-2==2.5.0
-django-common-helpers==0.9.1
-django-cron==0.5.0
+Django==1.11.16
+django-bootstrap-pagination==1.7.0
+django-bootstrap3==11.0.0
+django-bootstrap3-datetimepicker-2==2.6.0
+django-common-helpers==0.9.2
+django-cron==0.5.1
 django-dual-authentication==1.0.0
 django-registration-redux==1.7
 django-recurrence==1.4.1
