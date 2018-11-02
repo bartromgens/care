@@ -85,7 +85,7 @@ def send_welcome_email(username, emailaddress):
     send_html_mail(email_to, email_from, subject, message)
 
 
-def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
+def send_invite_email(username_from, username_to, group_name, emailaddress):
     email_from = 'Care <info@computerautomatedremoteexchange.com>'
     email_to = emailaddress
     subject = 'New invitation'
@@ -98,9 +98,9 @@ def send_invite_email(usernameFrom, usernameTo, groupName, emailaddress):
         for row in data:
             message += row
 
-    message = message.replace('{% usernameTo %}', usernameTo)
-    message = message.replace('{% usernameFrom %}', usernameFrom)
-    message = message.replace('{% groupName %}', groupName)
+    message = message.replace('{% usernameTo %}', username_to)
+    message = message.replace('{% usernameFrom %}', username_from)
+    message = message.replace('{% groupName %}', group_name)
 
     send_html_mail(email_to, email_from, subject, message)
 

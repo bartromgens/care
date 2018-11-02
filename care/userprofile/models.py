@@ -22,10 +22,11 @@ def create_userprofile(sender, instance, created, **kwargs):
         return
     logger.debug('signal create_userprofile()')
     profile = UserProfile(user=instance, displayname=instance.username)
-    if NotificationInterval.objects.get(name="Monthly"):
+    if NotificationInterval.objects.filter(name="Monthly"):
         profile.historyEmailInterval = NotificationInterval.objects.get(name="Monthly")
     profile.save()
     emailserver.send_welcome_email(instance.username, instance.email)
+
 
 # create a new userprofile when a new user is created
 post_save.connect(create_userprofile, sender=User)
