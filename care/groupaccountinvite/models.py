@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 class GroupAccountInvite(models.Model):
-    group_account = models.ForeignKey(GroupAccount)
-    inviter = models.ForeignKey(UserProfile, related_name='inviter')
-    invitee = models.ForeignKey(UserProfile, related_name='invitee')
+    group_account = models.ForeignKey(GroupAccount, on_delete=models.CASCADE)
+    inviter = models.ForeignKey(UserProfile, related_name='inviter', on_delete=models.CASCADE)
+    invitee = models.ForeignKey(UserProfile, related_name='invitee', on_delete=models.CASCADE)
     isAccepted = models.BooleanField(default=False)
     isDeclined = models.BooleanField(default=False)
     createdDateAndTime = models.DateTimeField(default=datetime.now, editable=True, blank=True)

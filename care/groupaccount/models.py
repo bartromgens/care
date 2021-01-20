@@ -3,7 +3,7 @@ from django.db import models
 
 class GroupSetting(models.Model):
     notification_lower_limit = models.IntegerField(default=-100) # the lower limit on the balance a user can have in this group before a notification will be sent.
-    notification_lower_limit_interval = models.ForeignKey('userprofile.NotificationInterval', null=True) # the balance notification interval in days
+    notification_lower_limit_interval = models.ForeignKey('userprofile.NotificationInterval', null=True, on_delete=models.SET_NULL) # the balance notification interval in days
     
     def __str__(self):
         return 'id: ' + str(self.id) + ', limit: ' + str(self.notification_lower_limit)
@@ -11,7 +11,7 @@ class GroupSetting(models.Model):
 
 class GroupAccount(models.Model):
     name = models.CharField(max_length=200)
-    settings = models.ForeignKey(GroupSetting, blank=True, null=True)
+    settings = models.ForeignKey(GroupSetting, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name

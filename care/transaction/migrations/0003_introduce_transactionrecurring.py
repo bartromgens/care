@@ -27,14 +27,14 @@ class Migration(migrations.Migration):
                 ('date', models.DateTimeField(blank=True, default=datetime.datetime.now)),
                 ('every', care.fields.recurrencefield.RecurrenceField()),
                 ('last_occurrence', models.DateTimeField(blank=True, default=datetime.datetime(1970, 1, 1, 1, 0), editable=False)),
-                ('buyer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rec_buyer', to='userprofile.UserProfile')),
+                ('buyer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='rec_buyer', to='userprofile.UserProfile')),
                 ('consumers', models.ManyToManyField(related_name='rec_consumers', to='userprofile.UserProfile')),
-                ('group_account', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='groupaccount.GroupAccount')),
+                ('group_account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='groupaccount.GroupAccount')),
             ],
         ),
         migrations.AddField(
             model_name='modification',
             name='transaction_recurring',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='modification', to='transaction.TransactionRecurring'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='modification', to='transaction.TransactionRecurring'),
         ),
     ]

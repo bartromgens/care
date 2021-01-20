@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='modification',
             name='transaction',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='modification', to='transaction.Transaction'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='modification', to='transaction.Transaction'),
         ),
         migrations.AlterField(
             model_name='modification',
             name='transaction_real',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='modification', to='transaction.TransactionReal'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='modification', to='transaction.TransactionReal'),
         ),
     ]

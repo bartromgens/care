@@ -17,9 +17,9 @@ logger = logging.getLogger(__name__)
 class Transaction(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     what = models.CharField(max_length=24)
-    buyer = models.ForeignKey(UserProfile, related_name='buyer')
+    buyer = models.ForeignKey(UserProfile, related_name='buyer', on_delete=models.PROTECT)
     consumers = models.ManyToManyField(UserProfile, related_name='consumers')
-    group_account = models.ForeignKey(GroupAccount)
+    group_account = models.ForeignKey(GroupAccount, on_delete=models.PROTECT)
     comment = models.CharField(max_length=200, blank=True)
     date = models.DateTimeField(default=datetime.datetime.now,
                                 editable=True, blank=True)
@@ -68,10 +68,10 @@ class Transaction(models.Model):
 class TransactionRecurring(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     what = models.CharField(max_length=24)
-    buyer = models.ForeignKey(UserProfile, related_name='rec_buyer')
+    buyer = models.ForeignKey(UserProfile, related_name='rec_buyer', on_delete=models.PROTECT)
     consumers = models.ManyToManyField(UserProfile,
                                        related_name='rec_consumers')
-    group_account = models.ForeignKey(GroupAccount)
+    group_account = models.ForeignKey(GroupAccount, on_delete=models.PROTECT)
     comment = models.CharField(max_length=200, blank=True)
     date = models.DateTimeField(default=datetime.datetime.now, editable=True,
                                 blank=True)
@@ -176,10 +176,10 @@ class TransactionRecurring(models.Model):
 
 class TransactionReal(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
-    sender = models.ForeignKey(UserProfile, related_name='sender')
-    receiver = models.ForeignKey(UserProfile, related_name='receiver')
+    sender = models.ForeignKey(UserProfile, related_name='sender', on_delete=models.PROTECT)
+    receiver = models.ForeignKey(UserProfile, related_name='receiver', on_delete=models.PROTECT)
     comment = models.CharField(max_length=200)
-    group_account = models.ForeignKey(GroupAccount)
+    group_account = models.ForeignKey(GroupAccount, on_delete=models.PROTECT)
     date = models.DateTimeField(default=datetime.datetime.now,
                                 editable=True, blank=True)
 
@@ -222,11 +222,14 @@ class TransactionReal(models.Model):
 
 
 class Modification(models.Model):
-    user = models.ForeignKey(UserProfile, blank=True)
+    user = models.ForeignKey(UserProfile, blank=True, on_delete=models.PROTECT)
     date = models.DateTimeField(default=datetime.datetime.now,
                                 editable=True, blank=True)
-    transaction = models.ForeignKey(Transaction, blank=True, null=True, related_name='modification')
-    transaction_real = models.ForeignKey(TransactionReal, blank=True, null=True, related_name='modification')
+    transaction = models.ForeignKey(Transaction, blank=True, null=True, related_name='modification', on_delete=models.SET_NULL)
+    transaction_real = models.ForeignKey(TransactionReal, blank=True, null=True,
+                                         related_name='modification',
+                                         on_delete=models.SET_NULL)
     transaction_recurring = models.ForeignKey(TransactionRecurring,
                                               blank=True, null=True,
-                                              related_name='modification')
+                                              related_name='modification',
+                                              on_delete=models.SET_NULL)

@@ -41,13 +41,13 @@ class NotificationInterval(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     displayname = models.CharField(max_length=15, validators=[RegexValidator(r"^\S.*\S$|^\S$|^$", "This field cannot start or end with spaces.")])
     firstname = models.CharField(max_length=100, blank=True)
     lastname = models.CharField(max_length=100, blank=True)
     group_accounts = models.ManyToManyField(GroupAccount, blank=True)
     showTableView = models.BooleanField(default=False)
-    historyEmailInterval = models.ForeignKey(NotificationInterval, null=True)
+    historyEmailInterval = models.ForeignKey(NotificationInterval, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return str(self.displayname)
