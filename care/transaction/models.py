@@ -13,6 +13,50 @@ from care.userprofile.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
+def _merge_on_last_modified(l1, l2):
+    """ Takes two iterables l1, l2 of objects with a `last_modified` attribute. Assumes
+    the iterables are sorted (desc. order) on this attribute, and merges them into a
+    single sorted list """
+
+    il1 = iter(l1)
+    il2 = iter(l2)
+    out = []
+
+    try:
+        next_l1 = next(il1)
+    except StopIteration:
+        next_l1 = None
+    try:
+        next_l2 = next(il2)
+    except StopIteration:
+        next_l2 = None
+
+    # Merge while both lists have elements
+    while next_l1 is not None and next_l2 is not None:
+        if next_l1.last_modified > next_l2.last_modified:
+            out.append(next_l1)
+            try:
+                next_l1 = next(il1)
+            except StopIteration:
+                next_l1 = None
+        else:
+            out.append(next_l2)
+            try:
+                next_l2 = next(il2)
+            except StopIteration:
+                next_l2 = None
+
+    if next_l1 is not None:
+        out.append(next_l1)
+        for elt in il1:
+            out.append(elt)
+    if next_l2 is not None:
+        out.append(next_l2)
+        for elt in il2:
+            out.append(elt)
+
+    return out
+
 
 class Transaction(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
@@ -23,18 +67,21 @@ class Transaction(models.Model):
     comment = models.CharField(max_length=200, blank=True)
     date = models.DateTimeField(default=datetime.datetime.now,
                                 editable=True, blank=True)
+    last_modified = models.DateTimeField(
+        default=datetime.datetime.now,
+        editable=False,
+        blank=True
+    )
 
     def get_datetime_last_modified(self):
-        if self.modifications.exists():
-            return self.modifications.latest('date').date
-        return self.date
+        return self.last_modified
 
     @staticmethod
     def get_buyer_transactions(buyer_id):
         transactions = (
             Transaction.objects
             .filter(buyer__id=buyer_id)
-            .order_by("-date")
+            .order_by("-last_modified")
             .prefetch_related('modifications', 'group_account')
         )
         for transaction in transactions:
@@ -52,7 +99,7 @@ class Transaction(models.Model):
                     output_field=models.FloatField()
                 )
             ).filter(consumers__id=consumer_id)
-            .order_by("-date")
+            .order_by("-last_modified")
             .prefetch_related('modifications', 'group_account')
         )
 
@@ -65,10 +112,10 @@ class Transaction(models.Model):
     def get_transactions_sorted_by_last_modified(userprofile_id):
         buyer_transactions = Transaction.get_buyer_transactions(userprofile_id)
         consumer_transactions = Transaction.get_consumer_transactions(userprofile_id)
-        transactions_all = list(chain(buyer_transactions, consumer_transactions))
-        for transaction in transactions_all:
-            transaction.last_modified = transaction.get_datetime_last_modified()
-        return sorted(transactions_all, key=lambda instance: instance.last_modified, reverse=True)
+        transactions_all = _merge_on_last_modified(
+            buyer_transactions, consumer_transactions
+        )
+        return transactions_all
 
     def __str__(self):
         return self.what
@@ -84,6 +131,11 @@ class TransactionRecurring(models.Model):
     comment = models.CharField(max_length=200, blank=True)
     date = models.DateTimeField(default=datetime.datetime.now, editable=True,
                                 blank=True)
+    last_modified = models.DateTimeField(
+        default=datetime.datetime.now,
+        editable=False,
+        blank=True
+    )
     every = RecurrenceField()
     last_occurrence = models.DateTimeField(
         default=datetime.datetime.fromtimestamp(0),
@@ -130,9 +182,7 @@ class TransactionRecurring(models.Model):
         self.save()
 
     def get_datetime_last_modified(self):
-        if self.modifications.exists():
-            return self.modifications.latest('date').date
-        return self.date
+        return self.last_modified
 
     @staticmethod
     def get_buyer_transactions(buyer_id):
@@ -171,14 +221,10 @@ class TransactionRecurring(models.Model):
             TransactionRecurring.get_buyer_transactions(userprofile_id)
         consumer_transactions = \
             TransactionRecurring.get_consumer_transactions(userprofile_id)
-        transactions_all = list(chain(buyer_transactions,
-                                      consumer_transactions))
-        for transaction in transactions_all:
-            transaction.last_modified = \
-                transaction.get_datetime_last_modified()
-        return sorted(transactions_all,
-                      key=lambda instance: instance.last_modified,
-                      reverse=True)
+        transactions_all = _merge_on_last_modified(
+            buyer_transactions, consumer_transactions
+        )
+        return transactions_all
 
     def __str__(self):
         return self.what
@@ -192,11 +238,14 @@ class TransactionReal(models.Model):
     group_account = models.ForeignKey(GroupAccount, on_delete=models.PROTECT)
     date = models.DateTimeField(default=datetime.datetime.now,
                                 editable=True, blank=True)
+    last_modified = models.DateTimeField(
+        default=datetime.datetime.now,
+        editable=False,
+        blank=True
+    )
 
     def get_datetime_last_modified(self):
-        if self.modifications.exists():
-            return self.modifications.latest('date').date
-        return self.date
+        return self.last_modified
 
     @staticmethod
     def get_transactions_real_sent(sender_id):
@@ -228,10 +277,10 @@ class TransactionReal(models.Model):
     def get_transactions_real_sorted_by_last_modified(userprofile_id):
         sent_transactions = TransactionReal.get_transactions_real_sent(userprofile_id)
         received_transactions = TransactionReal.get_transactions_real_received(userprofile_id)
-        transactions_real_all = list(chain(sent_transactions, received_transactions))
-        for transaction_real in transactions_real_all:
-            transaction_real.last_modified = transaction_real.get_datetime_last_modified()
-        return sorted(transactions_real_all, key=lambda instance: instance.last_modified, reverse=True)
+        transactions_real_all = _merge_on_last_modified(
+            sent_transactions, received_transactions
+        )
+        return transactions_real_all
 
     def __str__(self):
         return self.comment
