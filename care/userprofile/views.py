@@ -1,8 +1,9 @@
 import logging
 logger = logging.getLogger(__name__)
 
+from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth.views import password_reset_confirm
+from django.contrib.auth.views import PasswordResetConfirmView
 from django.db.models import Q
 from django.shortcuts import HttpResponseRedirect
 from django.views.generic.edit import FormView
@@ -63,6 +64,6 @@ class SendMyTransactionHistory(BaseView):
         return context
 
 
-def password_reset_confirm_custom(request, uidb64=None, token=None):
-    return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
-                                  uidb64=uidb64, token=token, post_reset_redirect='/accounts/login/')
+class PasswordResetConfirm(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+    success_url = settings.LOGIN_URL

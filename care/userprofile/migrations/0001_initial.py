@@ -31,8 +31,8 @@ class Migration(migrations.Migration):
                 ('lastname', models.CharField(max_length=100, blank=True)),
                 ('showTableView', models.BooleanField(default=False)),
                 ('group_accounts', models.ManyToManyField(to='groupaccount.GroupAccount', blank=True)),
-                ('historyEmailInterval', models.ForeignKey(to='userprofile.NotificationInterval', null=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('historyEmailInterval', models.ForeignKey(to='userprofile.NotificationInterval', null=True, on_delete=models.SET_NULL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
         ),
     ]

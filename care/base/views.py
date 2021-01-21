@@ -27,7 +27,7 @@ class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             user_profile = UserProfile.objects.get(user=self.request.user)
             invites = GroupAccountInvite.objects.filter(invitee=user_profile, isAccepted=False, isDeclined=False)
             context['user'] = self.request.user

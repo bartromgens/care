@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='groupsetting',
             name='notification_lower_limit_interval',
-            field=models.ForeignKey(to='userprofile.NotificationInterval', null=True),
+            field=models.ForeignKey(to='userprofile.NotificationInterval', null=True, on_delete=models.SET_NULL),
         ),
         migrations.AddField(
             model_name='groupaccount',
             name='settings',
-            field=models.ForeignKey(to='groupaccount.GroupSetting', null=True, blank=True),
+            field=models.ForeignKey(to='groupaccount.GroupSetting', null=True, blank=True, on_delete=models.SET_NULL),
         ),
     ]

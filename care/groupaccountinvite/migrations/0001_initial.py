@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
                 ('isAccepted', models.BooleanField(default=False)),
                 ('isDeclined', models.BooleanField(default=False)),
                 ('createdDateAndTime', models.DateTimeField(default=datetime.datetime.now, blank=True)),
-                ('group_account', models.ForeignKey(to='groupaccount.GroupAccount')),
-                ('invitee', models.ForeignKey(to='userprofile.UserProfile', related_name='invitee')),
-                ('inviter', models.ForeignKey(to='userprofile.UserProfile', related_name='inviter')),
+                ('group_account', models.ForeignKey(to='groupaccount.GroupAccount', on_delete=models.CASCADE)),
+                ('invitee', models.ForeignKey(to='userprofile.UserProfile', related_name='invitee', on_delete=models.CASCADE)),
+                ('inviter', models.ForeignKey(to='userprofile.UserProfile', related_name='inviter', on_delete=models.CASCADE)),
             ],
         ),
     ]
