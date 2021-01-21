@@ -25,16 +25,18 @@ class Transaction(models.Model):
                                 editable=True, blank=True)
 
     def get_datetime_last_modified(self):
-        modifications = Modification.objects.filter(transaction=self)
-        if modifications.exists():
-            modification = modifications.latest('date')
-            return modification.date
-        else:
-            return self.date
+        if self.modifications.exists():
+            return self.modifications.latest('date').date
+        return self.date
 
     @staticmethod
     def get_buyer_transactions(buyer_id):
-        transactions = Transaction.objects.filter(buyer__id=buyer_id).order_by("-date").prefetch_related('consumers', 'group_account')
+        transactions = (
+            Transaction.objects
+            .filter(buyer__id=buyer_id)
+            .order_by("-date")
+            .prefetch_related('modifications', 'group_account')
+        )
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % float(transaction.amount)
             transaction.amount_per_person_float = float(transaction.amount)
@@ -42,9 +44,17 @@ class Transaction(models.Model):
 
     @staticmethod
     def get_consumer_transactions(consumer_id):
-        transactions = Transaction.objects.annotate(
-            amount_per_person=ExpressionWrapper(F('amount') / (1.0*Count('consumers')), output_field=models.FloatField())
-        ).filter(consumers__id=consumer_id).order_by("-date")
+        transactions = (
+            Transaction.objects
+            .annotate(
+                amount_per_person=ExpressionWrapper(
+                    F('amount') / (1.0*Count('consumers')),
+                    output_field=models.FloatField()
+                )
+            ).filter(consumers__id=consumer_id)
+            .order_by("-date")
+            .prefetch_related('modifications', 'group_account')
+        )
 
         for transaction in transactions:
             transaction.amount_per_person_float = float((-1*transaction.amount_per_person))
@@ -58,7 +68,6 @@ class Transaction(models.Model):
         transactions_all = list(chain(buyer_transactions, consumer_transactions))
         for transaction in transactions_all:
             transaction.last_modified = transaction.get_datetime_last_modified()
-            transaction.modifications = Modification.objects.filter(transaction=transaction)
         return sorted(transactions_all, key=lambda instance: instance.last_modified, reverse=True)
 
     def __str__(self):
@@ -121,18 +130,15 @@ class TransactionRecurring(models.Model):
         self.save()
 
     def get_datetime_last_modified(self):
-        modifications = Modification.objects.filter(transaction_recurring=self)
-        if modifications.exists():
-            modification = modifications.latest('date')
-            return modification.date
-        else:
-            return self.date
+        if self.modifications.exists():
+            return self.modifications.latest('date').date
+        return self.date
 
     @staticmethod
     def get_buyer_transactions(buyer_id):
         transactions = TransactionRecurring.objects \
             .filter(buyer__id=buyer_id).order_by("-date") \
-            .prefetch_related('consumers', 'group_account')
+            .prefetch_related('modifications', 'group_account')
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % float(transaction.amount)
             transaction.amount_per_person_float = float(transaction.amount)
@@ -140,11 +146,17 @@ class TransactionRecurring(models.Model):
 
     @staticmethod
     def get_consumer_transactions(consumer_id):
-        transactions = TransactionRecurring.objects.annotate(
-            amount_per_person=ExpressionWrapper(
-                F('amount') / (1.0*Count('consumers')),
-                output_field=models.FloatField())
-        ).filter(consumers__id=consumer_id).order_by("-date")
+        transactions = (
+            TransactionRecurring.objects
+            .annotate(
+                amount_per_person=ExpressionWrapper(
+                    F('amount') / (1.0*Count('consumers')),
+                    output_field=models.FloatField())
+            )
+            .filter(consumers__id=consumer_id)
+            .order_by("-date")
+            .prefetch_related('modifications', 'group_account')
+        )
 
         for transaction in transactions:
             transaction.amount_per_person_float = \
@@ -164,8 +176,6 @@ class TransactionRecurring(models.Model):
         for transaction in transactions_all:
             transaction.last_modified = \
                 transaction.get_datetime_last_modified()
-            transaction.modifications = \
-                Modification.objects.filter(transaction_recurring=transaction)
         return sorted(transactions_all,
                       key=lambda instance: instance.last_modified,
                       reverse=True)
@@ -184,16 +194,18 @@ class TransactionReal(models.Model):
                                 editable=True, blank=True)
 
     def get_datetime_last_modified(self):
-        modifications = Modification.objects.filter(transaction_real=self)
-        if modifications.exists():
-            modification = modifications.latest('date')
-            return modification.date
-        else:
-            return self.date
+        if self.modifications.exists():
+            return self.modifications.latest('date').date
+        return self.date
 
     @staticmethod
     def get_transactions_real_sent(sender_id):
-        transactions = TransactionReal.objects.filter(sender__id=sender_id).prefetch_related('modification', 'sender', 'receiver').order_by("-date")
+        transactions = (
+            TransactionReal.objects
+            .filter(sender__id=sender_id)
+            .order_by("-date")
+            .prefetch_related('modifications', 'group_account')
+        )
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % transaction.amount
             transaction.amount_per_person_float = float(transaction.amount)
@@ -201,7 +213,12 @@ class TransactionReal(models.Model):
 
     @staticmethod
     def get_transactions_real_received(receiver_id):
-        transactions = TransactionReal.objects.filter(receiver__id=receiver_id).prefetch_related('modification', 'sender', 'receiver').order_by("-date")
+        transactions = (
+            TransactionReal.objects
+            .filter(receiver__id=receiver_id)
+            .order_by("-date")
+            .prefetch_related('modifications', 'group_account')
+        )
         for transaction in transactions:
             transaction.amount_per_person = '%.2f' % transaction.amount
             transaction.amount_per_person_float = float(transaction.amount)
@@ -214,7 +231,6 @@ class TransactionReal(models.Model):
         transactions_real_all = list(chain(sent_transactions, received_transactions))
         for transaction_real in transactions_real_all:
             transaction_real.last_modified = transaction_real.get_datetime_last_modified()
-            transaction_real.modifications = Modification.objects.filter(transaction_real=transaction_real)
         return sorted(transactions_real_all, key=lambda instance: instance.last_modified, reverse=True)
 
     def __str__(self):
@@ -225,11 +241,11 @@ class Modification(models.Model):
     user = models.ForeignKey(UserProfile, blank=True, on_delete=models.PROTECT)
     date = models.DateTimeField(default=datetime.datetime.now,
                                 editable=True, blank=True)
-    transaction = models.ForeignKey(Transaction, blank=True, null=True, related_name='modification', on_delete=models.SET_NULL)
+    transaction = models.ForeignKey(Transaction, blank=True, null=True, related_name='modifications', on_delete=models.SET_NULL)
     transaction_real = models.ForeignKey(TransactionReal, blank=True, null=True,
-                                         related_name='modification',
+                                         related_name='modifications',
                                          on_delete=models.SET_NULL)
     transaction_recurring = models.ForeignKey(TransactionRecurring,
                                               blank=True, null=True,
-                                              related_name='modification',
+                                              related_name='modifications',
                                               on_delete=models.SET_NULL)
