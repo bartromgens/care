@@ -1,10 +1,8 @@
 import os
 import threading
 import logging
-from smtplib import SMTP
 
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from django.core.mail import send_mail
 
 from care import settings
 
@@ -12,37 +10,8 @@ module_dir = os.path.dirname(__file__)  # get current directory
 logger = logging.getLogger(__name__)
 
 
-class EmailThread(threading.Thread):
-    def __init__(self, email_to, email_from, subject, message):
-        self.email_to = email_to
-        self.email_from = email_from
-        self.subject = subject
-        self.message = message
-        threading.Thread.__init__(self)
-
-    def run(self):
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = self.subject
-        msg['From'] = self.email_from
-        msg['To'] = self.email_to
-
-        msg.attach(MIMEText(self.message, 'html'))
-
-        # Credentials (if needed)
-        username = settings.EMAIL_HOST_USER
-        password = settings.EMAIL_HOST_PASSWORD
-
-        # The actual mail send
-        server = SMTP( settings.EMAIL_HOST + ':' + str(settings.EMAIL_PORT) )
-        server.starttls()
-        server.login(username, password)
-        server.sendmail(self.email_from, self.email_to, msg.as_string())
-        server.quit()
-        logger.info("finished sending mail")
-
-
 def send_html_mail(email_to, email_from, subject, message):
-    EmailThread(email_to, email_from, subject, message).start()
+    send_mail(subject, message, email_from, [email_to])
 
 
 def send_transaction_history(username, emailaddress, transactionTable, transactionRealTable, startDate, endDate):
