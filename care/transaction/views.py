@@ -121,7 +121,9 @@ class EditTransactionView(FormView, BaseView):
             form.cleaned_data['consumers'] = UserProfile.objects.filter(group_accounts=form.cleaned_data['group_account'])
         form.save()
         transaction = Transaction.objects.get(pk=self.kwargs['pk'])
-        Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
+        modif = Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction=transaction)
+        transaction.last_modified = modif.date
+        transaction.save()
         return HttpResponseRedirect('/transactions/share/0')
 
 
@@ -238,9 +240,11 @@ class EditRecurringTransactionView(FormView, BaseView):
                 group_accounts=form.cleaned_data['group_account'])
         form.save()
         transaction = TransactionRecurring.objects.get(pk=self.kwargs['pk'])
-        Modification.objects.create(
+        modif = Modification.objects.create(
             user=UserProfile.objects.get(user=self.request.user),
             transaction_recurring=transaction)
+        transaction.last_modified = modif.date
+        transaction.save()
         return HttpResponseRedirect('/transactions/recurring/0')
 
 
@@ -338,5 +342,7 @@ class EditRealTransactionView(FormView, BaseView):
         # prevent users that are not part of the transaction to edit the transaction
         if self.request.user == transactionreal.sender.user or self.request.user == transactionreal.receiver.user:
             form.save()
-            Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transactionreal)
+            modif = Modification.objects.create(user=UserProfile.objects.get(user=self.request.user), transaction_real=transactionreal)
+            transactionreal.last_modified = modif.date
+            transactionreal.save()
         return HttpResponseRedirect('/transactions/real/0')
